@@ -71,8 +71,10 @@ char * get_matrix(FILE *input, int *m, int *n){
 int main(){
 	FILE *fp = fopen("input", "r") ;
 	int nrow, ncol ;
+	/* convert the pointer to multidimensional array */
 	char *temp_mat =  get_matrix(fp, &nrow, &ncol) ;
 	char (*mat)[ncol] = (char (*)[ncol]) temp_mat ;
+
 	#ifdef DEBUG
 	int i,j ;
 	for (i = 0; i < nrow; i++){
@@ -82,5 +84,7 @@ int main(){
 		fprintf(stderr, "\n") ;
 	}
 	#endif
+
+
 	fclose(fp) ;
 }
