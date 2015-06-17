@@ -1,38 +1,28 @@
 =begin
 %%{
 
-  machine simple_lexer;
-  
-  integer     = ('+'|'-')?[0-9]+;
-  float       = ('+'|'-')?[0-9]+'.'[0-9]+;
-  assignment  = '=';
+  machine Verilog;
 
-  n_input_gatetype = 'and' | 'nand' | 'or' | 'nor' | 'xor' | 'xnor' ;
+  # keywords
+  module_keyword = 'and' | 'nand' | 'or' | 'nor' | 'xor' | 'xnor' | 'dff' ;
+  module = 'module' ;
+  endmodule = 'endmodule' ;
   n_output_gatetype = 'buf' | 'not' ;
 
-#  identifier  = [a-zA-Z_]+; 
+  integer     = ('+'|'-')?[0-9]+;
+  decimals    = [0-9][0-9_]* ;
+  assignment  = '=';
+  identifier  = [a-zA-Z_][a-zA-Z0-9$_]* ;
 
   
   main := |*
     
-    integer => { 
-      emit(:integer_literal, data, token_array, ts, te) 
+    module_keyword => {
+      emit(:module_keyword, data, token_array, ts, te)
     };
     
-    float => { 
-      emit(:float_literal, data, token_array, ts, te) 
-    };
-    
-    assignment => { 
-      emit(:assignment_operator, data, token_array, ts, te) 
-    };
-    
-#    identifier => { 
-#      emit(:identifier, data, token_array, ts, te) 
-#    };
-
-    n_input_gatetype => {
-      emit(:n_input_gatetype, data, token_array, ts, te)
+    identifier => { 
+      emit(:identifier, data, token_array, ts, te) 
     };
     
     space;
