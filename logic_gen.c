@@ -8,10 +8,7 @@
 
 #define DEBUG 
 
-char * get_matrix(FILE *input){
-	#ifdef DEBUG
-	int i,j ;
-	#endif
+char * get_matrix(FILE *input, int *m, int *n){
 	if(input == NULL){
 
 	perror("illegal file");
@@ -53,7 +50,9 @@ char * get_matrix(FILE *input){
 			row_counter += 1 ;
 			col_counter = 0 ;
 		}else{
-			fprintf(stderr, "unmatched column number at row %d\n", row_counter) ;
+			fprintf(stderr, 
+				"unmatched column number at row %d\n",
+				 row_counter) ;
 			exit(__UNMATCHED_COL__);
 		}
 		if (c == EOF) {nrow = row_counter ;}
@@ -65,19 +64,23 @@ char * get_matrix(FILE *input){
 		break;
 		}
 	} while(c != EOF) ;
-	#ifdef DEBUG
-	for (i = 0; i < nrow; i++){
-		for(j = 0; j < ncol; j ++){
-			fprintf(stderr, "%d ", ret[ i * ncol + j] ) ;
-		}
-		fprintf(stderr, "\n") ;
-	}
-	#endif	
+	*m = nrow; *n = ncol ;	
 	return ret ;
 	}
 }
 int main(){
 	FILE *fp = fopen("input", "r") ;
-	get_matrix(fp) ;
+	int nrow, ncol ;
+	char *temp_mat =  get_matrix(fp, &nrow, &ncol) ;
+	char (*mat)[ncol] = (char (*)[ncol]) temp_mat ;
+	#ifdef DEBUG
+	int i,j ;
+	for (i = 0; i < nrow; i++){
+		for(j = 0; j < ncol; j ++){
+			fprintf(stderr, "%d ", mat   [ i ][j] ) ;
+		}
+		fprintf(stderr, "\n") ;
+	}
+	#endif
 	fclose(fp) ;
 }
