@@ -54,14 +54,13 @@ char * get_matrix(FILE *input){
 			col_counter = 0 ;
 		}else{
 			fprintf(stderr, "unmatched column number at row %d\n", row_counter) ;
-			perror("unmatched column number");
 			exit(__UNMATCHED_COL__);
 		}
 		if (c == EOF) {nrow = row_counter ;}
 		break;
 		
 		default:
-		perror("illegal character");
+		fprintf(stderr, "illegal character: %c\n", c);
 		exit(__ILLEGAL_CHAR__);
 		break;
 		}
