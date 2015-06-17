@@ -27,7 +27,7 @@ char * get_matrix(FILE *input){
 	int cur_size ;
 	char c = '\0' ;
 	do {
-		getc(input) ;
+		c = getc(input) ;
 		switch(c){
 		case '0':
 		case '1':
@@ -57,7 +57,7 @@ char * get_matrix(FILE *input){
 			perror("unmatched column number");
 			exit(__UNMATCHED_COL__);
 		}
-	
+		if (c == EOF) {nrow = row_counter ;}
 		break;
 		
 		default:
@@ -69,7 +69,7 @@ char * get_matrix(FILE *input){
 	#ifdef DEBUG
 	for (i = 0; i < nrow; i++){
 		for(j = 0; j < ncol; j ++){
-			fprintf(stderr, "%c ", ret[ i * ncol + j] ) ;
+			fprintf(stderr, "%d ", ret[ i * ncol + j] ) ;
 		}
 		fprintf(stderr, "\n") ;
 	}
