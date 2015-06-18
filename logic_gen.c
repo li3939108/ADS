@@ -80,6 +80,7 @@ int cost_fun(FILE *input , void *mat, int nrow, int ncol, int row_number){
 		exit(5) ;
 	}
 }
+
 int main(){
 	FILE *fp = fopen("input", "r") ;
 	int nrow, ncol ;
@@ -87,8 +88,14 @@ int main(){
 	char *temp_mat =  get_matrix(fp, &nrow, &ncol) ;
 	char (*mat)[ncol] = (char (*)[ncol]) temp_mat ;
 
+	int index[ncol],i ;
+
+	for(i = 0; i < ncol; i++){
+		index[i] = i ;
+	}
+	qsort_r(index, ncol, sizeof *index,
 	#ifdef DEBUG
-	int i,j ;
+	int j ;
 	for (i = 0; i < nrow; i++){
 		for(j = 0; j < ncol; j ++){
 			fprintf(stderr, "%d ", mat   [ i ][j] ) ;
