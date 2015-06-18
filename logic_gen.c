@@ -80,27 +80,36 @@ int cost_fun(FILE *input , void *mat, int nrow, int ncol, int row_number){
 		exit(5) ;
 	}
 }
-
+int cost_cmp(void *a, void *b, void *cost){
+	if(  ( (int *)cost)[*(int*)a] <  ( (int *)cost)[*(int*)b] ){
+		return -1;
+	}else if( ( (int *)cost)[*(int*)a] == ( (int *)cost)[*(int*)b] ){
+		return 0;
+	}else{	return 1;}
+}
 int main(){
 	FILE *fp = fopen("input", "r") ;
 	int nrow, ncol ;
 	/* convert the pointer to multidimensional array */
 	char *temp_mat =  get_matrix(fp, &nrow, &ncol) ;
 	char (*mat)[ncol] = (char (*)[ncol]) temp_mat ;
-
+	
 	int index[ncol],i ;
-
-	for(i = 0; i < ncol; i++){
+	int cost[nrow] ;
+	
+	for(i = 0; i < nrow; i++){
+		cost[i] = cost_fun(NULL, mat, nrow, ncol, i) ;
 		index[i] = i ;
 	}
-	qsort_r(index, ncol, sizeof *index,
+	qsort_r(index, nrow, sizeof *index, cost_cmp, cost) ;
 	#ifdef DEBUG
 	int j ;
 	for (i = 0; i < nrow; i++){
+		
 		for(j = 0; j < ncol; j ++){
 			fprintf(stderr, "%d ", mat   [ i ][j] ) ;
 		}
-		fprintf(stderr, "\n") ;
+		fprintf(stderr, "   cost is %d, sorted cost is %d\n", cost[i], index[i]) ;
 	}
 	fprintf(stderr, "cost of 2 : %d\n",  cost_fun(NULL, mat, nrow, ncol, 2)) ;
 	#endif
