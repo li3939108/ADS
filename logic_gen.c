@@ -68,6 +68,18 @@ char * get_matrix(FILE *input, int *m, int *n){
 	return ret ;
 	}
 }
+int cost_fun(FILE *input , void *mat, int nrow, int ncol, int row_number){
+	int i, ret = 0 ;
+	if(row_number < nrow){
+		for ( i = 0; i < ncol; i++){
+			ret += (unsigned int ) ((char (*)[ncol])mat)[row_number ][i] ;
+		}
+		return ret ;
+	}else{
+		fprintf(stderr, "specified row number %d too large", row_number);
+		exit(5) ;
+	}
+}
 int main(){
 	FILE *fp = fopen("input", "r") ;
 	int nrow, ncol ;
@@ -83,8 +95,8 @@ int main(){
 		}
 		fprintf(stderr, "\n") ;
 	}
+	fprintf(stderr, "cost of 2 : %d\n",  cost_fun(NULL, mat, nrow, ncol, 2)) ;
 	#endif
-
 
 	fclose(fp) ;
 }
