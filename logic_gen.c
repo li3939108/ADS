@@ -9,6 +9,7 @@
 #define __UNMATCHED_COL__ 3
 
 #define __MAX_LEVEL__ 3
+/* The max number of characters for a signal key */
 #define __MAX_SIGNAL_KEY__ 1024
 
 
@@ -149,6 +150,21 @@ SIG_KNOB sk_gen(
 int sk_cmp(const void *a, const void *b){
 	return strcmp( ( (SIG_KNOB)a )->signal_key,  ( (SIG_KNOB)b )->signal_key ) ;
 }
+void recursive_combination_gen(int *sensors_index_list, int nsensors, SIG_KNOB *sk_tree, int knob_index){
+	int i;
+	if(nsensors == 0){
+		return ;
+	}else{
+	sk_gen(sensors_index_list, knob_index);
+	for (i = 0; i < nsensors; i++){
+		int *new_sensors_index_list = malloc( ( nsensors - 1) * sizeof *new_sensors_index_list) ;
+		memcpy(new_sensors_index_list, sensors_index_list, i * sizeof *sensors_index_list) ;
+		memcpy(new_sensors_index_list + i, sensors_index_list + 1 + i, (nsensors - i - 1) * sizeof *sensors_index_list) ;
+		recursive_combination_gen(new_sensors_index_list, nsensors - 1, sk_tree, knob_index) ;
+	}
+
+	}
+}
 int combination_gen(void *temp_mat, int nrow, int ncol, int *sorted_index) {
 	int i , j;
 	char (*mat)[ncol] = (char (*)[ncol]) temp_mat ;
@@ -156,15 +172,20 @@ int combination_gen(void *temp_mat, int nrow, int ncol, int *sorted_index) {
 
 	
 	for(i = 0; i < nrow; i++){
+		int *sensers_index_list = NULL, nsensors = 0;
 		for (j = 0; j < ncol; j++){
+
 		if(mat[ sorted_index[i] ][j] == 1){
-			
+			sensers_index_list = 
+				realloc(sensers_index_list, 
+				(1 + nsensors) * sizeof *sensers_index_list ) ;
+			sensers_index_list[nsensors] = j ;
+			nsensors += 1;
 		}
-	
-
-
 
 		}
+		free(sensers_index_list) ;
+		sensers_index_list = NULL ;
 	}
 }
 int main(){
