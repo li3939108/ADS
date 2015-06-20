@@ -1,9 +1,14 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
+
+#include <search.h>
 
 #define __ILLEGAL_FILE__ 1
 #define __ILLEGAL_CHAR__ 2
 #define __UNMATCHED_COL__ 3
+
+#define __MAX_LEVEL__ 3
 
 
 #define DEBUG 
@@ -66,6 +71,7 @@ char * get_matrix(FILE *input, int *m, int *n){
 	} while(c != EOF) ;
 	*m = nrow; *n = ncol ;	
 	return ret ;
+
 	}
 }
 int cost_fun(FILE *input , void *mat, int nrow, int ncol, int row_number){
@@ -80,12 +86,57 @@ int cost_fun(FILE *input , void *mat, int nrow, int ncol, int row_number){
 		exit(5) ;
 	}
 }
-int cost_cmp(void *a, void *b, void *cost){
+int cost_cmp(const void *a, const void *b, void *cost){
 	if(  ( (int *)cost)[*(int*)a] <  ( (int *)cost)[*(int*)b] ){
 		return -1;
 	}else if( ( (int *)cost)[*(int*)a] == ( (int *)cost)[*(int*)b] ){
 		return 0;
 	}else{	return 1;}
+}
+
+typedef void *BINARY_TREE_NODE ;
+typedef struct _sig_knob_set{
+	/* should be equal to the index of the array to store these sets */
+	int signal_number ;
+	/* these sensors ANDed together will turn on the signal */
+	/* sensors_set is the pointer pointing to the root */
+	BINARY_TREE_NODE sensors_set ;
+	/* these signals dominates this signal */
+	BINARY_TREE_NODE signals_set ;
+	/* the minimum cost of knobs on to cover all included sensors for this signal 
+	int min_cost_of_knob ; */
+	int knobs[__MAX_LEVEL__] ;
+	/* number of knobs */
+	int nknobs ;
+} sig_knob_set, *SIG_KNOB_SET ;
+
+int int_cmp(const void *a, const void *b){
+	if( *(int *)a < *(int *)b){
+		return -1;
+	}else if( *(int *) a == *(int *)b ){
+		return 0;
+	}else{
+		return 1;
+	}
+}
+int combination_gen(void *temp_mat, int nrow, int ncol, int *sorted_index) {
+	int i , j;
+	char (*mat)[ncol] = (char (*)[ncol]) temp_mat ;
+	SIG_KNOB_SET sks_arr = NULL ;
+
+	
+	for(i = 0; i < nrow; i++){
+		for (j = 0; j < ncol; j++){
+
+		if(mat[ sorted_index[i] ][j] == 1){
+			
+		}
+	
+
+
+
+		}
+	}
 }
 int main(){
 	FILE *fp = fopen("input", "r") ;
@@ -96,6 +147,18 @@ int main(){
 	
 	int index[ncol],i ;
 	int cost[nrow] ;
+
+	int max_col ;
+
+	if(ncol > (max_col = 8*sizeof(long long) ) ){
+		fprintf(stderr, "number of columns exceeds maximum of %d\n", max_col);
+		exit(7) ;
+	}
+	#ifdef DEBUG
+	else{
+		fprintf(stderr, "maximum number of columns is %d\n", max_col) ;
+	}
+	#endif
 	
 	for(i = 0; i < nrow; i++){
 		cost[i] = cost_fun(NULL, mat, nrow, ncol, i) ;
