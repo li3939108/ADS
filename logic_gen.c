@@ -1,7 +1,7 @@
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 #include <search.h>
 
 #define __ILLEGAL_FILE__ 1
@@ -9,6 +9,7 @@
 #define __UNMATCHED_COL__ 3
 
 #define __MAX_LEVEL__ 3
+#define __MAX_SIGNAL_KEY__ 1024
 
 
 #define DEBUG 
@@ -95,9 +96,9 @@ int cost_cmp(const void *a, const void *b, void *cost){
 }
 
 typedef void *BINARY_TREE_NODE ;
-typedef struct _sig_knob_set{
+typedef struct _sig_knob{
 	/* should be equal to the index of the array to store these sets */
-	int signal_number ;
+	char *signal_key ;
 	/* these sensors ANDed together will turn on the signal */
 	/* sensors_set is the pointer pointing to the root */
 	BINARY_TREE_NODE sensors_set ;
@@ -108,26 +109,54 @@ typedef struct _sig_knob_set{
 	int knobs[__MAX_LEVEL__] ;
 	/* number of knobs */
 	int nknobs ;
-} sig_knob_set, *SIG_KNOB_SET ;
-
+} sig_knob, *SIG_KNOB ;
 int int_cmp(const void *a, const void *b){
-	if( *(int *)a < *(int *)b){
+	if( *(int *)a < *(int *)b ){
 		return -1;
-	}else if( *(int *) a == *(int *)b ){
+	}else if( *(int *)a == *(int *)b ){
 		return 0;
 	}else{
 		return 1;
 	}
 }
+SIG_KNOB sk_gen(
+	/* -1 terminated */
+	int sensors_index_list[], 
+	/* The knob with highest priority */
+	int knob_index){
+	int i = 0;
+	char *signal_key = malloc (__MAX_SIGNAL_KEY__);
+	signal_key[0] = '\0' ;
+
+	SIG_KNOB ret = malloc(sizeof *ret) ;
+
+	ret->nknobs = 0;
+	/* add a knob */
+	ret->knobs[0] = knob_index ;
+	ret->nknobs += 1 ;
+	/* binary tree NULLed */
+	ret->sensors_set = NULL;
+	ret->signals_set = NULL ;
+	while (sensors_index_list[i] >= 0){ 
+		int *ptr = malloc(*ptr);
+		*ptr = sensors_index_list [i ] ;
+		sprintf(signal_key, "%dx", *ptr );
+		tsearch( (void *)ptr, &(ret->sensors_set), int_cmp ); 
+	}
+	ret->signal_key = signal_key;
+	return ret ;
+}
+int sk_cmp(const void *a, const void *b){
+	return strcmp( ( (SIG_KNOB)a )->signal_key,  ( (SIG_KNOB)b )->signal_key ) ;
+}
 int combination_gen(void *temp_mat, int nrow, int ncol, int *sorted_index) {
 	int i , j;
 	char (*mat)[ncol] = (char (*)[ncol]) temp_mat ;
-	SIG_KNOB_SET sks_arr = NULL ;
+	SIG_KNOB sk_tree = NULL ;
 
 	
 	for(i = 0; i < nrow; i++){
 		for (j = 0; j < ncol; j++){
-
 		if(mat[ sorted_index[i] ][j] == 1){
 			
 		}
