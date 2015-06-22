@@ -100,6 +100,26 @@ typedef struct _sig_knob{
 	int nknobs ;
 } sig_knob, *SIG_KNOB ;
 
+SIG_KNOB sk_add_knob(SIG_KNOB sk, int knob_index){
+	int i;
+	if(sk->nknobs > __MAX_LEVEL__){
+		fprintf(stderr, "too many levels, illegal matrix");
+		exit(EXIT_FAILURE) ;
+	}else if(sk->nknobs == __MAX_LEVEL__ ){
+		if(sk->knobs[sk->nknobs - 1] != knob_index){
+			fprintf(stderr, "too many levels, illegal matrix");
+			exit(EXIT_FAILURE) ;
+		}
+	}else{
+		if(sk->knobs[sk->nknobs - 1] != knob_index){
+			sk->knobs[sk->nknobs] = knob_index ;
+			sk->nknobs += 1 ;
+		}
+	}
+	return sk ;
+
+}
+
 SIG_KNOB sk_gen(
 	int sensors_index_list[], 
 	int nsensors,
@@ -160,6 +180,7 @@ void recursive_signal_gen(
 		fprintf(stderr, "%s insterted \n", item.key);
 		#endif
 	}else {
+		sk_add_knob(ret->data, knob_index) ;
 		#ifdef DEBUG
 		fprintf(stderr, "%s exists \n", item.key);
 		#endif
@@ -199,7 +220,6 @@ void signal_gen(void *temp_mat, int nrow, int ncol, int sorted_index[], int cost
 		recursive_signal_gen(sensors_index_list, nsensors, sk_tree, sorted_index[i], 0, cost);
 		free(sensors_index_list) ;
 		sensors_index_list = NULL ;
-		nsensors = 0;
 	}
 	
 }
@@ -242,6 +262,8 @@ int main(){
 		index[i] = i ;
 	}
 	qsort_r(index, nrow, sizeof *index, cost_cmp, cost) ;
+	signal_gen(temp_mat, nrow, ncol, index, cost) ;
+
 	#ifdef DEBUG
 	int j ;
 	for (i = 0; i < nrow; i++){
@@ -253,14 +275,16 @@ int main(){
 	}
 	fprintf(stderr, "cost of 2 : %d\n",  cost_fun(NULL, mat, nrow, ncol, 2)) ;
 
-	signal_gen(temp_mat, nrow, ncol, index, cost) ;
 	for( i = 0; i < nkeys ; i++){
 		ENTRY e={ keys[i], NULL};
 		et = hsearch(e, FIND) ;
 		if(et == NULL){
 			fprintf(stderr, "nothing found \n") ;
 		}else{
-			fprintf(stderr, "key: %s, knob: %d\n", ( (SIG_KNOB )(et->data))->signal_key, ( (SIG_KNOB )(et->data))->knobs[0]) ;
+			fprintf(stderr, "key: %s, knob: %d,%d,%d\n", ( (SIG_KNOB )(et->data))->signal_key, 
+				( (SIG_KNOB )(et->data))->knobs[0],
+				( (SIG_KNOB )(et->data))->knobs[1],
+				( (SIG_KNOB )(et->data))->knobs[2]) ;
 		}
 	}
 	#endif
