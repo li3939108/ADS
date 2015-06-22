@@ -124,14 +124,18 @@ SIG_KNOB sk_gen(
 	int sensors_index_list[], 
 	int nsensors,
 	int knob){
+
+	SIG_KNOB ret = malloc(sizeof *ret) ;
 	int i = 0;
 	char *signal_key = malloc (__MAX_SIGNAL_KEY__);
 	char buf[__MAX_SIGNAL_KEY__] ;
-	signal_key[0] = '\0' ;
 
-	SIG_KNOB ret = malloc(sizeof *ret) ;
-	memset(ret, 0, sizeof *ret) ;
+
 	
+	memset(ret, 0, sizeof *ret) ;
+	memset(signal_key, 0, __MAX_SIGNAL_KEY__ * sizeof *signal_key) ;
+
+	ret->signal_key = signal_key;
 	ret->knobs[0] = knob ;	
 	ret->nknobs = 1;
 	/* add a knob */
@@ -145,14 +149,18 @@ SIG_KNOB sk_gen(
 		}else{
 			sprintf(buf, "%d", sensors_index_list[i] );
 		}
-		strcat(signal_key, buf) ;
+		strcat(ret->signal_key, buf) ;
 	}
 	ret->significant = 0 ;
-	ret->signal_key = signal_key;
 	return ret ;
 }
 
-
+void sk_free(SIG_KNOB sk){
+	free(sk->signal_key);
+	free(sk->signals_set_list_node);
+	free(sk->dominating_signal);
+	free(sk) ;
+}
 
 void recursive_signal_gen(
 	int *sensors_index_list, int nsensors, SIG_KNOB sk_tree, 
@@ -165,7 +173,6 @@ void recursive_signal_gen(
 	}else{
 
 	SIG_KNOB sk = sk_gen(sensors_index_list, nsensors, knob_index);
-	SIG_KNOB _sk = NULL ;
 
 	ENTRY item, *ret ;
 	item.key = sk->signal_key ;
@@ -181,6 +188,7 @@ void recursive_signal_gen(
 		#endif
 	}else {
 		sk_add_knob(ret->data, knob_index) ;
+		sk_free(sk) ;
 		#ifdef DEBUG
 		fprintf(stderr, "%s exists \n", item.key);
 		#endif
@@ -191,6 +199,7 @@ void recursive_signal_gen(
 		memcpy(new_sensors_index_list, sensors_index_list, i * sizeof *sensors_index_list) ;
 		memcpy(new_sensors_index_list + i, sensors_index_list + 1 + i, (nsensors - i - 1) * sizeof *sensors_index_list) ;
 		recursive_signal_gen(new_sensors_index_list, nsensors - 1, sk_tree, knob_index, i, cost) ;
+		free(new_sensors_index_list) ;
 	}
 
 	}
@@ -275,9 +284,11 @@ int main(){
 	}
 	fprintf(stderr, "cost of 2 : %d\n",  cost_fun(NULL, mat, nrow, ncol, 2)) ;
 
+	#endif
 	for( i = 0; i < nkeys ; i++){
 		ENTRY e={ keys[i], NULL};
 		et = hsearch(e, FIND) ;
+		#ifdef DEBUG
 		if(et == NULL){
 			fprintf(stderr, "nothing found \n") ;
 		}else{
@@ -286,8 +297,10 @@ int main(){
 				( (SIG_KNOB )(et->data))->knobs[1],
 				( (SIG_KNOB )(et->data))->knobs[2]) ;
 		}
+		#endif
+		sk_free(et->data);
 	}
-	#endif
-
+	hdestroy();
+	free(temp_mat);
 	fclose(fp) ;
 }
