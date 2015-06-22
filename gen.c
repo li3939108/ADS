@@ -5,26 +5,23 @@
 #include <string.h>
 #include <search.h>
 
-#define __ILLEGAL_FILE__ 1
-#define __ILLEGAL_CHAR__ 2
-#define __UNMATCHED_COL__ 3
 #define __MAX_NUMBER_OF_SIGNALS__ (1<<16)
-
 #define __MAX_LEVEL__ 3
+
 /* The max number of characters for a signal key */
 #define __MAX_SIGNAL_KEY__ (1<<10)
 
 
 #define DEBUG 
 
-static char *keys[__MAX_SIGNAL_KEY__] = {NULL}; 
+static char *keys[__MAX_NUMBER_OF_SIGNALS__] = {NULL}; 
 static int nkeys = 0 ;
 
 char * get_matrix(FILE *input, int *m, int *n){
 	if(input == NULL){
 
 	perror("illegal file");
-	exit(__ILLEGAL_FILE__);
+	exit(EXIT_FAILURE);
 
 	}else{
 
@@ -65,14 +62,14 @@ char * get_matrix(FILE *input, int *m, int *n){
 			fprintf(stderr, 
 				"unmatched column number at row %d\n",
 				 row_counter) ;
-			exit(__UNMATCHED_COL__);
+			exit(EXIT_FAILURE);
 		}
 		if (c == EOF) {nrow = row_counter ;}
 		break;
 		
 		default:
 		fprintf(stderr, "illegal character: %c\n", c);
-		exit(__ILLEGAL_CHAR__);
+		exit(EXIT_FAILURE);
 		break;
 		}
 	} while(c != EOF) ;
@@ -86,11 +83,13 @@ typedef struct _sig_knob{
 	/* should be equal to the index of the array to store these sets */
 	char *signal_key ;
 	/* these sensors ANDed together will turn on the signal */
-	/* sensors_set is the pointer pointing to the root 
-	BINARY_TREE_NODE sensors_set ;*/
+	/* sensors_set is the pointer pointing to the root */
+	int nsensors ;
+	int *sensors_index_list ;
 	int significant ;
 	/* min cost equivalent signals set */
-	char **signals_set_list_node;
+	char **signal_key_list;
+	int nsignals ;
 	struct _sig_knob *dominating_signal ;
 	unsigned int min_cost ;
 	/* the minimum cost of knobs on to cover all included sensors for this signal 
@@ -123,26 +122,38 @@ SIG_KNOB sk_add_knob(SIG_KNOB sk, int knob_index){
 SIG_KNOB sk_gen(
 	int sensors_index_list[], 
 	int nsensors,
-	int knob){
+	int knob_index,
+	int cost[]){
 
 	SIG_KNOB ret = malloc(sizeof *ret) ;
 	int i = 0;
 	char *signal_key = malloc (__MAX_SIGNAL_KEY__);
 	char buf[__MAX_SIGNAL_KEY__] ;
 
-
-	
 	memset(ret, 0, sizeof *ret) ;
 	memset(signal_key, 0, __MAX_SIGNAL_KEY__ * sizeof *signal_key) ;
+	/* set all knobs to -1 */
+	memset(ret->knobs, (char)-1, __MAX_LEVEL__ * sizeof(int) ) ;
+	
+	ret->sensors_index_list = malloc(nsensors * sizeof *sensors_index_list) ;
+	ret->nsensors = nsensors ;
+	memcpy(ret->sensors_index_list, sensors_index_list, nsensors * sizeof *sensors_index_list) ;
 
 	ret->signal_key = signal_key;
-	ret->knobs[0] = knob ;	
+	ret->knobs[0] = knob_index ;	
 	ret->nknobs = 1;
 	/* add a knob */
 	/* binary tree NULLed */
-	ret->signals_set_list_node = NULL ;
+	ret->signal_key_list = malloc(sizeof *ret->signal_key_list) ;
+	ret->signal_key_list[0] = ret->signal_key;
+	ret->nsignals = 1 ;
+
 	ret->dominating_signal = NULL ;
-	ret->min_cost = -1 ;
+	if(ret->nsensors == 1){
+		ret->min_cost = cost[knob_index] ;
+	}else{
+		ret->min_cost = -1 ;
+	}
 	for(i = 0; i < nsensors; i++){
 		if(i != nsensors - 1){
 			sprintf(buf, "%dx", sensors_index_list[i] );
@@ -151,13 +162,15 @@ SIG_KNOB sk_gen(
 		}
 		strcat(ret->signal_key, buf) ;
 	}
-	ret->significant = 0 ;
+	ret->significant = 1 ;
 	return ret ;
 }
-
+void sk_update_cost(SIG_KNOB sk  ){
+}
 void sk_free(SIG_KNOB sk){
+	free(sk->sensors_index_list) ;
 	free(sk->signal_key);
-	free(sk->signals_set_list_node);
+	free(sk->signal_key_list);
 	free(sk->dominating_signal);
 	free(sk) ;
 }
@@ -172,7 +185,7 @@ void recursive_signal_gen(
 		return ;
 	}else{
 
-	SIG_KNOB sk = sk_gen(sensors_index_list, nsensors, knob_index);
+	SIG_KNOB sk = sk_gen(sensors_index_list, nsensors, knob_index, cost);
 
 	ENTRY item, *ret ;
 	item.key = sk->signal_key ;
@@ -182,16 +195,16 @@ void recursive_signal_gen(
 		fprintf(stderr, "hash table insert failed\n");
 		exit(EXIT_FAILURE) ;
 	}else if(ret->key == item.key){
-		keys [ nkeys ] = item.key ; nkeys += 1;
 		#ifdef DEBUG
 		fprintf(stderr, "%s insterted \n", item.key);
 		#endif
+		keys [ nkeys ] = item.key ; nkeys += 1;
 	}else {
-		sk_add_knob(ret->data, knob_index) ;
-		sk_free(sk) ;
 		#ifdef DEBUG
 		fprintf(stderr, "%s exists \n", item.key);
 		#endif
+		sk_add_knob(ret->data, knob_index) ;
+		sk_free(sk) ;
 	}
 	/* recursively generate all the combinations */
 	for (i = position; i < nsensors; i++){
@@ -245,11 +258,31 @@ int cost_fun(FILE *input , void *mat, int nrow, int ncol, int row_number){
 	}
 }
 int cost_cmp(const void *a, const void *b, void *cost){
-	if(  ( (int *)cost)[*(int*)a] <  ( (int *)cost)[*(int*)b] ){
+	if(  ( (int const *)cost)[*(int const *)a] <  ( (int const *)cost)[*(int const *)b] ){
 		return -1;
-	}else if( ( (int *)cost)[*(int*)a] == ( (int *)cost)[*(int*)b] ){
+	}else if( ( (int const *)cost)[*(int const *)a] == ( (int const *)cost)[*(int const *)b] ){
 		return 0;
 	}else{	return 1;}
+}
+int key_cmp(const void *a, const void *b){
+	ENTRY ea = {*(char * const *)a, NULL}, eb = {*(char * const *)b, NULL}, *ar, *br ;
+	ar = hsearch(ea, FIND) ; br = hsearch(eb, FIND) ;
+	if(ar == NULL ){
+		fprintf(stderr, "unexpected NULL search result for %s\n", ea.key) ;
+		exit(EXIT_FAILURE);
+	}else if(br == NULL ){
+		fprintf(stderr, "unexpected NULL search result for %s\n", eb.key) ;
+		exit(EXIT_FAILURE);
+	}else{
+		SIG_KNOB sk_a = ar->data, sk_b = br->data ;
+		if(sk_a->nsensors < sk_b->nsensors){
+			return -1;
+		}else if(sk_a->nsensors == sk_b->nsensors){
+			return 0;
+		}else{
+			return 1;
+		}
+	}
 }
 int main(){
 	FILE *fp = fopen("input", "r") ;
@@ -272,6 +305,7 @@ int main(){
 	}
 	qsort_r(index, nrow, sizeof *index, cost_cmp, cost) ;
 	signal_gen(temp_mat, nrow, ncol, index, cost) ;
+	qsort(keys, nkeys, sizeof (char *), key_cmp); 
 
 	#ifdef DEBUG
 	int j ;
