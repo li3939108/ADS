@@ -8,13 +8,17 @@
 #define __ILLEGAL_FILE__ 1
 #define __ILLEGAL_CHAR__ 2
 #define __UNMATCHED_COL__ 3
+#define __MAX_NUMBER_OF_SIGNALS__ (1<<16)
 
 #define __MAX_LEVEL__ 3
 /* The max number of characters for a signal key */
-#define __MAX_SIGNAL_KEY__ 1024
+#define __MAX_SIGNAL_KEY__ (1<<10)
 
 
 #define DEBUG 
+
+static char *keys[__MAX_SIGNAL_KEY__] = {NULL}; 
+static int nkeys = 0 ;
 
 char * get_matrix(FILE *input, int *m, int *n){
 	if(input == NULL){
@@ -146,12 +150,18 @@ void recursive_signal_gen(
 	ENTRY item, *ret ;
 	item.key = sk->signal_key ;
 	item.data = (void *)sk ;
-	if(NULL == hsearch (item, ENTER) ){
+	
+	if(NULL == (ret = hsearch (item, ENTER) ) ){
 		fprintf(stderr, "hash table insert failed\n");
 		exit(EXIT_FAILURE) ;
-	}else{
+	}else if(ret->key == item.key){
+		keys [ nkeys ] = item.key ; nkeys += 1;
 		#ifdef DEBUG
 		fprintf(stderr, "%s insterted \n", item.key);
+		#endif
+	}else {
+		#ifdef DEBUG
+		fprintf(stderr, "%s exists \n", item.key);
 		#endif
 	}
 	/* recursively generate all the combinations */
@@ -169,7 +179,7 @@ void signal_gen(void *temp_mat, int nrow, int ncol, int sorted_index[], int cost
 	char (*mat)[ncol] = (char (*)[ncol]) temp_mat ;
 	SIG_KNOB sk_tree = NULL ;
 
-	hcreate(1<<16) ;
+	hcreate(__MAX_NUMBER_OF_SIGNALS__) ;
 	for(i = 0; i < nrow; i++){
 		int *sensors_index_list = NULL, nsensors = 0;
 		for (j = 0; j < ncol; j++){
@@ -186,7 +196,7 @@ void signal_gen(void *temp_mat, int nrow, int ncol, int sorted_index[], int cost
 		#ifdef DEBUG
 		fprintf(stderr, "recursive gen nsensors: %d, row:%d\n", nsensors, sorted_index[i]) ;
 		#endif
-		recursive_signal_gen(sensors_index_list, nsensors, sk_tree, i, 0, cost);
+		recursive_signal_gen(sensors_index_list, nsensors, sk_tree, sorted_index[i], 0, cost);
 		free(sensors_index_list) ;
 		sensors_index_list = NULL ;
 		nsensors = 0;
@@ -224,7 +234,7 @@ int main(){
 
 	int max_col ;
 
-	ENTRY *et, e={"1x2", NULL}  ;
+	ENTRY *et  ;
 
 	
 	for(i = 0; i < nrow; i++){
@@ -244,11 +254,14 @@ int main(){
 	fprintf(stderr, "cost of 2 : %d\n",  cost_fun(NULL, mat, nrow, ncol, 2)) ;
 
 	signal_gen(temp_mat, nrow, ncol, index, cost) ;
-	et = hsearch(e, FIND) ;
-	if(et == NULL){
-		fprintf(stderr, "nothing found \n") ;
-	}else{
-		fprintf(stderr, "key: %s\n", ( (SIG_KNOB )(et->data))->signal_key) ;
+	for( i = 0; i < nkeys ; i++){
+		ENTRY e={ keys[i], NULL};
+		et = hsearch(e, FIND) ;
+		if(et == NULL){
+			fprintf(stderr, "nothing found \n") ;
+		}else{
+			fprintf(stderr, "key: %s, knob: %d\n", ( (SIG_KNOB )(et->data))->signal_key, ( (SIG_KNOB )(et->data))->knobs[0]) ;
+		}
 	}
 	#endif
 
