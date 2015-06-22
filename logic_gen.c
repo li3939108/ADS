@@ -173,7 +173,7 @@ SIG_KNOB sk_gen(
 	ret->sensors_set = NULL;
 	ret->signals_set = NULL ;
 	for(i = 0; i < nsensors; i++){
-		sprintf(signal_key, "%dx", *ptr );
+		sprintf(signal_key, "%dx", sensors_index_list[i] );
 	}
 	ret->signal_key = signal_key;
 	return ret ;

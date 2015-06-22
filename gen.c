@@ -77,6 +77,122 @@ char * get_matrix(FILE *input, int *m, int *n){
 
 	}
 }
+
+typedef struct _sig_knob{
+	/* should be equal to the index of the array to store these sets */
+	char *signal_key ;
+	/* these sensors ANDed together will turn on the signal */
+	/* sensors_set is the pointer pointing to the root 
+	BINARY_TREE_NODE sensors_set ;*/
+	int significant ;
+	/* min cost equivalent signals set */
+	char **signals_set_list_node;
+	struct _sig_knob *dominating_signal ;
+	unsigned int min_cost ;
+	/* the minimum cost of knobs on to cover all included sensors for this signal 
+	int min_cost_of_knob ; */
+	int knobs[__MAX_LEVEL__] ;
+	/* number of knobs */
+	int nknobs ;
+} sig_knob, *SIG_KNOB ;
+
+SIG_KNOB sk_gen(
+	int sensors_index_list[], 
+	int nsensors,
+	int knob){
+	int i = 0;
+	char *signal_key = malloc (__MAX_SIGNAL_KEY__);
+	char buf[__MAX_SIGNAL_KEY__] ;
+	signal_key[0] = '\0' ;
+
+	SIG_KNOB ret = malloc(sizeof *ret) ;
+	memset(ret, 0, sizeof *ret) ;
+	
+	ret->knobs[0] = knob ;	
+	ret->nknobs = 1;
+	/* add a knob */
+	/* binary tree NULLed */
+	ret->signals_set_list_node = NULL ;
+	ret->dominating_signal = NULL ;
+	ret->min_cost = -1 ;
+	for(i = 0; i < nsensors; i++){
+		if(i != nsensors - 1){
+			sprintf(buf, "%dx", sensors_index_list[i] );
+		}else{
+			sprintf(buf, "%d", sensors_index_list[i] );
+		}
+		strcat(signal_key, buf) ;
+	}
+	ret->significant = 0 ;
+	ret->signal_key = signal_key;
+	return ret ;
+}
+
+
+
+void recursive_signal_gen(
+	int *sensors_index_list, int nsensors, SIG_KNOB sk_tree, 
+	int knob_index, int position, int cost[] ){
+
+	int i, min_cost;
+
+	if(nsensors == 0){
+		return ;
+	}else{
+
+	SIG_KNOB sk = sk_gen(sensors_index_list, nsensors, knob_index);
+	SIG_KNOB _sk = NULL ;
+
+	ENTRY item, *ret ;
+	item.key = sk->signal_key ;
+	item.data = (void *)sk ;
+	if(NULL == hsearch (item, ENTER) ){
+		fprintf(stderr, "hash table insert failed\n");
+		exit(EXIT_FAILURE) ;
+	}else{
+		#ifdef DEBUG
+		fprintf(stderr, "%s insterted \n", item.key);
+		#endif
+	}
+	/* recursively generate all the combinations */
+	for (i = position; i < nsensors; i++){
+		int *new_sensors_index_list = malloc( ( nsensors - 1) * sizeof *new_sensors_index_list) ;
+		memcpy(new_sensors_index_list, sensors_index_list, i * sizeof *sensors_index_list) ;
+		memcpy(new_sensors_index_list + i, sensors_index_list + 1 + i, (nsensors - i - 1) * sizeof *sensors_index_list) ;
+		recursive_signal_gen(new_sensors_index_list, nsensors - 1, sk_tree, knob_index, i, cost) ;
+	}
+
+	}
+}
+void signal_gen(void *temp_mat, int nrow, int ncol, int sorted_index[], int cost[]) {
+	int i , j;
+	char (*mat)[ncol] = (char (*)[ncol]) temp_mat ;
+	SIG_KNOB sk_tree = NULL ;
+
+	hcreate(1<<16) ;
+	for(i = 0; i < nrow; i++){
+		int *sensors_index_list = NULL, nsensors = 0;
+		for (j = 0; j < ncol; j++){
+
+		if(mat[ sorted_index[i] ][j] == 1){
+			sensors_index_list = 
+				realloc(sensors_index_list, 
+				(1 + nsensors) * sizeof *sensors_index_list ) ;
+			sensors_index_list[nsensors] = j ;
+			nsensors += 1;
+		}
+
+		}
+		#ifdef DEBUG
+		fprintf(stderr, "recursive gen nsensors: %d, row:%d\n", nsensors, sorted_index[i]) ;
+		#endif
+		recursive_signal_gen(sensors_index_list, nsensors, sk_tree, i, 0, cost);
+		free(sensors_index_list) ;
+		sensors_index_list = NULL ;
+		nsensors = 0;
+	}
+	
+}
 int cost_fun(FILE *input , void *mat, int nrow, int ncol, int row_number){
 	int i, ret = 0 ;
 	if(row_number < nrow){
@@ -108,15 +224,8 @@ int main(){
 
 	int max_col ;
 
-	if(ncol > (max_col = 8*sizeof(long long) ) ){
-		fprintf(stderr, "number of columns exceeds maximum of %d\n", max_col);
-		exit(7) ;
-	}
-	#ifdef DEBUG
-	else{
-		fprintf(stderr, "maximum number of columns is %d\n", max_col) ;
-	}
-	#endif
+	ENTRY *et, e={"1x2", NULL}  ;
+
 	
 	for(i = 0; i < nrow; i++){
 		cost[i] = cost_fun(NULL, mat, nrow, ncol, i) ;
@@ -133,6 +242,14 @@ int main(){
 		fprintf(stderr, "   cost is %d, sorted cost is %d\n", cost[i], index[i]) ;
 	}
 	fprintf(stderr, "cost of 2 : %d\n",  cost_fun(NULL, mat, nrow, ncol, 2)) ;
+
+	signal_gen(temp_mat, nrow, ncol, index, cost) ;
+	et = hsearch(e, FIND) ;
+	if(et == NULL){
+		fprintf(stderr, "nothing found \n") ;
+	}else{
+		fprintf(stderr, "key: %s\n", ( (SIG_KNOB )(et->data))->signal_key) ;
+	}
 	#endif
 
 	fclose(fp) ;
