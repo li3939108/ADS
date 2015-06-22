@@ -1,4 +1,5 @@
 #define _GNU_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -96,15 +97,19 @@ int cost_cmp(const void *a, const void *b, void *cost){
 	}else{	return 1;}
 }
 
-typedef void *BINARY_TREE_NODE ;
 typedef struct _sig_knob{
 	/* should be equal to the index of the array to store these sets */
 	char *signal_key ;
 	/* these sensors ANDed together will turn on the signal */
-	/* sensors_set is the pointer pointing to the root */
-	BINARY_TREE_NODE sensors_set ;
-	/* these signals dominates this signal */
-	BINARY_TREE_NODE signals_set ;
+	/* sensors_set is the pointer pointing to the root 
+	BINARY_TREE_NODE sensors_set ;*/
+
+	/* min cost equivalent signals set */
+	struct _sig_knob *signals_set_list_node ;
+	int min_cost ;
+
+	struct _sig_knob *dominating_signal ;
+	
 	/* the minimum cost of knobs on to cover all included sensors for this signal 
 	int min_cost_of_knob ; */
 	int knobs[__MAX_LEVEL__] ;
@@ -120,9 +125,38 @@ int int_cmp(const void *a, const void *b){
 		return 1;
 	}
 }
+SIG_KNOB sk_add_knob(SIG_KNOB sk, int knob_index){
+	int i;
+	if(sk->nknobs > __MAX_LEVEL__){
+		fprintf(stderr, "too many levels, illegal matrix");
+		exit(EXIT_FAILURE) ;
+	}else if(sk->nknobs == __MAX_LEVEL__ ){
+		if(sk->knobs[sk->nknobs - 1] != knob_index){
+			fprintf(stderr, "too many levels, illegal matrix");
+			exit(EXIT_FAILURE) ;
+		}
+	}else{
+		if(sk->knobs[sk->nknobs - 1] != knob_index){
+			sk->knobs[sk->nknobs] = knob_index ;
+			sk->nknobs += 1 ;
+		}
+	}
+	return sk ;
+
+}
+SIG_KNOB sk_add_sensors_set( SIG_KNOB sk, int sensors_index_list[], int nsensors){
+	
+	int i;
+	for(i = 0;i < nsensors; i++){
+		int *ptr = malloc(*ptr);
+		*ptr = sensors_index_list [i ] ;
+		tsearch( (void *)ptr, &(sk->sensors_set), int_cmp ); 
+	}
+	return sk ;
+}
 SIG_KNOB sk_gen(
-	/* -1 terminated */
 	int sensors_index_list[], 
+	int nsensors,
 	/* The knob with highest priority */
 	int knob_index){
 	int i = 0;
@@ -138,11 +172,8 @@ SIG_KNOB sk_gen(
 	/* binary tree NULLed */
 	ret->sensors_set = NULL;
 	ret->signals_set = NULL ;
-	while (sensors_index_list[i] >= 0){ 
-		int *ptr = malloc(*ptr);
-		*ptr = sensors_index_list [i ] ;
+	for(i = 0; i < nsensors; i++){
 		sprintf(signal_key, "%dx", *ptr );
-		tsearch( (void *)ptr, &(ret->sensors_set), int_cmp ); 
 	}
 	ret->signal_key = signal_key;
 	return ret ;
@@ -150,42 +181,59 @@ SIG_KNOB sk_gen(
 int sk_cmp(const void *a, const void *b){
 	return strcmp( ( (SIG_KNOB)a )->signal_key,  ( (SIG_KNOB)b )->signal_key ) ;
 }
-void recursive_combination_gen(int *sensors_index_list, int nsensors, SIG_KNOB *sk_tree, int knob_index){
-	int i;
+
+/* return value is the min cost of knob combination that covers all the sensors in ``sensors_index_list'' */
+int recursive_signal_gen(
+	int *sensors_index_list, int nsensors, SIG_KNOB *sk_tree, 
+	int knob_index, int position, int cost[] ){
+
+	int i, min_cost;
+
 	if(nsensors == 0){
 		return ;
 	}else{
-	sk_gen(sensors_index_list, knob_index);
-	for (i = 0; i < nsensors; i++){
+
+	SIG_KNOB sk = sk_gen(sensors_index_list, nsensors, knob_index);
+	SIG_KNOB _sk = NULL ;
+	if( sk !=  (_sk = *(SIG_KNOB *)tsearch(sk, &sk_tree, sk_cmp) ) ){
+		sk_add_knob(_sk, knob_index ) ;
+		free(sk->signal_key );
+		free(sk) ;
+	}else{
+		sk_add_sensors_set(sk, sensors_index_list, nsensors ) ;
+	}
+	/* recursively generate all the combinations */
+	for (i = position; i < nsensors; i++){
 		int *new_sensors_index_list = malloc( ( nsensors - 1) * sizeof *new_sensors_index_list) ;
 		memcpy(new_sensors_index_list, sensors_index_list, i * sizeof *sensors_index_list) ;
 		memcpy(new_sensors_index_list + i, sensors_index_list + 1 + i, (nsensors - i - 1) * sizeof *sensors_index_list) ;
-		recursive_combination_gen(new_sensors_index_list, nsensors - 1, sk_tree, knob_index) ;
+		recursive_signal_gen(new_sensors_index_list, nsensors - 1, sk_tree, knob_index, i, cost) ;
 	}
 
 	}
 }
-int combination_gen(void *temp_mat, int nrow, int ncol, int *sorted_index) {
+int signal_gen(void *temp_mat, int nrow, int ncol, int sorted_index[], int cost[]) {
 	int i , j;
 	char (*mat)[ncol] = (char (*)[ncol]) temp_mat ;
 	SIG_KNOB sk_tree = NULL ;
 
 	
 	for(i = 0; i < nrow; i++){
-		int *sensers_index_list = NULL, nsensors = 0;
+		int *sensors_index_list = NULL, nsensors = 0;
 		for (j = 0; j < ncol; j++){
 
 		if(mat[ sorted_index[i] ][j] == 1){
-			sensers_index_list = 
-				realloc(sensers_index_list, 
-				(1 + nsensors) * sizeof *sensers_index_list ) ;
-			sensers_index_list[nsensors] = j ;
+			sensors_index_list = 
+				realloc(sensors_index_list, 
+				(1 + nsensors) * sizeof *sensors_index_list ) ;
+			sensors_index_list[nsensors] = j ;
 			nsensors += 1;
 		}
+		recursive_signal_gen(sensors_index_list, nsensors, sk_tree, knob_index, 0, cost);
 
 		}
-		free(sensers_index_list) ;
-		sensers_index_list = NULL ;
+		free(sensors_index_list) ;
+		sensors_index_list = NULL ;
 	}
 }
 int main(){
