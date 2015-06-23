@@ -90,8 +90,9 @@ typedef struct _sig_knob{
 	int *sensors_index_list ;
 	int significant ;
 	/* min cost equivalent signals set */
-	char **signal_key_list;
+	char **signal_key_list ;
 	int nsignals ;
+
 	struct _sig_knob **dominating_signal ;
 	int ndominating_sig ;
 	struct _sig_knob **dominated_signal ;
@@ -225,6 +226,8 @@ void sk_free(SIG_KNOB sk){
 	free(sk->sensors_index_list) ;
 	free(sk->signal_key);
 	free(sk->signal_key_list);
+	free(sk->dominating_signal);
+	free(sk->dominated_signal) ;
 	free(sk) ;
 }
 
