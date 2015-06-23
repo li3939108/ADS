@@ -123,7 +123,8 @@ SIG_KNOB sk_gen(
 	int sensors_index_list[], 
 	int nsensors,
 	int knob_index,
-	int cost[]){
+	int cost[], 
+	SIG_KNOB dominating_signal){
 
 	SIG_KNOB ret = malloc(sizeof *ret) ;
 	int i = 0;
@@ -148,7 +149,6 @@ SIG_KNOB sk_gen(
 	ret->signal_key_list[0] = ret->signal_key;
 	ret->nsignals = 1 ;
 
-	ret->dominating_signal = NULL ;
 	if(ret->nsensors == 1){
 		ret->min_cost = cost[knob_index] ;
 	}else{
@@ -162,22 +162,33 @@ SIG_KNOB sk_gen(
 		}
 		strcat(ret->signal_key, buf) ;
 	}
+	#ifdef DEBUG
+	fprintf(stderr, "dominating created: %s <- %s\n", ret->signal_key, dominating_signal == NULL ? " " : dominating_signal->signal_key) ;
+	#endif
+	ret->dominating_signal = dominating_signal ;
+
 	ret->significant = 1 ;
 	return ret ;
 }
-void sk_update_cost(SIG_KNOB sk  ){
+void sk_update_dominating_sig(SIG_KNOB sk, SIG_KNOB d_sk){
+	if(sk->dominating_signal == NULL){
+		#ifdef DEBUG
+		fprintf(stderr, "dominating updated: %s <- %s\n", sk->signal_key, d_sk->signal_key) ;
+		#endif
+		sk->dominating_signal = d_sk ;
+	}
 }
+
 void sk_free(SIG_KNOB sk){
 	free(sk->sensors_index_list) ;
 	free(sk->signal_key);
 	free(sk->signal_key_list);
-	free(sk->dominating_signal);
 	free(sk) ;
 }
 
 void recursive_signal_gen(
 	int *sensors_index_list, int nsensors, SIG_KNOB sk_tree, 
-	int knob_index, int position, int cost[] ){
+	int knob_index, int position, int cost[], SIG_KNOB dominating_signal ){
 
 	int i, min_cost;
 
@@ -185,7 +196,7 @@ void recursive_signal_gen(
 		return ;
 	}else{
 
-	SIG_KNOB sk = sk_gen(sensors_index_list, nsensors, knob_index, cost);
+	SIG_KNOB sk = sk_gen(sensors_index_list, nsensors, knob_index, cost, dominating_signal);
 
 	ENTRY item, *ret ;
 	item.key = sk->signal_key ;
@@ -203,15 +214,18 @@ void recursive_signal_gen(
 		#ifdef DEBUG
 		fprintf(stderr, "%s exists \n", item.key);
 		#endif
-		sk_add_knob(ret->data, knob_index) ;
+		
 		sk_free(sk) ;
+		sk = ret->data; 
+		sk_add_knob(sk, knob_index) ;
+		sk_update_dominating_sig(sk, dominating_signal );
 	}
 	/* recursively generate all the combinations */
 	for (i = position; i < nsensors; i++){
 		int *new_sensors_index_list = malloc( ( nsensors - 1) * sizeof *new_sensors_index_list) ;
 		memcpy(new_sensors_index_list, sensors_index_list, i * sizeof *sensors_index_list) ;
 		memcpy(new_sensors_index_list + i, sensors_index_list + 1 + i, (nsensors - i - 1) * sizeof *sensors_index_list) ;
-		recursive_signal_gen(new_sensors_index_list, nsensors - 1, sk_tree, knob_index, i, cost) ;
+		recursive_signal_gen(new_sensors_index_list, nsensors - 1, sk_tree, knob_index, i, cost, sk) ;
 		free(new_sensors_index_list) ;
 	}
 
@@ -239,7 +253,7 @@ void signal_gen(void *temp_mat, int nrow, int ncol, int sorted_index[], int cost
 		#ifdef DEBUG
 		fprintf(stderr, "recursive gen nsensors: %d, row:%d\n", nsensors, sorted_index[i]) ;
 		#endif
-		recursive_signal_gen(sensors_index_list, nsensors, sk_tree, sorted_index[i], 0, cost);
+		recursive_signal_gen(sensors_index_list, nsensors, sk_tree, sorted_index[i], 0, cost, NULL);
 		free(sensors_index_list) ;
 		sensors_index_list = NULL ;
 	}
@@ -254,7 +268,7 @@ int cost_fun(FILE *input , void *mat, int nrow, int ncol, int row_number){
 		return ret ;
 	}else{
 		fprintf(stderr, "specified row number %d too large", row_number);
-		exit(5) ;
+		exit(EXIT_FAILURE) ;
 	}
 }
 int cost_cmp(const void *a, const void *b, void *cost){
@@ -284,6 +298,9 @@ int key_cmp(const void *a, const void *b){
 		}
 	}
 }
+void sk_update_cost(void ){
+	
+}
 int main(){
 	FILE *fp = fopen("input", "r") ;
 	int nrow, ncol ;
@@ -296,6 +313,8 @@ int main(){
 
 	int max_col ;
 
+	int j ;
+
 	ENTRY *et  ;
 
 	
@@ -305,10 +324,9 @@ int main(){
 	}
 	qsort_r(index, nrow, sizeof *index, cost_cmp, cost) ;
 	signal_gen(temp_mat, nrow, ncol, index, cost) ;
-	qsort(keys, nkeys, sizeof (char *), key_cmp); 
+//	qsort(keys, nkeys, sizeof (char *), key_cmp); 
 
 	#ifdef DEBUG
-	int j ;
 	for (i = 0; i < nrow; i++){
 		
 		for(j = 0; j < ncol; j ++){
@@ -318,20 +336,26 @@ int main(){
 	}
 	fprintf(stderr, "cost of 2 : %d\n",  cost_fun(NULL, mat, nrow, ncol, 2)) ;
 
+	for( i = 0; i < nkeys ; i++){
+		ENTRY e={ keys[i], NULL};
+		et = hsearch(e, FIND) ;
+		SIG_KNOB sk =  et->data;
+
+		if(et == NULL){
+			fprintf(stderr, "nothing found \n") ;
+		}else{
+			fprintf(stderr, "key: %s, knob: %d,%d,%d; dominating: %s\n", sk->signal_key, 
+				( (SIG_KNOB )(et->data))->knobs[0],
+				( (SIG_KNOB )(et->data))->knobs[1],
+				( (SIG_KNOB )(et->data))->knobs[2], 
+				sk->dominating_signal == NULL ? " ": sk->dominating_signal->signal_key ) ;
+		}
+	}
 	#endif
 	for( i = 0; i < nkeys ; i++){
 		ENTRY e={ keys[i], NULL};
 		et = hsearch(e, FIND) ;
-		#ifdef DEBUG
-		if(et == NULL){
-			fprintf(stderr, "nothing found \n") ;
-		}else{
-			fprintf(stderr, "key: %s, knob: %d,%d,%d\n", ( (SIG_KNOB )(et->data))->signal_key, 
-				( (SIG_KNOB )(et->data))->knobs[0],
-				( (SIG_KNOB )(et->data))->knobs[1],
-				( (SIG_KNOB )(et->data))->knobs[2]) ;
-		}
-		#endif
+		SIG_KNOB sk =  et->data;
 		sk_free(et->data);
 	}
 	hdestroy();
