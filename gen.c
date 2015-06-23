@@ -178,6 +178,14 @@ SIG_KNOB sk_gen(
 		ret->dominating_signal = malloc(sizeof *ret->dominating_signal) ;
 		ret->dominating_signal[0] = dominating_signal ;
 		ret->ndominating_sig = 1;
+		dominating_signal->dominated_signal = 
+			realloc(dominating_signal->dominated_signal,
+			(dominating_signal->ndominated_sig + 1) * sizeof * dominating_signal->dominated_signal) ;
+		dominating_signal->dominated_signal[dominating_signal->ndominated_sig] = ret ;
+		dominating_signal->ndominated_sig += 1 ;
+	}else{
+		ret->dominating_signal = NULL ;
+		ret->ndominating_sig = 0 ;
 	}
 
 	ret->dominated_signal = NULL ;
@@ -378,7 +386,7 @@ int main(){
 	}
 	fprintf(stderr, "cost of 2 : %d\n",  cost_fun(NULL, mat, nrow, ncol, 2)) ;
 
-	for( i = 0; i < nkeys ; i++){
+	for(i = 0; i < nkeys ; i++){
 		ENTRY e={ keys[i], NULL};
 		et = hsearch(e, FIND) ;
 		SIG_KNOB sk =  et->data;
