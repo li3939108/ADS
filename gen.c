@@ -17,6 +17,8 @@
 static char *keys[__MAX_NUMBER_OF_SIGNALS__] = {NULL}; 
 static int nkeys = 0 ;
 
+static int key_nsensors_cmp(const void *a, const void *b);
+
 char * get_matrix(FILE *input, int *m, int *n){
 	if(input == NULL){
 
@@ -90,7 +92,10 @@ typedef struct _sig_knob{
 	/* min cost equivalent signals set */
 	char **signal_key_list;
 	int nsignals ;
-	struct _sig_knob *dominating_signal ;
+	struct _sig_knob **dominating_signal ;
+	int ndominating_sig ;
+	struct _sig_knob **dominated_signal ;
+	int ndominated_sig ;
 	unsigned int min_cost ;
 	/* the minimum cost of knobs on to cover all included sensors for this signal 
 	int min_cost_of_knob ; */
@@ -145,13 +150,15 @@ SIG_KNOB sk_gen(
 	ret->nknobs = 1;
 	/* add a knob */
 	/* binary tree NULLed */
-	ret->signal_key_list = malloc(sizeof *ret->signal_key_list) ;
-	ret->signal_key_list[0] = ret->signal_key;
-	ret->nsignals = 1 ;
-
+	/*
 	if(ret->nsensors == 1){
+		ret->signal_key_list = malloc(sizeof *ret->signal_key_list) ;
+		ret->signal_key_list[0] = ret->signal_key;
+		ret->nsignals = 1 ;
 		ret->min_cost = cost[knob_index] ;
-	}else{
+	}else*/{
+		ret->signal_key_list = NULL ;
+		ret->nsignals = 0 ;
 		ret->min_cost = -1 ;
 	}
 	for(i = 0; i < nsensors; i++){
@@ -165,18 +172,53 @@ SIG_KNOB sk_gen(
 	#ifdef DEBUG
 	fprintf(stderr, "dominating created: %s <- %s\n", ret->signal_key, dominating_signal == NULL ? " " : dominating_signal->signal_key) ;
 	#endif
-	ret->dominating_signal = dominating_signal ;
+
+	if(dominating_signal != NULL){
+		ret->dominating_signal = malloc(sizeof *ret->dominating_signal) ;
+		ret->dominating_signal[0] = dominating_signal ;
+		ret->ndominating_sig = 1;
+	}
+
+	ret->dominated_signal = NULL ;
+	ret->dominated_signal = 0 ;
 
 	ret->significant = 1 ;
 	return ret ;
 }
+/*
+void sk_update_cost(void ){
+	int i ;
+	qsort(keys, nkeys, sizeof (char *), key_nsensors_cmp); 
+
+	for(i = 0; i < nkeys; i ++){
+		ENTRY e={ keys[i], NULL}, *et = hsearch(e, FIND) ;
+		if(et == NULL){
+			fprintf(stderr, "table error, unfound key %s \n", e.key) ;
+			exit(EXIT_FAILURE);
+		}else {
+
+
+		SIG_KNOB sk =  et->data;
+		if(sk->min_cost == -1 && sk->nsignals == 0 && ret->signal_key_list == NULL){
+		}else{
+			continue ;
+		}
+
+		}
+	}
+}
+*/
 void sk_update_dominating_sig(SIG_KNOB sk, SIG_KNOB d_sk){
-	if(sk->dominating_signal == NULL){
+		int i ;
 		#ifdef DEBUG
 		fprintf(stderr, "dominating updated: %s <- %s\n", sk->signal_key, d_sk->signal_key) ;
 		#endif
-		sk->dominating_signal = d_sk ;
-	}
+		for(i = 0; i < sk->ndominating_sig ; i++){
+			if(sk->dominating_signal[i]->signal_key == d_sk->signal_key ) { return ;}
+		}
+		sk->dominating_signal = realloc(sk->dominating_signal, (sk->ndominating_sig + 1) * sizeof *sk->dominating_signal) ;
+		sk->dominating_signal[sk->ndominating_sig] = d_sk ;
+		sk->ndominating_sig += 1;
 }
 
 void sk_free(SIG_KNOB sk){
@@ -221,7 +263,7 @@ void recursive_signal_gen(
 		sk_update_dominating_sig(sk, dominating_signal );
 	}
 	/* recursively generate all the combinations */
-	for (i = position; i < nsensors; i++){
+	for (i = 0; i < nsensors; i++){
 		int *new_sensors_index_list = malloc( ( nsensors - 1) * sizeof *new_sensors_index_list) ;
 		memcpy(new_sensors_index_list, sensors_index_list, i * sizeof *sensors_index_list) ;
 		memcpy(new_sensors_index_list + i, sensors_index_list + 1 + i, (nsensors - i - 1) * sizeof *sensors_index_list) ;
@@ -278,7 +320,7 @@ int cost_cmp(const void *a, const void *b, void *cost){
 		return 0;
 	}else{	return 1;}
 }
-int key_cmp(const void *a, const void *b){
+int key_nsensors_cmp(const void *a, const void *b){
 	ENTRY ea = {*(char * const *)a, NULL}, eb = {*(char * const *)b, NULL}, *ar, *br ;
 	ar = hsearch(ea, FIND) ; br = hsearch(eb, FIND) ;
 	if(ar == NULL ){
@@ -298,9 +340,7 @@ int key_cmp(const void *a, const void *b){
 		}
 	}
 }
-void sk_update_cost(void ){
-	
-}
+
 int main(){
 	FILE *fp = fopen("input", "r") ;
 	int nrow, ncol ;
@@ -324,8 +364,7 @@ int main(){
 	}
 	qsort_r(index, nrow, sizeof *index, cost_cmp, cost) ;
 	signal_gen(temp_mat, nrow, ncol, index, cost) ;
-//	qsort(keys, nkeys, sizeof (char *), key_cmp); 
-
+	qsort(keys, nkeys, sizeof (char *), key_nsensors_cmp); 
 	#ifdef DEBUG
 	for (i = 0; i < nrow; i++){
 		
@@ -344,19 +383,27 @@ int main(){
 		if(et == NULL){
 			fprintf(stderr, "nothing found \n") ;
 		}else{
-			fprintf(stderr, "key: %s, knob: %d,%d,%d; dominating: %s\n", sk->signal_key, 
+			fprintf(stderr, "key: %s, knob: %d,%d,%d; dominating: ", sk->signal_key, 
 				( (SIG_KNOB )(et->data))->knobs[0],
 				( (SIG_KNOB )(et->data))->knobs[1],
-				( (SIG_KNOB )(et->data))->knobs[2], 
-				sk->dominating_signal == NULL ? " ": sk->dominating_signal->signal_key ) ;
+				( (SIG_KNOB )(et->data))->knobs[2] ) ;
+			for(j = 0; j < sk->ndominating_sig ; j ++){
+				fprintf(stderr, "%s, ", sk->dominating_signal[j]->signal_key ) ;
+			}
+			fprintf(stderr, "\n") ;
 		}
 	}
 	#endif
 	for( i = 0; i < nkeys ; i++){
 		ENTRY e={ keys[i], NULL};
 		et = hsearch(e, FIND) ;
-		SIG_KNOB sk =  et->data;
-		sk_free(et->data);
+		if(et == NULL){
+			fprintf(stderr, "nothing found \n") ;
+			exit(EXIT_FAILURE);
+		}else{
+			SIG_KNOB sk =  et->data;
+			sk_free(et->data);
+		}	
 	}
 	hdestroy();
 	free(temp_mat);
