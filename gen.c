@@ -14,10 +14,37 @@
 
 #define DEBUG 
 
+typedef struct _sig_knob{
+	/* should be equal to the index of the array to store these sets */
+	char *signal_key ;
+	/* these sensors ANDed together will turn on the signal */
+	/* sensors_set is the pointer pointing to the root */
+	int nsensors ;
+	int *sensors_index_list ;
+	int significant ;
+	/* min cost equivalent signals set */
+	char **signal_key_list ;
+	int nsignals ;
+
+	struct _sig_knob **dominating_signal ;
+	int ndominating_sig ;
+	struct _sig_knob **dominated_signal ;
+	int ndominated_sig ;
+	unsigned int min_cost ;
+	/* the minimum cost of knobs on to cover all included sensors for this signal 
+	int min_cost_of_knob ; */
+	int knobs[__MAX_LEVEL__] ;
+	/* number of knobs */
+	int nknobs ;
+} sig_knob, *SIG_KNOB ;
+
+
 static char *keys[__MAX_NUMBER_OF_SIGNALS__] = {NULL}; 
 static int nkeys = 0 ;
 
 static int key_nsensors_cmp(const void *a, const void *b);
+static void sk_update_dominated_sig(SIG_KNOB sk, SIG_KNOB dd_sk);
+static void sk_update_dominating_sig(SIG_KNOB sk, SIG_KNOB d_sk);
 
 char * get_matrix(FILE *input, int *m, int *n){
 	if(input == NULL){
@@ -80,31 +107,6 @@ char * get_matrix(FILE *input, int *m, int *n){
 
 	}
 }
-
-typedef struct _sig_knob{
-	/* should be equal to the index of the array to store these sets */
-	char *signal_key ;
-	/* these sensors ANDed together will turn on the signal */
-	/* sensors_set is the pointer pointing to the root */
-	int nsensors ;
-	int *sensors_index_list ;
-	int significant ;
-	/* min cost equivalent signals set */
-	char **signal_key_list ;
-	int nsignals ;
-
-	struct _sig_knob **dominating_signal ;
-	int ndominating_sig ;
-	struct _sig_knob **dominated_signal ;
-	int ndominated_sig ;
-	unsigned int min_cost ;
-	/* the minimum cost of knobs on to cover all included sensors for this signal 
-	int min_cost_of_knob ; */
-	int knobs[__MAX_LEVEL__] ;
-	/* number of knobs */
-	int nknobs ;
-} sig_knob, *SIG_KNOB ;
-
 SIG_KNOB sk_add_knob(SIG_KNOB sk, int knob_index){
 	int i;
 	if(sk->nknobs > __MAX_LEVEL__){
@@ -170,26 +172,22 @@ SIG_KNOB sk_gen(
 		}
 		strcat(ret->signal_key, buf) ;
 	}
-	#ifdef DEBUG
-	fprintf(stderr, "dominating created: %s <- %s\n", ret->signal_key, dominating_signal == NULL ? " " : dominating_signal->signal_key) ;
-	#endif
 
+	ret->dominated_signal = NULL ;
+	ret->ndominated_sig = 0 ;
+
+	ret->dominating_signal = NULL ;
+	ret->ndominating_sig = 0 ;
+/*
 	if(dominating_signal != NULL){
+		sk_update_dominating_sig(ret, dominating_signal);
+		sk_update_dominated_sig(dominating_signal, ret);
 		ret->dominating_signal = malloc(sizeof *ret->dominating_signal) ;
 		ret->dominating_signal[0] = dominating_signal ;
 		ret->ndominating_sig = 1;
-		dominating_signal->dominated_signal = 
-			realloc(dominating_signal->dominated_signal,
-			(dominating_signal->ndominated_sig + 1) * sizeof * dominating_signal->dominated_signal) ;
-		dominating_signal->dominated_signal[dominating_signal->ndominated_sig] = ret ;
-		dominating_signal->ndominated_sig += 1 ;
-	}else{
-		ret->dominating_signal = NULL ;
-		ret->ndominating_sig = 0 ;
+		sk_update_dominated_sig(dominating_signal, ret) ;
 	}
-
-	ret->dominated_signal = NULL ;
-	ret->dominated_signal = 0 ;
+*/
 
 	ret->significant = 1 ;
 	return ret ;
@@ -217,8 +215,22 @@ void sk_update_cost(void ){
 	}
 }
 */
+void sk_update_dominated_sig(SIG_KNOB sk, SIG_KNOB dd_sk){
+		int i ;
+		if(sk == NULL || dd_sk == NULL){return ;}
+		#ifdef DEBUG
+		fprintf(stderr, "dominating updated: %s -> %s\n", sk->signal_key, dd_sk->signal_key) ;
+		#endif
+		for(i = 0; i < sk->ndominated_sig ; i++){
+			if(sk->dominated_signal[i]->signal_key == dd_sk->signal_key ) { return ;}
+		}
+		sk->dominated_signal = realloc(sk->dominated_signal, (sk->ndominated_sig + 1) * sizeof *sk->dominated_signal) ;
+		sk->dominated_signal[sk->ndominated_sig] = dd_sk ;
+		sk->ndominated_sig += 1;
+}
 void sk_update_dominating_sig(SIG_KNOB sk, SIG_KNOB d_sk){
 		int i ;
+		if(sk == NULL|| d_sk == NULL){return ;}
 		#ifdef DEBUG
 		fprintf(stderr, "dominating updated: %s <- %s\n", sk->signal_key, d_sk->signal_key) ;
 		#endif
@@ -263,6 +275,8 @@ void recursive_signal_gen(
 		fprintf(stderr, "%s insterted \n", item.key);
 		#endif
 		keys [ nkeys ] = item.key ; nkeys += 1;
+		sk_update_dominating_sig(sk, dominating_signal );
+		sk_update_dominated_sig(dominating_signal, sk);
 	}else {
 		#ifdef DEBUG
 		fprintf(stderr, "%s exists \n", item.key);
@@ -272,6 +286,7 @@ void recursive_signal_gen(
 		sk = ret->data; 
 		sk_add_knob(sk, knob_index) ;
 		sk_update_dominating_sig(sk, dominating_signal );
+		sk_update_dominated_sig(dominating_signal, sk);
 	}
 	/* recursively generate all the combinations */
 	for (i = 0; i < nsensors; i++){
@@ -400,6 +415,10 @@ int main(){
 				( (SIG_KNOB )(et->data))->knobs[2] ) ;
 			for(j = 0; j < sk->ndominating_sig ; j ++){
 				fprintf(stderr, "%s, ", sk->dominating_signal[j]->signal_key ) ;
+			}
+			fprintf(stderr, "; dominated: ") ;
+			for(j = 0; j < sk->ndominated_sig ; j ++){
+				fprintf(stderr, "%s, ", sk->dominated_signal[j]->signal_key ) ;
 			}
 			fprintf(stderr, "\n") ;
 		}
