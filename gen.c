@@ -46,6 +46,140 @@ static int key_nsensors_cmp(const void *a, const void *b);
 static void sk_update_dominated_sig(SIG_KNOB sk, SIG_KNOB dd_sk);
 static void sk_update_dominating_sig(SIG_KNOB sk, SIG_KNOB d_sk);
 
+
+
+int dfs_check(SIG_KNOB sk, int level, SIG_KNOB sk_to_ckeck){
+	if(level < 2){
+		int  i;
+		for ( i = 0; i < sk->ndominating_sig; i++){
+			if( dfs_check(sk->dominating_signal[i], level + 1, sk_to_ckeck) == 1){
+				return 1;
+			}
+		}
+		return 0;
+	}else if(level == 2){
+		if(strcmp( sk->signal_key , sk_to_ckeck->signal_key ) == 0){
+			return 1 ;
+		}else {return 0; }
+	} else{
+		fprintf(stderr, "Unexpected error\n");
+		exit(EXIT_FAILURE);
+	}
+}
+
+void remove_dominated_sig(SIG_KNOB sk, SIG_KNOB sk_to_remove){
+	int i,j=0 ;
+	SIG_KNOB *dominated_signal = malloc( (sk->ndominated_sig - 1) * sizeof *dominated_signal ) ;
+	
+	for(i = 0; i < sk->ndominated_sig ; i++){
+		if(sk->dominated_signal[i] == sk_to_remove){
+			continue ;
+		}else{
+			dominated_signal[j] = sk->dominated_signal[i] ;
+			j++ ;
+		}
+	}
+	free(sk->dominated_signal ) ;
+	sk->dominated_signal = dominated_signal ;
+	fprintf(stderr, "remove_dominated : %s(%d) - %s\n", sk->signal_key, sk->ndominated_sig, sk_to_remove->signal_key ) ;
+	sk->ndominated_sig = sk->ndominated_sig  - 1;
+	fprintf(stderr, "dominated: %s %s \n", sk->dominated_signal[0]->signal_key, sk->dominated_signal[1]->signal_key ) ;
+	
+}
+void remove_dominating_sig(SIG_KNOB sk, SIG_KNOB sk_to_remove){
+	int i,j=0 ;
+	SIG_KNOB *dominating_signal = malloc( (sk->ndominating_sig - 1) * sizeof *dominating_signal ) ;
+	
+	for(i = 0; i < sk->ndominating_sig ; i++){
+		if(sk->dominating_signal[i] == sk_to_remove){
+			continue ;
+		}else{
+			dominating_signal[i] = sk->dominating_signal[j] ;
+			j++ ;
+		}
+	}
+	free(sk->dominating_signal ) ;
+	sk->dominating_signal = dominating_signal ;
+	sk->ndominating_sig = sk->ndominating_sig - 1 ;
+}
+void sk_chain_pruning(int const cost[] ){
+	int i, j;
+	qsort(keys, nkeys, sizeof (char *), key_nsensors_cmp) ;
+	for (i = 0; i < nkeys; i++){
+
+	ENTRY e={ keys[i], NULL}, *et = hsearch(e, FIND) ;
+	if(et == NULL){
+		fprintf(stderr, "nothing found in table\n") ;
+		exit(EXIT_FAILURE);
+	}else{
+		SIG_KNOB sk =  et->data;
+		int nmin_cost_knobs = 0;
+		if(sk->nsensors == 1) {continue ;}else{
+		
+		int *min_cost_knob_list = malloc(sk->ndominated_sig * sizeof * min_cost_knob_list) , min_c = 0;
+		memset(min_cost_knob_list, (char)-1, sk->ndominated_sig * sizeof * min_cost_knob_list );
+		for(j = 0; j < sk->ndominated_sig; j ++){
+			int k = 0;
+			while( sk->dominated_signal[j]->knobs[0] != min_cost_knob_list[k ] && min_cost_knob_list[k] != -1) {
+				k++;
+			}
+			if(min_cost_knob_list[k] == -1){
+				min_cost_knob_list[k] = sk->dominated_signal[j]->knobs[0] ;
+				nmin_cost_knobs = k + 1; 
+			}else{ continue; }
+		}
+		for (j = 0; j < sk->ndominated_sig; j++){
+			if(min_cost_knob_list[j] != -1){
+				min_c += cost [ min_cost_knob_list[j] ];
+			}else{
+				break ;
+			}
+		}
+		#ifdef DEBUG
+		fprintf(stderr, "sig:%s ,min_c: %d, cost: %d, nmin_knobs:%d\n", keys[i], min_c, cost[ sk->knobs[0] ], nmin_cost_knobs ) ;
+		#endif
+		if( (min_c < cost [ sk->knobs[0] ] )||
+			(min_c == cost[ sk->knobs[0] ] && nmin_cost_knobs == 1 && min_cost_knob_list[0] == sk->knobs[0]) ){
+			int i = 0, j;
+			for(	j = 0; j < sk->ndominating_sig; j++){
+				remove_dominated_sig ( sk->dominating_signal[j], sk ) ;
+			}
+			for ( i = 0; i < sk->ndominated_sig; i++){
+				remove_dominating_sig ( sk->dominated_signal[i], sk ) ;
+			}
+			for (j = 0; j < sk->ndominating_sig; j++){
+
+				for (i = 0; i < sk->ndominated_sig; i++){
+				
+				if(dfs_check(sk->dominated_signal[i], 0, sk->dominating_signal[j]) ){
+					
+				}else{
+					sk_update_dominating_sig(sk->dominated_signal[i] , sk->dominating_signal[j] ) ;
+					sk_update_dominated_sig(sk->dominating_signal[j] , sk->dominated_signal[i] ) ;
+				}
+
+				}
+			}
+			sk->significant = 0 ;		
+			sk->ndominating_sig = 0;
+			free(sk->dominating_signal ) ;
+			sk->dominating_signal = NULL ;
+			
+			sk->ndominated_sig = 0 ;
+			free(sk->dominated_signal ) ;
+			sk->dominated_signal =NULL ;
+			#ifdef DEBUG
+			fprintf(stderr, "free : %s\n", sk->signal_key ) ;
+			#endif
+		}
+		free(min_cost_knob_list);
+		
+		}
+	}
+		
+	}
+}
+
 char * get_matrix(FILE *input, int *m, int *n){
 	if(input == NULL){
 
@@ -192,6 +326,8 @@ SIG_KNOB sk_gen(
 	ret->significant = 1 ;
 	return ret ;
 }
+
+
 /*
 void sk_update_cost(void ){
 	int i ;
@@ -390,7 +526,9 @@ int main(){
 	}
 	qsort_r(index, nrow, sizeof *index, cost_cmp, cost) ;
 	signal_gen(temp_mat, nrow, ncol, index, cost) ;
-	qsort(keys, nkeys, sizeof (char *), key_nsensors_cmp); 
+//	qsort(keys, nkeys, sizeof (char *), key_nsensors_cmp); 
+
+	sk_chain_pruning(cost) ;	
 	#ifdef DEBUG
 	for (i = 0; i < nrow; i++){
 		
@@ -416,7 +554,7 @@ int main(){
 			for(j = 0; j < sk->ndominating_sig ; j ++){
 				fprintf(stderr, "%s, ", sk->dominating_signal[j]->signal_key ) ;
 			}
-			fprintf(stderr, "; dominated: ") ;
+			fprintf(stderr, "; siginificant : %d , dominated(%d): ",sk->significant, sk->ndominated_sig) ;
 			for(j = 0; j < sk->ndominated_sig ; j ++){
 				fprintf(stderr, "%s, ", sk->dominated_signal[j]->signal_key ) ;
 			}
