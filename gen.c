@@ -49,21 +49,19 @@ static void sk_update_dominating_sig(SIG_KNOB sk, SIG_KNOB d_sk);
 
 
 int dfs_check(SIG_KNOB sk, int level, SIG_KNOB sk_to_ckeck){
-	if(level < 2){
+	
+	if(strcmp( sk->signal_key , sk_to_ckeck->signal_key ) == 0){
+		return 1 ;
+	}else {
+
 		int  i;
-		for ( i = 0; i < sk->ndominating_sig; i++){
+		for( i = 0; i < sk->ndominating_sig; i++){
 			if( dfs_check(sk->dominating_signal[i], level + 1, sk_to_ckeck) == 1){
 				return 1;
 			}
 		}
 		return 0;
-	}else if(level == 2){
-		if(strcmp( sk->signal_key , sk_to_ckeck->signal_key ) == 0){
-			return 1 ;
-		}else {return 0; }
-	} else{
-		fprintf(stderr, "Unexpected error\n");
-		exit(EXIT_FAILURE);
+
 	}
 }
 
@@ -94,7 +92,7 @@ void remove_dominating_sig(SIG_KNOB sk, SIG_KNOB sk_to_remove){
 		if(sk->dominating_signal[i] == sk_to_remove){
 			continue ;
 		}else{
-			dominating_signal[i] = sk->dominating_signal[j] ;
+			dominating_signal[j] = sk->dominating_signal[i] ;
 			j++ ;
 		}
 	}
@@ -502,7 +500,41 @@ int key_nsensors_cmp(const void *a, const void *b){
 		}
 	}
 }
+#ifdef DEBUG
+void print_keys(char *temp_mat, int nrow, int ncol, int const cost[], int const index[] ){
+	int i, j;
+	char (*mat)[ncol] = (char (*)[ncol]) temp_mat ;
+	for (i = 0; i < nrow; i++){
+		for(j = 0; j < ncol; j ++){
+			fprintf(stderr, "%d ", mat   [ i ][j] ) ;
+		}
+		fprintf(stderr, "   cost is %d, sorted cost is %d\n", cost[i], index[i]) ;
+	}
+	fprintf(stderr, "cost of 2 : %d\n",  cost_fun(NULL, mat, nrow, ncol, 2)) ;
 
+	for(i = 0; i < nkeys ; i++){
+		ENTRY e={ keys[i], NULL}, *et = hsearch(e, FIND) ;
+		SIG_KNOB sk =  et->data;
+
+		if(et == NULL){
+			fprintf(stderr, "nothing found \n") ;
+		}else{
+			fprintf(stderr, "key: %s, knob: %d,%d,%d; dominating: ", sk->signal_key, 
+				( (SIG_KNOB )(et->data))->knobs[0],
+				( (SIG_KNOB )(et->data))->knobs[1],
+				( (SIG_KNOB )(et->data))->knobs[2] ) ;
+			for(j = 0; j < sk->ndominating_sig ; j ++){
+				fprintf(stderr, "%s, ", sk->dominating_signal[j]->signal_key ) ;
+			}
+			fprintf(stderr, "; siginificant : %d , dominated(%d): ",sk->significant, sk->ndominated_sig) ;
+			for(j = 0; j < sk->ndominated_sig ; j ++){
+				fprintf(stderr, "%s, ", sk->dominated_signal[j]->signal_key ) ;
+			}
+			fprintf(stderr, "\n") ;
+		}
+	}
+}
+#endif
 int main(){
 	FILE *fp = fopen("input", "r") ;
 	int nrow, ncol ;
@@ -526,41 +558,14 @@ int main(){
 	}
 	qsort_r(index, nrow, sizeof *index, cost_cmp, cost) ;
 	signal_gen(temp_mat, nrow, ncol, index, cost) ;
-//	qsort(keys, nkeys, sizeof (char *), key_nsensors_cmp); 
+	qsort(keys, nkeys, sizeof (char *), key_nsensors_cmp); 
 
+	#ifdef DEBUG
+	print_keys((char *)mat, nrow, ncol, cost, index) ;
+	#endif
 	sk_chain_pruning(cost) ;	
 	#ifdef DEBUG
-	for (i = 0; i < nrow; i++){
-		
-		for(j = 0; j < ncol; j ++){
-			fprintf(stderr, "%d ", mat   [ i ][j] ) ;
-		}
-		fprintf(stderr, "   cost is %d, sorted cost is %d\n", cost[i], index[i]) ;
-	}
-	fprintf(stderr, "cost of 2 : %d\n",  cost_fun(NULL, mat, nrow, ncol, 2)) ;
-
-	for(i = 0; i < nkeys ; i++){
-		ENTRY e={ keys[i], NULL};
-		et = hsearch(e, FIND) ;
-		SIG_KNOB sk =  et->data;
-
-		if(et == NULL){
-			fprintf(stderr, "nothing found \n") ;
-		}else{
-			fprintf(stderr, "key: %s, knob: %d,%d,%d; dominating: ", sk->signal_key, 
-				( (SIG_KNOB )(et->data))->knobs[0],
-				( (SIG_KNOB )(et->data))->knobs[1],
-				( (SIG_KNOB )(et->data))->knobs[2] ) ;
-			for(j = 0; j < sk->ndominating_sig ; j ++){
-				fprintf(stderr, "%s, ", sk->dominating_signal[j]->signal_key ) ;
-			}
-			fprintf(stderr, "; siginificant : %d , dominated(%d): ",sk->significant, sk->ndominated_sig) ;
-			for(j = 0; j < sk->ndominated_sig ; j ++){
-				fprintf(stderr, "%s, ", sk->dominated_signal[j]->signal_key ) ;
-			}
-			fprintf(stderr, "\n") ;
-		}
-	}
+	print_keys((char *)mat, nrow, ncol, cost, index) ;
 	#endif
 	for( i = 0; i < nkeys ; i++){
 		ENTRY e={ keys[i], NULL};
@@ -576,4 +581,4 @@ int main(){
 	hdestroy();
 	free(temp_mat);
 	fclose(fp) ;
-}
+} 
