@@ -15,6 +15,7 @@ static int key_nsensors_cmp(const void *a, const void *b);
 static void sk_update_dominated_sig(SIG_KNOB sk, SIG_KNOB dd_sk);
 static void sk_update_dominating_sig(SIG_KNOB sk, SIG_KNOB d_sk);
 extern void sig2gates(char *keys[], int nkeys);
+extern void isig2gates(char *keys[], int nkeys);
 
 
 
@@ -537,6 +538,7 @@ int main(){
 	#ifdef DEBUG
 	print_keys((char *)mat, nrow, ncol, cost, index) ;
 	sig2gates(keys, nkeys) ;
+	isig2gates(keys, nkeys) ;
 	#endif
 	for( i = 0; i < nkeys ; i++){
 		ENTRY e={ keys[i], NULL};
