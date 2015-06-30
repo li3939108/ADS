@@ -1,50 +1,20 @@
-#define _GNU_SOURCE
 
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <search.h>
 
-#define __MAX_NUMBER_OF_SIGNALS__ (1<<16)
-#define __MAX_LEVEL__ 3
+#include "struct.h"
 
-/* The max number of characters for a signal key */
-#define __MAX_SIGNAL_KEY__ (1<<10)
-
-
+char *keys[__MAX_NUMBER_OF_SIGNALS__] = {NULL}; 
+int nkeys = 0 ;
 #define DEBUG 
-
-typedef struct _sig_knob{
-	/* should be equal to the index of the array to store these sets */
-	char *signal_key ;
-	/* these sensors ANDed together will turn on the signal */
-	/* sensors_set is the pointer pointing to the root */
-	int nsensors ;
-	int *sensors_index_list ;
-	int significant ;
-	/* min cost equivalent signals set */
-	char **signal_key_list ;
-	int nsignals ;
-
-	struct _sig_knob **dominating_signal ;
-	int ndominating_sig ;
-	struct _sig_knob **dominated_signal ;
-	int ndominated_sig ;
-	unsigned int min_cost ;
-	/* the minimum cost of knobs on to cover all included sensors for this signal 
-	int min_cost_of_knob ; */
-	int knobs[__MAX_LEVEL__] ;
-	/* number of knobs */
-	int nknobs ;
-} sig_knob, *SIG_KNOB ;
-
-
-static char *keys[__MAX_NUMBER_OF_SIGNALS__] = {NULL}; 
-static int nkeys = 0 ;
 
 static int key_nsensors_cmp(const void *a, const void *b);
 static void sk_update_dominated_sig(SIG_KNOB sk, SIG_KNOB dd_sk);
 static void sk_update_dominating_sig(SIG_KNOB sk, SIG_KNOB d_sk);
+extern void sig2gates(char *keys[], int nkeys);
 
 
 
@@ -566,6 +536,7 @@ int main(){
 	sk_chain_pruning(cost) ;	
 	#ifdef DEBUG
 	print_keys((char *)mat, nrow, ncol, cost, index) ;
+	sig2gates(keys, nkeys) ;
 	#endif
 	for( i = 0; i < nkeys ; i++){
 		ENTRY e={ keys[i], NULL};
