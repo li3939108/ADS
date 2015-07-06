@@ -271,6 +271,8 @@ SIG_KNOB sk_gen(
 	ret->ndominating_sig = 0 ;
 
 	ret->significant = 1 ;
+
+	ret->next_level = NULL ;
 	return ret ;
 }
 
@@ -320,11 +322,15 @@ void sk_update_dominating_sig(SIG_KNOB sk, SIG_KNOB d_sk){
 }
 
 void sk_free(SIG_KNOB sk){
+
 	free(sk->sensors_index_list) ;
 	free(sk->signal_key);
 	free(sk->signal_key_list);
 	free(sk->dominating_signal);
 	free(sk->dominated_signal) ;
+	if(sk->next_level != NULL){
+		sk_free(sk->next_level );
+	}
 	free(sk) ;
 }
 
