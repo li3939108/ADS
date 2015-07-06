@@ -250,15 +250,7 @@ SIG_KNOB sk_gen(
 	ret->signal_key = signal_key;
 	ret->knobs[0] = knob_index ;	
 	ret->nknobs = 1;
-	/* add a knob */
-	/* binary tree NULLed */
-	/*
-	if(ret->nsensors == 1){
-		ret->signal_key_list = malloc(sizeof *ret->signal_key_list) ;
-		ret->signal_key_list[0] = ret->signal_key;
-		ret->nsignals = 1 ;
-		ret->min_cost = cost[knob_index] ;
-	}else*/{
+	{
 		ret->signal_key_list = NULL ;
 		ret->nsignals = 0 ;
 		ret->min_cost = -1 ;
@@ -277,16 +269,6 @@ SIG_KNOB sk_gen(
 
 	ret->dominating_signal = NULL ;
 	ret->ndominating_sig = 0 ;
-/*
-	if(dominating_signal != NULL){
-		sk_update_dominating_sig(ret, dominating_signal);
-		sk_update_dominated_sig(dominating_signal, ret);
-		ret->dominating_signal = malloc(sizeof *ret->dominating_signal) ;
-		ret->dominating_signal[0] = dominating_signal ;
-		ret->ndominating_sig = 1;
-		sk_update_dominated_sig(dominating_signal, ret) ;
-	}
-*/
 
 	ret->significant = 1 ;
 	return ret ;
