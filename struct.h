@@ -30,6 +30,8 @@ typedef struct _sig_knob{
 	int knobs[__MAX_LEVEL__] ;
 	/* number of knobs */
 	int nknobs ;
+
+	struct _sig_knob *next_level ;
 } sig_knob, *SIG_KNOB ;
 
 

@@ -44,8 +44,7 @@ void remove_dominated_sig(SIG_KNOB sk, SIG_KNOB sk_to_remove){
 			dominated_signal[j] = sk->dominated_signal[i] ;
 			j++ ;
 		}
-	}
-	free(sk->dominated_signal ) ;
+	} free(sk->dominated_signal ) ;
 	sk->dominated_signal = dominated_signal ;
 	fprintf(stderr, "remove_dominated : %s(%d) - %s\n", sk->signal_key, sk->ndominated_sig, sk_to_remove->signal_key ) ;
 	sk->ndominated_sig = sk->ndominated_sig  - 1;
@@ -293,19 +292,36 @@ SIG_KNOB sk_gen(
 	return ret ;
 }
 
+void next_pruning(char *keys[], int nkeys){
+	int i;
+	for(i = 0; i < nkeys; i++){
+
+	ENTRY e={ keys[i], NULL}, *et = hsearch(e, FIND) ;
+	if(et == NULL){
+		fprintf(stderr, "nothing found in table\n") ;
+		exit(EXIT_FAILURE);
+	}else{
+		SIG_KNOB sk =  et->data, skn = NULL ; 
+		skn = (sk->next_level = malloc(sizeof *( sk->next_level ) ) );
+		memcpy(skn, sk, sizeof *sk);
+		skn->next_level = NULL ;
+	}
+
+	}
+}
 
 void sk_update_dominated_sig(SIG_KNOB sk, SIG_KNOB dd_sk){
-		int i ;
-		if(sk == NULL || dd_sk == NULL){return ;}
-		#ifdef DEBUG
-		fprintf(stderr, "dominating updated: %s -> %s\n", sk->signal_key, dd_sk->signal_key) ;
-		#endif
-		for(i = 0; i < sk->ndominated_sig ; i++){
-			if(sk->dominated_signal[i]->signal_key == dd_sk->signal_key ) { return ;}
-		}
-		sk->dominated_signal = realloc(sk->dominated_signal, (sk->ndominated_sig + 1) * sizeof *sk->dominated_signal) ;
-		sk->dominated_signal[sk->ndominated_sig] = dd_sk ;
-		sk->ndominated_sig += 1;
+	int i ;
+	if(sk == NULL || dd_sk == NULL){return ;}
+	#ifdef DEBUG
+	fprintf(stderr, "dominating updated: %s -> %s\n", sk->signal_key, dd_sk->signal_key) ;
+	#endif
+	for(i = 0; i < sk->ndominated_sig ; i++){
+		if(sk->dominated_signal[i]->signal_key == dd_sk->signal_key ) { return ;}
+	}
+	sk->dominated_signal = realloc(sk->dominated_signal, (sk->ndominated_sig + 1) * sizeof *sk->dominated_signal) ;
+	sk->dominated_signal[sk->ndominated_sig] = dd_sk ;
+	sk->ndominated_sig += 1;
 }
 void sk_update_dominating_sig(SIG_KNOB sk, SIG_KNOB d_sk){
 		int i ;
