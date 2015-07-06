@@ -230,8 +230,7 @@ SIG_KNOB sk_gen(
 	int sensors_index_list[], 
 	int nsensors,
 	int knob_index,
-	int cost[], 
-	SIG_KNOB dominating_signal){
+	int cost[]){
 
 	SIG_KNOB ret = malloc(sizeof *ret) ;
 	int i = 0;
@@ -282,7 +281,11 @@ void next_pruning(char *keys[], int nkeys, int cost[]){
 		exit(EXIT_FAILURE);
 	}else{
 		SIG_KNOB sk =  et->data, skn = NULL ; 
-		skn = (sk->next_level = sk_gen(sk->sensors_index_list, sk->nsensors, sk->knobs[0], cost, sk->dominating_signal[0] ) );
+		int i ;
+		skn = (sk->next_level = sk_gen(sk->sensors_index_list, sk->nsensors, sk->knobs[0], cost ) );
+		for (i = 0; i < sk->ndominating_sig; i++){
+			sk_update_dominating_sig(skn, sk->dominating_signal[i]) ;
+		}
 	}
 
 	}
@@ -335,7 +338,7 @@ void recursive_signal_gen(
 		return ;
 	}else{
 
-	SIG_KNOB sk = sk_gen(sensors_index_list, nsensors, knob_index, cost, dominating_signal);
+	SIG_KNOB sk = sk_gen(sensors_index_list, nsensors, knob_index, cost);
 
 	ENTRY item, *ret ;
 	item.key = sk->signal_key ;
