@@ -250,11 +250,7 @@ SIG_KNOB sk_gen(
 	ret->signal_key = signal_key;
 	ret->knobs[0] = knob_index ;	
 	ret->nknobs = 1;
-	{
-		ret->signal_key_list = NULL ;
-		ret->nsignals = 0 ;
-		ret->min_cost = -1 ;
-	}
+
 	for(i = 0; i < nsensors; i++){
 		if(i != nsensors - 1){
 			sprintf(buf, "%dx", sensors_index_list[i] );
@@ -276,7 +272,7 @@ SIG_KNOB sk_gen(
 	return ret ;
 }
 
-void next_pruning(char *keys[], int nkeys){
+void next_pruning(char *keys[], int nkeys, int cost[]){
 	int i;
 	for(i = 0; i < nkeys; i++){
 
@@ -286,9 +282,7 @@ void next_pruning(char *keys[], int nkeys){
 		exit(EXIT_FAILURE);
 	}else{
 		SIG_KNOB sk =  et->data, skn = NULL ; 
-		skn = (sk->next_level = malloc(sizeof *( sk->next_level ) ) );
-		memcpy(skn, sk, sizeof *sk);
-		skn->next_level = NULL ;
+		skn = (sk->next_level = sk_gen(sk->sensors_index_list, sk->nsensors, sk->knobs[0], cost, sk->dominating_signal[0] ) );
 	}
 
 	}
@@ -325,12 +319,9 @@ void sk_free(SIG_KNOB sk){
 
 	free(sk->sensors_index_list) ;
 	free(sk->signal_key);
-	free(sk->signal_key_list);
+
 	free(sk->dominating_signal);
 	free(sk->dominated_signal) ;
-	if(sk->next_level != NULL){
-		sk_free(sk->next_level );
-	}
 	free(sk) ;
 }
 
@@ -338,7 +329,7 @@ void recursive_signal_gen(
 	int *sensors_index_list, int nsensors, SIG_KNOB sk_tree, 
 	int knob_index, int position, int cost[], SIG_KNOB dominating_signal ){
 
-	int i, min_cost;
+	int i;
 
 	if(nsensors == 0){
 		return ;

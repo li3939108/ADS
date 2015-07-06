@@ -17,14 +17,11 @@ typedef struct _sig_knob{
 	int *sensors_index_list ;
 	int significant ;
 	/* min cost equivalent signals set */
-	char **signal_key_list ;
-	int nsignals ;
 
 	struct _sig_knob **dominating_signal ;
 	int ndominating_sig ;
 	struct _sig_knob **dominated_signal ;
 	int ndominated_sig ;
-	unsigned int min_cost ;
 	/* the minimum cost of knobs on to cover all included sensors for this signal 
 	int min_cost_of_knob ; */
 	int knobs[__MAX_LEVEL__] ;
