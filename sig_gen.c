@@ -23,7 +23,6 @@ int dfs_check(SIG_KNOB sk, int level, SIG_KNOB sk_to_ckeck){
 	if(strcmp( sk->signal_key , sk_to_ckeck->signal_key ) == 0){
 		return 1 ;
 	}else {
-
 		int  i;
 		for( i = 0; i < sk->ndominating_sig; i++){
 			if( dfs_check(sk->dominating_signal[i], level + 1, sk_to_ckeck) == 1){
@@ -31,7 +30,6 @@ int dfs_check(SIG_KNOB sk, int level, SIG_KNOB sk_to_ckeck){
 			}
 		}
 		return 0;
-
 	}
 }
 
@@ -296,29 +294,6 @@ SIG_KNOB sk_gen(
 }
 
 
-/*
-void sk_update_cost(void ){
-	int i ;
-	qsort(keys, nkeys, sizeof (char *), key_nsensors_cmp); 
-
-	for(i = 0; i < nkeys; i ++){
-		ENTRY e={ keys[i], NULL}, *et = hsearch(e, FIND) ;
-		if(et == NULL){
-			fprintf(stderr, "table error, unfound key %s \n", e.key) ;
-			exit(EXIT_FAILURE);
-		}else {
-
-
-		SIG_KNOB sk =  et->data;
-		if(sk->min_cost == -1 && sk->nsignals == 0 && ret->signal_key_list == NULL){
-		}else{
-			continue ;
-		}
-
-		}
-	}
-}
-*/
 void sk_update_dominated_sig(SIG_KNOB sk, SIG_KNOB dd_sk){
 		int i ;
 		if(sk == NULL || dd_sk == NULL){return ;}
