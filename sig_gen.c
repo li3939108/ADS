@@ -8,6 +8,7 @@
 
 char *keys[__MAX_NUMBER_OF_SIGNALS__] = {NULL}; 
 int nkeys = 0 ;
+
 #define DEBUG 
 
 extern void sig2gates(char *keys[__MAX_NUMBER_OF_SIGNALS__], int nkeys); 
@@ -109,6 +110,14 @@ void remove_dominating_sig(SIG_KNOB sk, SIG_KNOB sk_to_remove){
 	sk->dominating_signal = dominating_signal ;
 	sk->ndominating_sig = sk->ndominating_sig - 1 ;
 }
+int check_existing(SIG_KNOB sk, int j, int level, int min_cost_knob_list[]){
+	int k = 0;
+	while( sk->dominated_signal[j]->knobs[level] != min_cost_knob_list[k ] 
+	 && min_cost_knob_list[k] != -1) {
+		k++;
+	}
+	return k ;
+}
 void sk_chain_pruning(int const cost[] ){
 	int i, j;
 	qsort(keys, nkeys, sizeof (char *), key_nsensors_cmp) ;
@@ -120,75 +129,71 @@ void sk_chain_pruning(int const cost[] ){
 		exit(EXIT_FAILURE);
 	}else{
 		SIG_KNOB sk =  et->data;
+		int dominated_level = 0, self_level = 0 ;
 
-//		while(sk != NULL){
-
-		int nmin_cost_knobs = 0;
 		if(sk->nsensors == 1) {continue ;}else{
-		
-		int *min_cost_knob_list = malloc(sk->ndominated_sig * sizeof * min_cost_knob_list) , min_c = 0;
-		memset(min_cost_knob_list, (char)-1, sk->ndominated_sig * sizeof * min_cost_knob_list );
-		for(j = 0; j < sk->ndominated_sig; j ++){
-			int k = 0;
-			while( sk->dominated_signal[j]->knobs[0] != min_cost_knob_list[k ] && min_cost_knob_list[k] != -1) {
-				k++;
-			}
-			if(min_cost_knob_list[k] == -1){
-				min_cost_knob_list[k] = sk->dominated_signal[j]->knobs[0] ;
-				nmin_cost_knobs = k + 1; 
-			}else{ continue; }
-		}
-		for (j = 0; j < sk->ndominated_sig; j++){
-			if(min_cost_knob_list[j] != -1){
-				min_c += cost [ min_cost_knob_list[j] ];
-			}else{
-				break ;
-			}
-		}
-		#ifdef DEBUG
-		fprintf(stderr, "sig:%s ,min_c: %d, cost: %d, nmin_knobs:%d\n", keys[i], min_c, cost[ sk->knobs[0] ], nmin_cost_knobs ) ;
-		#endif
-		if( (min_c < cost [ sk->knobs[0] ] )||
-			(min_c == cost[ sk->knobs[0] ] && nmin_cost_knobs == 1 && min_cost_knob_list[0] == sk->knobs[0]) ){
-			int i = 0, j;
-			for(	j = 0; j < sk->ndominating_sig; j++){
-				remove_dominated_sig ( sk->dominating_signal[j], sk ) ;
-			}
-			for ( i = 0; i < sk->ndominated_sig; i++){
-				remove_dominating_sig ( sk->dominated_signal[i], sk ) ;
-			}
-			for (j = 0; j < sk->ndominating_sig; j++){
-
-				for (i = 0; i < sk->ndominated_sig; i++){
-				
-				if(dfs_check(sk->dominated_signal[i], 0, sk->dominating_signal[j]) ){
-					
-				}else{
-					sk_update_dominating_sig(sk->dominated_signal[i] , sk->dominating_signal[j] ) ;
-					sk_update_dominated_sig(sk->dominating_signal[j] , sk->dominated_signal[i] ) ;
-				}
-
-				}
-			}
-			sk->significant = 0 ;		
-			sk->ndominating_sig = 0;
-			free(sk->dominating_signal ) ;
-			sk->dominating_signal = NULL ;
 			
-			sk->ndominated_sig = 0 ;
-			free(sk->dominated_signal ) ;
-			sk->dominated_signal =NULL ;
-			#ifdef DEBUG
-			fprintf(stderr, "free : %s\n", sk->signal_key ) ;
-			#endif
-		}
-		free(min_cost_knob_list);
+			int nmin_cost_knobs = 0;
 		
+			while(sk != NULL){
+
+			int *min_cost_knob_list = malloc(sk->ndominated_sig * sizeof * min_cost_knob_list) , min_c = 0;
+			memset(min_cost_knob_list, (char)-1, sk->ndominated_sig * sizeof * min_cost_knob_list );
+			for(j = 0; j < sk->ndominated_sig; j ++){
+				int k = check_existing(sk, j, 0, min_cost_knob_list);
+				if(min_cost_knob_list[k] == -1){
+					min_cost_knob_list[k] = sk->dominated_signal[j]->knobs[0] ;
+					nmin_cost_knobs = k + 1; 
+				}else{ continue; }
+			}
+			for (j = 0; j < sk->ndominated_sig; j++){
+				if(min_cost_knob_list[j] != -1){
+					min_c += cost [ min_cost_knob_list[j] ];
+				}else{
+					break ;
+				}
+			}
+			#ifdef DEBUG
+			fprintf(stderr, "sig:%s ,min_c: %d, cost: %d, nmin_knobs:%d\n", keys[i], min_c, cost[ sk->knobs[0] ], nmin_cost_knobs ) ;
+			#endif
+			if( (min_c < cost [ sk->knobs[0] ] )||
+				(min_c == cost[ sk->knobs[0] ] && nmin_cost_knobs == 1 && min_cost_knob_list[0] == sk->knobs[0]) ){
+				int i = 0, j;
+				for(	j = 0; j < sk->ndominating_sig; j++){
+					remove_dominated_sig ( sk->dominating_signal[j], sk ) ;
+				}
+				for ( i = 0; i < sk->ndominated_sig; i++){
+					remove_dominating_sig ( sk->dominated_signal[i], sk ) ;
+				}
+				for (j = 0; j < sk->ndominating_sig; j++){
+
+					for (i = 0; i < sk->ndominated_sig; i++){
+				
+					if(dfs_check(sk->dominated_signal[i], 0, sk->dominating_signal[j]) ){
+					
+					}else{
+						sk_update_dominating_sig(sk->dominated_signal[i] , sk->dominating_signal[j] ) ;
+						sk_update_dominated_sig(sk->dominating_signal[j] , sk->dominated_signal[i] ) ;
+					}
+
+					}
+				}
+				sk->significant = 0 ;		
+				sk->ndominating_sig = 0;
+				free(sk->dominating_signal ) ;
+				sk->dominating_signal = NULL ;
+			
+				sk->ndominated_sig = 0 ;
+				free(sk->dominated_signal ) ;
+				sk->dominated_signal =NULL ;
+				#ifdef DEBUG
+				fprintf(stderr, "free : %s\n", sk->signal_key ) ;
+				#endif
+			}
+			free(min_cost_knob_list);
 		}
-
-	//	sk = sk->next_level;
-
-//	}
+		sk = sk->next_level;
+		}
 
 	}
 		

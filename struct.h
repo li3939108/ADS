@@ -1,5 +1,3 @@
-
-
 #define __MAX_NUMBER_OF_SIGNALS__ (1<<16)
 #define __MAX_LEVEL__ 3
 
