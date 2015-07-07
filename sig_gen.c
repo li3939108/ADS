@@ -186,7 +186,7 @@ void sk_chain_pruning(int const cost[] ){
 		
 		}
 
-		sk = sk->next_level;
+	//	sk = sk->next_level;
 
 //	}
 
@@ -324,28 +324,35 @@ SIG_KNOB sk_gen(
 void add_next_level(char *keys[], int nkeys, int cost[]){
 	int i;
 	for(i = 0; i < nkeys; i++){
-
-	ENTRY e={ keys[i], NULL}, *et = hsearch(e, FIND) ;
-	if(et == NULL){
-		fprintf(stderr, "nothing found in table\n") ;
-		exit(EXIT_FAILURE);
-	}else{
-		SIG_KNOB sk =  et->data, skn = NULL ; 
-		int i ;
-		skn = (sk->next_level = sk_gen(sk->sensors_index_list, sk->nsensors, sk->knobs[0], cost ) );
-		for(i = 0; i < sk->ndominating_sig; i++){
-			sk_update_dominating_sig(skn, sk->dominating_signal[i]) ;
-		}
-		skn->ndominating_sig = sk->ndominating_sig ;
-		for(i = 0; i < sk->ndominated_sig; i++){
-			sk_update_dominated_sig(skn, sk->dominated_signal[i]);
-		}
-		skn->ndominated_sig = sk->ndominated_sig;
-		for(i = 1; i < sk->nknobs; i++){
-			sk_add_knob(skn, sk->knobs[i] ) ;
+		ENTRY e={ keys[i], NULL}, *et = hsearch(e, FIND) ;
+		if(et == NULL){
+			fprintf(stderr, "nothing found in table\n")	 ;
+			exit(EXIT_FAILURE);
+		}else{
+			SIG_KNOB sk =  et->data, skn = NULL ; 
+			skn = (sk->next_level = sk_gen(sk->sensors_index_list, sk->nsensors, sk->knobs[0], cost ) );
 		}
 	}
-
+	for(i = 0; i < nkeys; i++){
+		ENTRY e={ keys[i], NULL}, *et = hsearch(e, FIND) ;
+		if(et == NULL){
+			fprintf(stderr, "nothing found in table\n")	 ;
+			exit(EXIT_FAILURE);
+		}else{
+			SIG_KNOB sk =  et->data, skn = sk->next_level ; 
+			int i ;
+			for(i = 0; i < sk->ndominating_sig; i++){
+				sk_update_dominating_sig(skn, sk->dominating_signal[i]->next_level) ;
+			}
+			skn->ndominating_sig = sk->ndominating_sig ;
+			for(i = 0; i < sk->ndominated_sig; i++){
+				sk_update_dominated_sig(skn, sk->dominated_signal[i]->next_level);
+			}
+			skn->ndominated_sig = sk->ndominated_sig;
+			for(i = 1; i < sk->nknobs; i++){
+				sk_add_knob(skn, sk->knobs[i] ) ;
+			}
+		}
 	}
 }
 
