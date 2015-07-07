@@ -512,7 +512,7 @@ int main(){
 	qsort_r(index, nrow, sizeof *index, cost_cmp, cost) ;
 	signal_gen(temp_mat, nrow, ncol, index, cost) ;
 	qsort(keys, nkeys, sizeof (char *), key_nsensors_cmp); 
-
+	add_next_level(keys, nkeys, cost);
 	#ifdef DEBUG
 	print_keys((char *)mat, nrow, ncol, cost, index) ;
 	#endif
