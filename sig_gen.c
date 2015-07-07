@@ -271,7 +271,7 @@ SIG_KNOB sk_gen(
 	return ret ;
 }
 
-void next_pruning(char *keys[], int nkeys, int cost[]){
+void add_next_level(char *keys[], int nkeys, int cost[]){
 	int i;
 	for(i = 0; i < nkeys; i++){
 
@@ -285,6 +285,14 @@ void next_pruning(char *keys[], int nkeys, int cost[]){
 		skn = (sk->next_level = sk_gen(sk->sensors_index_list, sk->nsensors, sk->knobs[0], cost ) );
 		for (i = 0; i < sk->ndominating_sig; i++){
 			sk_update_dominating_sig(skn, sk->dominating_signal[i]) ;
+		}
+		skn->ndominating_sig = sk->ndominating_sig ;
+		for(i = 0; i < sk->ndominated_sig; i++){
+			sk_update_dominated_sig(skn, sk->dominated_signal[i]);
+		}
+		skn->ndominated_sig = sk->ndominated_sig;
+		for(i = 1; i < sk->nknobs; i++){
+			sk_add_knob(skn, sk->knobs[i] ) ;
 		}
 	}
 
@@ -322,9 +330,11 @@ void sk_free(SIG_KNOB sk){
 
 	free(sk->sensors_index_list) ;
 	free(sk->signal_key);
-
 	free(sk->dominating_signal);
 	free(sk->dominated_signal) ;
+	if(sk->next_level != NULL){
+		sk_free(sk->next_level) ;
+	}
 	free(sk) ;
 }
 
