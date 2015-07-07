@@ -6,8 +6,6 @@
 /* The max number of characters for a signal key */
 #define __MAX_SIGNAL_KEY__ (1<<10)
 
-
-
 typedef struct _sig_knob{
 	/* should be equal to the index of the array to store these sets */
 	char *signal_key ;
@@ -31,7 +29,3 @@ typedef struct _sig_knob{
 	struct _sig_knob *next_level ;
 	struct _sig_knob *prev_level ;
 } sig_knob, *SIG_KNOB ;
-
-
-
-
