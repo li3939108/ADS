@@ -29,6 +29,7 @@ typedef struct _sig_knob{
 	int nknobs ;
 
 	struct _sig_knob *next_level ;
+	struct _sig_knob *prev_level ;
 } sig_knob, *SIG_KNOB ;
 
 

@@ -10,12 +10,29 @@ char *keys[__MAX_NUMBER_OF_SIGNALS__] = {NULL};
 int nkeys = 0 ;
 #define DEBUG 
 
-static int key_nsensors_cmp(const void *a, const void *b);
-static void sk_update_dominated_sig(SIG_KNOB sk, SIG_KNOB dd_sk);
-static void sk_update_dominating_sig(SIG_KNOB sk, SIG_KNOB d_sk);
-extern void sig2gates(char *keys[], int nkeys);
-extern void isig2gates(char *keys[], int nkeys);
+extern void sig2gates(char *keys[__MAX_NUMBER_OF_SIGNALS__], int nkeys); 
+extern void isig2gates(char *keys[], int nkeys) ;
 
+int key_nsensors_cmp(const void *a, const void *b){
+	ENTRY ea = {*(char * const *)a, NULL}, eb = {*(char * const *)b, NULL}, *ar, *br ;
+	ar = hsearch(ea, FIND) ; br = hsearch(eb, FIND) ;
+	if(ar == NULL ){
+		fprintf(stderr, "unexpected NULL search result for %s\n", ea.key) ;
+		exit(EXIT_FAILURE);
+	}else if(br == NULL ){
+		fprintf(stderr, "unexpected NULL search result for %s\n", eb.key) ;
+		exit(EXIT_FAILURE);
+	}else{
+		SIG_KNOB sk_a = ar->data, sk_b = br->data ;
+		if(sk_a->nsensors < sk_b->nsensors){
+			return -1;
+		}else if(sk_a->nsensors == sk_b->nsensors){
+			return 0;
+		}else{
+			return 1;
+		}
+	}
+}
 
 
 int dfs_check(SIG_KNOB sk, int level, SIG_KNOB sk_to_ckeck){
@@ -32,7 +49,32 @@ int dfs_check(SIG_KNOB sk, int level, SIG_KNOB sk_to_ckeck){
 		return 0;
 	}
 }
-
+void sk_update_dominated_sig(SIG_KNOB sk, SIG_KNOB dd_sk){
+	int i ;
+	if(sk == NULL || dd_sk == NULL){return ;}
+	#ifdef DEBUG
+	fprintf(stderr, "dominating updated: %s -> %s\n", sk->signal_key, dd_sk->signal_key) ;
+	#endif
+	for(i = 0; i < sk->ndominated_sig ; i++){
+		if(sk->dominated_signal[i]->signal_key == dd_sk->signal_key ) { return ;}
+	}
+	sk->dominated_signal = realloc(sk->dominated_signal, (sk->ndominated_sig + 1) * sizeof *sk->dominated_signal) ;
+	sk->dominated_signal[sk->ndominated_sig] = dd_sk ;
+	sk->ndominated_sig += 1;
+}
+void sk_update_dominating_sig(SIG_KNOB sk, SIG_KNOB d_sk){
+		int i ;
+		if(sk == NULL|| d_sk == NULL){return ;}
+		#ifdef DEBUG
+		fprintf(stderr, "dominating updated: %s <- %s\n", sk->signal_key, d_sk->signal_key) ;
+		#endif
+		for(i = 0; i < sk->ndominating_sig ; i++){
+			if(sk->dominating_signal[i]->signal_key == d_sk->signal_key ) { return ;}
+		}
+		sk->dominating_signal = realloc(sk->dominating_signal, (sk->ndominating_sig + 1) * sizeof *sk->dominating_signal) ;
+		sk->dominating_signal[sk->ndominating_sig] = d_sk ;
+		sk->ndominating_sig += 1;
+}
 void remove_dominated_sig(SIG_KNOB sk, SIG_KNOB sk_to_remove){
 	int i,j=0 ;
 	SIG_KNOB *dominated_signal = malloc( (sk->ndominated_sig - 1) * sizeof *dominated_signal ) ;
@@ -78,6 +120,9 @@ void sk_chain_pruning(int const cost[] ){
 		exit(EXIT_FAILURE);
 	}else{
 		SIG_KNOB sk =  et->data;
+
+//		while(sk != NULL){
+
 		int nmin_cost_knobs = 0;
 		if(sk->nsensors == 1) {continue ;}else{
 		
@@ -140,6 +185,11 @@ void sk_chain_pruning(int const cost[] ){
 		free(min_cost_knob_list);
 		
 		}
+
+		sk = sk->next_level;
+
+//	}
+
 	}
 		
 	}
@@ -283,7 +333,7 @@ void add_next_level(char *keys[], int nkeys, int cost[]){
 		SIG_KNOB sk =  et->data, skn = NULL ; 
 		int i ;
 		skn = (sk->next_level = sk_gen(sk->sensors_index_list, sk->nsensors, sk->knobs[0], cost ) );
-		for (i = 0; i < sk->ndominating_sig; i++){
+		for(i = 0; i < sk->ndominating_sig; i++){
 			sk_update_dominating_sig(skn, sk->dominating_signal[i]) ;
 		}
 		skn->ndominating_sig = sk->ndominating_sig ;
@@ -299,32 +349,7 @@ void add_next_level(char *keys[], int nkeys, int cost[]){
 	}
 }
 
-void sk_update_dominated_sig(SIG_KNOB sk, SIG_KNOB dd_sk){
-	int i ;
-	if(sk == NULL || dd_sk == NULL){return ;}
-	#ifdef DEBUG
-	fprintf(stderr, "dominating updated: %s -> %s\n", sk->signal_key, dd_sk->signal_key) ;
-	#endif
-	for(i = 0; i < sk->ndominated_sig ; i++){
-		if(sk->dominated_signal[i]->signal_key == dd_sk->signal_key ) { return ;}
-	}
-	sk->dominated_signal = realloc(sk->dominated_signal, (sk->ndominated_sig + 1) * sizeof *sk->dominated_signal) ;
-	sk->dominated_signal[sk->ndominated_sig] = dd_sk ;
-	sk->ndominated_sig += 1;
-}
-void sk_update_dominating_sig(SIG_KNOB sk, SIG_KNOB d_sk){
-		int i ;
-		if(sk == NULL|| d_sk == NULL){return ;}
-		#ifdef DEBUG
-		fprintf(stderr, "dominating updated: %s <- %s\n", sk->signal_key, d_sk->signal_key) ;
-		#endif
-		for(i = 0; i < sk->ndominating_sig ; i++){
-			if(sk->dominating_signal[i]->signal_key == d_sk->signal_key ) { return ;}
-		}
-		sk->dominating_signal = realloc(sk->dominating_signal, (sk->ndominating_sig + 1) * sizeof *sk->dominating_signal) ;
-		sk->dominating_signal[sk->ndominating_sig] = d_sk ;
-		sk->ndominating_sig += 1;
-}
+
 
 void sk_free(SIG_KNOB sk){
 
@@ -433,26 +458,7 @@ int cost_cmp(const void *a, const void *b, void *cost){
 		return 0;
 	}else{	return 1;}
 }
-int key_nsensors_cmp(const void *a, const void *b){
-	ENTRY ea = {*(char * const *)a, NULL}, eb = {*(char * const *)b, NULL}, *ar, *br ;
-	ar = hsearch(ea, FIND) ; br = hsearch(eb, FIND) ;
-	if(ar == NULL ){
-		fprintf(stderr, "unexpected NULL search result for %s\n", ea.key) ;
-		exit(EXIT_FAILURE);
-	}else if(br == NULL ){
-		fprintf(stderr, "unexpected NULL search result for %s\n", eb.key) ;
-		exit(EXIT_FAILURE);
-	}else{
-		SIG_KNOB sk_a = ar->data, sk_b = br->data ;
-		if(sk_a->nsensors < sk_b->nsensors){
-			return -1;
-		}else if(sk_a->nsensors == sk_b->nsensors){
-			return 0;
-		}else{
-			return 1;
-		}
-	}
-}
+
 #ifdef DEBUG
 void print_keys(char *temp_mat, int nrow, int ncol, int const cost[], int const index[] ){
 	int i, j;
