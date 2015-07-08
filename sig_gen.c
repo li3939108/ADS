@@ -113,7 +113,7 @@ void remove_dominating_sig(SIG_KNOB sk, SIG_KNOB sk_to_remove){
 int check_existing(SIG_KNOB sk, int j, int level, int min_cost_knob_list[]){
 	int k = 0;
 	while( sk->dominated_signal[j]->knobs[level] != min_cost_knob_list[k ] 
-	 && min_cost_knob_list[k] != -1) {
+	&& min_cost_knob_list[k] != -1) {
 		k++;
 	}
 	return k ;
@@ -137,16 +137,19 @@ void sk_chain_pruning(int const cost[] ){
 		
 			while(sk != NULL){
 
-			int *min_cost_knob_list = malloc(sk->ndominated_sig * sizeof * min_cost_knob_list) , min_c = 0;
+			int *min_cost_knob_list = malloc(sk->ndominated_sig * sizeof * min_cost_knob_list) ;
+			unsigned int min_c = 0;
 			memset(min_cost_knob_list, (char)-1, sk->ndominated_sig * sizeof * min_cost_knob_list );
 			for(j = 0; j < sk->ndominated_sig; j ++){
 				int k = check_existing(sk, j, dominated_level, min_cost_knob_list);
-				if(min_cost_knob_list[k] == -1){
-					min_cost_knob_list[k] = sk->dominated_signal[j]->knobs[self_level] ;
+				if(k == -1){
+
+				}else if(min_cost_knob_list[k] == -1){
+					min_cost_knob_list[k] = sk->dominated_signal[j]->knobs[dominated_level] ;
 					nmin_cost_knobs = k + 1; 
 				}else{ continue; }
 			}
-			for (j = 0; j < sk->ndominated_sig; j++){
+			for (j = 0; j < nmin_cost_knobs; j++){
 				if(min_cost_knob_list[j] != -1){
 					min_c += cost [ min_cost_knob_list[j] ];
 				}else{
@@ -156,8 +159,8 @@ void sk_chain_pruning(int const cost[] ){
 			#ifdef DEBUG
 			fprintf(stderr, "sig:%s ,min_c: %d, cost: %d, nmin_knobs:%d\n", keys[i], min_c, cost[ sk->knobs[0] ], nmin_cost_knobs ) ;
 			#endif
-			if( (min_c < cost [ sk->knobs[0] ] )||
-				(min_c == cost[ sk->knobs[0] ] && nmin_cost_knobs == 1 && min_cost_knob_list[0] == sk->knobs[0]) ){
+			if( (min_c < cost [ sk->knobs[ self_level ] ])||
+				(min_c == cost[ sk->knobs[ self_level ] ] && nmin_cost_knobs == 1 && min_cost_knob_list[0] == sk->knobs[self_level]) ){
 				int i = 0, j;
 				for(	j = 0; j < sk->ndominating_sig; j++){
 					remove_dominated_sig ( sk->dominating_signal[j], sk ) ;
@@ -186,13 +189,18 @@ void sk_chain_pruning(int const cost[] ){
 				sk->ndominated_sig = 0 ;
 				free(sk->dominated_signal ) ;
 				sk->dominated_signal =NULL ;
+
+				self_level = self_level ;
+				dominated_level = 
 				#ifdef DEBUG
 				fprintf(stderr, "free : %s\n", sk->signal_key ) ;
 				#endif
+			}else{
+
 			}
 			free(min_cost_knob_list);
 			sk = sk->next_level;
-			
+
 			}
 		}
 
