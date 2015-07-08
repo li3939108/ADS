@@ -1,4 +1,7 @@
 #define _GNU_SOURCE
+#define _ISOC99_SOURCE      /* See feature_test_macros(7) */
+
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -138,7 +141,7 @@ void sk_chain_pruning(int const cost[] ){
 			while(sk != NULL){
 
 			int *min_cost_knob_list = malloc(sk->ndominated_sig * sizeof * min_cost_knob_list) ;
-			unsigned int min_c = 0;
+			float min_c = 0.0;
 			memset(min_cost_knob_list, (char)-1, sk->ndominated_sig * sizeof * min_cost_knob_list );
 			for(j = 0; j < sk->ndominated_sig; j ++){
 				int k = check_existing(sk, j, dominated_level, min_cost_knob_list);
@@ -153,11 +156,11 @@ void sk_chain_pruning(int const cost[] ){
 				if(min_cost_knob_list[j] != -1){
 					min_c += cost [ min_cost_knob_list[j] ];
 				}else{
-					break ;
+					min_c +=  INFINITY ;
 				}
 			}
 			#ifdef DEBUG
-			fprintf(stderr, "sig:%s ,min_c: %d, cost: %d, nmin_knobs:%d\n", keys[i], min_c, cost[ sk->knobs[0] ], nmin_cost_knobs ) ;
+			fprintf(stderr, "sig:%s ,min_c: %f, cost: %d, nmin_knobs:%d\n", keys[i], min_c, cost[ sk->knobs[0] ], nmin_cost_knobs ) ;
 			#endif
 			if( (min_c < cost [ sk->knobs[ self_level ] ])||
 				(min_c == cost[ sk->knobs[ self_level ] ] && nmin_cost_knobs == 1 && min_cost_knob_list[0] == sk->knobs[self_level]) ){
@@ -191,12 +194,12 @@ void sk_chain_pruning(int const cost[] ){
 				sk->dominated_signal =NULL ;
 
 				self_level = self_level ;
-				dominated_level = 
+				dominated_level += 1 ;
 				#ifdef DEBUG
 				fprintf(stderr, "free : %s\n", sk->signal_key ) ;
 				#endif
 			}else{
-
+				self_level += 1 ;
 			}
 			free(min_cost_knob_list);
 			sk = sk->next_level;
