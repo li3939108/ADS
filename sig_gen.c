@@ -129,10 +129,10 @@ void sk_chain_pruning(int const cost[] ){
 		exit(EXIT_FAILURE);
 	}else{
 		SIG_KNOB sk =  et->data;
-		int dominated_level = 0, self_level = 0 ;
 
 		if(sk->nsensors == 1) {continue ;}else{
 			
+			int dominated_level = 0, self_level = 0 ;
 			int nmin_cost_knobs = 0;
 		
 			while(sk != NULL){
@@ -140,9 +140,9 @@ void sk_chain_pruning(int const cost[] ){
 			int *min_cost_knob_list = malloc(sk->ndominated_sig * sizeof * min_cost_knob_list) , min_c = 0;
 			memset(min_cost_knob_list, (char)-1, sk->ndominated_sig * sizeof * min_cost_knob_list );
 			for(j = 0; j < sk->ndominated_sig; j ++){
-				int k = check_existing(sk, j, 0, min_cost_knob_list);
+				int k = check_existing(sk, j, dominated_level, min_cost_knob_list);
 				if(min_cost_knob_list[k] == -1){
-					min_cost_knob_list[k] = sk->dominated_signal[j]->knobs[0] ;
+					min_cost_knob_list[k] = sk->dominated_signal[j]->knobs[self_level] ;
 					nmin_cost_knobs = k + 1; 
 				}else{ continue; }
 			}
@@ -191,8 +191,9 @@ void sk_chain_pruning(int const cost[] ){
 				#endif
 			}
 			free(min_cost_knob_list);
-		}
-		sk = sk->next_level;
+			sk = sk->next_level;
+			
+			}
 		}
 
 	}
@@ -530,7 +531,7 @@ int main(){
 	qsort_r(index, nrow, sizeof *index, cost_cmp, cost) ;
 	signal_gen(temp_mat, nrow, ncol, index, cost) ;
 	qsort(keys, nkeys, sizeof (char *), key_nsensors_cmp); 
-	add_next_level(keys, nkeys, cost);
+//	add_next_level(keys, nkeys, cost);
 	#ifdef DEBUG
 	print_keys((char *)mat, nrow, ncol, cost, index) ;
 	#endif
