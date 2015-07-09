@@ -347,6 +347,9 @@ void add_next_level(char *keys[], int nkeys, int cost[]){
 			exit(EXIT_FAILURE);
 		}else{
 			SIG_KNOB sk =  et->data, skn = NULL ; 
+			while(sk->next_level != NULL){
+				sk = sk->next_level ;
+			}
 			skn = (sk->next_level = sk_gen(sk->sensors_index_list, sk->nsensors, sk->knobs[0], cost ) );
 		}
 	}
@@ -357,6 +360,9 @@ void add_next_level(char *keys[], int nkeys, int cost[]){
 			exit(EXIT_FAILURE);
 		}else{
 			SIG_KNOB sk =  et->data, skn = sk->next_level ; 
+			while(skn->next_level != NULL){
+				skn = skn->next_level ;
+			}
 			int i ;
 			for(i = 0; i < sk->ndominating_sig; i++){
 				sk_update_dominating_sig(skn, sk->dominating_signal[i]->next_level) ;
@@ -542,7 +548,7 @@ int main(){
 	qsort_r(index, nrow, sizeof *index, cost_cmp, cost) ;
 	signal_gen(temp_mat, nrow, ncol, index, cost) ;
 	qsort(keys, nkeys, sizeof (char *), key_nsensors_cmp); 
-//	add_next_level(keys, nkeys, cost);
+	add_next_level(keys, nkeys, cost);
 	#ifdef DEBUG
 	print_keys((char *)mat, nrow, ncol, cost, index) ;
 	#endif
