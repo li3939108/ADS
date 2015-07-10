@@ -14,8 +14,8 @@ int nkeys = 0 ;
 
 #define DEBUG 
 
-extern void sig2gates(char *keys[__MAX_NUMBER_OF_SIGNALS__], int nkeys); 
-extern void isig2gates(char *keys[], int nkeys) ;
+extern void sig2gates(char *keys[__MAX_NUMBER_OF_SIGNALS__], int nkeys, int level ); 
+extern void isig2gates(char *keys[], int nkeys, int level) ;
 
 int key_nsensors_cmp(const void *a, const void *b){
 	ENTRY ea = {*(char * const *)a, NULL}, eb = {*(char * const *)b, NULL}, *ar, *br ;
@@ -555,8 +555,10 @@ int main(){
 	sk_chain_pruning(cost) ;	
 	#ifdef DEBUG
 	print_keys((char *)mat, nrow, ncol, cost, index) ;
-	sig2gates(keys, nkeys) ;
-	isig2gates(keys, nkeys) ;
+	sig2gates(keys, nkeys, 0) ;
+	sig2gates(keys, nkeys, 1) ;
+	isig2gates(keys, nkeys, 0) ;
+	isig2gates(keys, nkeys, 1) ;
 	#endif
 	for( i = 0; i < nkeys ; i++){
 		ENTRY e={ keys[i], NULL};
