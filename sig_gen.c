@@ -160,7 +160,8 @@ void sk_chain_pruning(int const cost[] ){
 				}
 			}
 			#ifdef DEBUG
-			fprintf(stderr, "sig:%s ,min_c: %f, cost: %d, nmin_knobs:%d\n", keys[i], min_c, cost[ sk->knobs[0] ], nmin_cost_knobs ) ;
+			fprintf(stderr, "self_level: %d, dominated_level: %d, sig:%s ,min_c: %f, cost: %d, nmin_knobs:%d\n", 
+				self_level, dominated_level, keys[i], min_c, cost[ sk->knobs[self_level] ], nmin_cost_knobs ) ;
 			#endif
 			if( (min_c < cost [ sk->knobs[ self_level ] ])||
 				(min_c == cost[ sk->knobs[ self_level ] ] && nmin_cost_knobs == 1 && min_cost_knob_list[0] == sk->knobs[self_level]) ){
