@@ -121,7 +121,7 @@ int check_existing(SIG_KNOB sk, int j, int level, int min_cost_knob_list[]){
 	}
 	return k ;
 }
-void sk_chain_pruning(int const cost[] ){
+void sk_chain_pruning(float const cost[] ){
 	int i, j;
 	qsort(keys, nkeys, sizeof (char *), key_nsensors_cmp) ;
 	for (i = 0; i < nkeys; i++){
@@ -160,7 +160,7 @@ void sk_chain_pruning(int const cost[] ){
 				}
 			}
 			#ifdef DEBUG
-			fprintf(stderr, "self_level: %d, dominated_level: %d, sig:%s ,min_c: %f, cost: %d, nmin_knobs:%d\n", 
+			fprintf(stderr, "self_level: %d, dominated_level: %d, sig:%s ,min_c: %f, cost: %f, nmin_knobs:%d\n", 
 				self_level, dominated_level, keys[i], min_c, cost[ sk->knobs[self_level] ], nmin_cost_knobs ) ;
 			#endif
 			if( (min_c < cost [ sk->knobs[ self_level ] ])||
@@ -298,7 +298,7 @@ SIG_KNOB sk_gen(
 	int sensors_index_list[], 
 	int nsensors,
 	int knob_index,
-	int cost[]){
+	float cost[]){
 
 	SIG_KNOB ret = malloc(sizeof *ret) ;
 	int i = 0;
@@ -339,7 +339,7 @@ SIG_KNOB sk_gen(
 	return ret ;
 }
 
-void add_next_level(char *keys[], int nkeys, int cost[]){
+void add_next_level(char *keys[], int nkeys, float cost[]){
 	int i;
 	for(i = 0; i < nkeys; i++){
 		ENTRY e={ keys[i], NULL}, *et = hsearch(e, FIND) ;
@@ -396,7 +396,7 @@ void sk_free(SIG_KNOB sk){
 
 void recursive_signal_gen(
 	int *sensors_index_list, int nsensors, SIG_KNOB sk_tree, 
-	int knob_index, int position, int cost[], SIG_KNOB dominating_signal ){
+	int knob_index, int position, float cost[], SIG_KNOB dominating_signal ){
 
 	int i;
 
@@ -442,7 +442,7 @@ void recursive_signal_gen(
 
 	}
 }
-void signal_gen(void *temp_mat, int nrow, int ncol, int sorted_index[], int cost[]) {
+void signal_gen(void *temp_mat, int nrow, int ncol, int sorted_index[], float cost[]) {
 	int i , j;
 	char (*mat)[ncol] = (char (*)[ncol]) temp_mat ;
 	SIG_KNOB sk_tree = NULL ;
@@ -491,14 +491,14 @@ int cost_cmp(const void *a, const void *b, void *cost){
 }
 
 #ifdef DEBUG
-void print_keys(char *temp_mat, int nrow, int ncol, int const cost[], int const index[] , int level){
+void print_keys(char *temp_mat, int nrow, int ncol, float const cost[], int const index[] , int level){
 	int i, j;
 	char (*mat)[ncol] = (char (*)[ncol]) temp_mat ;
 	for (i = 0; i < nrow; i++){
 		for(j = 0; j < ncol; j ++){
 			fprintf(stderr, "%d ", mat   [ i ][j] ) ;
 		}
-		fprintf(stderr, "   cost is %d, sorted cost is %d\n", cost[i], index[i]) ;
+		fprintf(stderr, "   cost is %f, sorted cost is %d\n", cost[i], index[i]) ;
 	}
 	fprintf(stderr, "cost of 2 : %d\n",  cost_fun(NULL, mat, nrow, ncol, 2)) ;
 
@@ -542,7 +542,8 @@ int main(){
 	char (*mat)[ncol] = (char (*)[ncol]) temp_mat ;
 	
 	int index[ncol],i ;
-	int cost[nrow] ;
+	float cost_original[nrow + 1];
+	float *cost = cost_original + 1 ;
 
 	int max_col ;
 
@@ -550,6 +551,7 @@ int main(){
 
 	ENTRY *et  ;
 
+	cost_original[0] = INFINITY ;
 	
 	for(i = 0; i < nrow; i++){
 		cost[i] = cost_fun(NULL, mat, nrow, ncol, i) ;
