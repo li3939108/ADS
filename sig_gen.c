@@ -491,7 +491,7 @@ int cost_cmp(const void *a, const void *b, void *cost){
 }
 
 #ifdef DEBUG
-void print_keys(char *temp_mat, int nrow, int ncol, int const cost[], int const index[] ){
+void print_keys(char *temp_mat, int nrow, int ncol, int const cost[], int const index[] , int level){
 	int i, j;
 	char (*mat)[ncol] = (char (*)[ncol]) temp_mat ;
 	for (i = 0; i < nrow; i++){
@@ -502,10 +502,19 @@ void print_keys(char *temp_mat, int nrow, int ncol, int const cost[], int const 
 	}
 	fprintf(stderr, "cost of 2 : %d\n",  cost_fun(NULL, mat, nrow, ncol, 2)) ;
 
+	fprintf(stderr, "level %d\n\n\n", level );
 	for(i = 0; i < nkeys ; i++){
 		ENTRY e={ keys[i], NULL}, *et = hsearch(e, FIND) ;
 		SIG_KNOB sk =  et->data;
-
+		int l = level ;
+		while(l > 0){
+			sk = sk->next_level ;
+			if(sk == NULL ){
+				fprintf(stderr, "Specified level doesn\'t exist\n");
+				exit(EXIT_FAILURE) ;
+			}
+			l -= 1 ;
+		}
 		if(et == NULL){
 			fprintf(stderr, "nothing found \n") ;
 		}else{
@@ -551,11 +560,12 @@ int main(){
 	qsort(keys, nkeys, sizeof (char *), key_nsensors_cmp); 
 	add_next_level(keys, nkeys, cost);
 	#ifdef DEBUG
-	print_keys((char *)mat, nrow, ncol, cost, index) ;
+	print_keys((char *)mat, nrow, ncol, cost, index, 0) ;
 	#endif
 	sk_chain_pruning(cost) ;	
 	#ifdef DEBUG
-	print_keys((char *)mat, nrow, ncol, cost, index) ;
+	print_keys((char *)mat, nrow, ncol, cost, index, 0) ;
+	print_keys((char *)mat, nrow, ncol, cost, index, 1) ;
 	sig2gates(keys, nkeys, 0) ;
 	sig2gates(keys, nkeys, 1) ;
 	isig2gates(keys, nkeys, 0) ;
