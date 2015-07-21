@@ -121,7 +121,7 @@ int check_existing(SIG_KNOB sk, int j, int level, int min_cost_knob_list[]){
 	}
 	return k ;
 }
-void sk_chain_pruning(float const cost[] ){
+void sk_chain_pruning(float const cost[], int level ){
 	int i, j;
 	qsort(keys, nkeys, sizeof (char *), key_nsensors_cmp) ;
 	for (i = 0; i < nkeys; i++){
@@ -132,13 +132,21 @@ void sk_chain_pruning(float const cost[] ){
 		exit(EXIT_FAILURE);
 	}else{
 		SIG_KNOB sk =  et->data;
-
+		int l = level ;
+		while(l > 0){
+			sk = sk->next_level ;
+			if(sk == NULL ){
+				fprintf(stderr, "Specified level doesn\'t exist\n");
+				exit(EXIT_FAILURE) ;
+			}
+			l -= 1 ;
+		}
 		if(sk->nsensors == 1) {continue ;}else{
 			
 			int dominated_level = 0, self_level = 0 ;
 			int nmin_cost_knobs = 0;
 		
-			while(sk != NULL){
+//			while(sk != NULL){
 
 			int *min_cost_knob_list = malloc(sk->ndominated_sig * sizeof * min_cost_knob_list) ;
 			float min_c = 0.0;
@@ -193,8 +201,9 @@ void sk_chain_pruning(float const cost[] ){
 				sk->ndominated_sig = 0 ;
 				free(sk->dominated_signal ) ;
 				sk->dominated_signal =NULL ;
-
-				self_level = self_level ;
+				if( (min_c == cost[ sk->knobs[ self_level ] ] && nmin_cost_knobs == 1 && min_cost_knob_list[0] == sk->knobs[self_level]) ){
+					self_level += 1 ;
+				}
 				dominated_level += 1 ;
 				#ifdef DEBUG
 				fprintf(stderr, "free : %s\n", sk->signal_key ) ;
@@ -203,9 +212,8 @@ void sk_chain_pruning(float const cost[] ){
 				self_level += 1 ;
 			}
 			free(min_cost_knob_list);
-			sk = sk->next_level;
-
-			}
+//			sk = sk->next_level;
+//			}
 		}
 
 	}
@@ -564,7 +572,7 @@ int main(){
 	#ifdef DEBUG
 	print_keys((char *)mat, nrow, ncol, cost, index, 0) ;
 	#endif
-	sk_chain_pruning(cost) ;	
+	sk_chain_pruning(cost, 0) ;	
 	#ifdef DEBUG
 	print_keys((char *)mat, nrow, ncol, cost, index, 0) ;
 	print_keys((char *)mat, nrow, ncol, cost, index, 1) ;
