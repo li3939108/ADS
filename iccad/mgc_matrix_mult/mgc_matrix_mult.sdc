@@ -3205,7 +3205,7 @@ set_input_delay 0.0 [get_ports b_9_9_6] -clock mclk
 set_input_delay 0.0 [get_ports b_9_9_7] -clock mclk
 set_input_delay 0.0 [get_ports b_9_9_8] -clock mclk
 set_input_delay 0.0 [get_ports b_9_9_9] -clock mclk
-set_input_delay 0.0 [get_ports iccad_clk] -clock mclk
+#set_input_delay 0.0 [get_ports iccad_clk] -clock mclk
 set_input_delay 0.0 [get_ports rst] -clock mclk
 
 # input drivers
@@ -6409,7 +6409,7 @@ set_driving_cell -lib_cell INV_X32 -pin ZN [get_ports b_9_9_6] -input_transition
 set_driving_cell -lib_cell INV_X32 -pin ZN [get_ports b_9_9_7] -input_transition_fall 80.0 -input_transition_rise 80.0
 set_driving_cell -lib_cell INV_X32 -pin ZN [get_ports b_9_9_8] -input_transition_fall 80.0 -input_transition_rise 80.0
 set_driving_cell -lib_cell INV_X32 -pin ZN [get_ports b_9_9_9] -input_transition_fall 80.0 -input_transition_rise 80.0
-set_driving_cell -lib_cell INV_X32 -pin ZN [get_ports iccad_clk] -input_transition_fall 80.0 -input_transition_rise 80.0
+#set_driving_cell -lib_cell INV_X32 -pin ZN [get_ports iccad_clk] -input_transition_fall 80.0 -input_transition_rise 80.0
 set_driving_cell -lib_cell INV_X32 -pin ZN [get_ports rst] -input_transition_fall 80.0 -input_transition_rise 80.0
 
 # output delays
