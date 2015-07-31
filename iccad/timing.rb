@@ -1,5 +1,3 @@
-
- 
 class Path
 	INITIAL = 0
 	HEADER = 1
@@ -64,6 +62,7 @@ class Path
 				line_seg = line.split(/[\s()\/]+/)
 				line_seg.delete("")
 				if line_seg[0] == "data" and line_seg[1] == "arrival" and line_seg[2] = "time"
+					path.set_arrival_time(line_seg[3].to_f)
 					critical_paths.push(path) 
 					state = TIMING_PATH_END
 				elsif line_seg.length == 3 and (line_seg[2] == "r" or line_seg[2] == "f"  ) 
