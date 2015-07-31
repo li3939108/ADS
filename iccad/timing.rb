@@ -1,3 +1,4 @@
+require 'set'
 class Path
 	INITIAL = 0
 	HEADER = 1
@@ -10,7 +11,18 @@ class Path
 		@startpoint = startpoint
 		@endpoint = endpoint
 		@arrival_time = at
-		@gates_along_path = []
+		@gates_along_path = Set.new
+		@fresh = 1
+	end
+	def fresh
+		@fresh
+	end
+	def update_fresh(covered_gates = Set.new) 
+		uncovered_gates = @gates_along_path - covered_gates
+		@fresh = (uncovered_gates.length + 0.0) / (@gates_along_path.length + 0.0)
+	end
+	def gates
+		@gates_along_path
 	end
 	def arrival_time
 		@arrival_time 
@@ -25,8 +37,7 @@ class Path
 		@endpoint = endpoint
 	end
 	def add_gate(gate)
-		@gates_along_path.delete(gate) if @gates_along_path[-1] == gate
-		@gates_along_path.push(gate)
+		@gates_along_path.add(gate)
 	end
 	def self.parse_timing_file(file = "timing.path", threshold = 0.75)
 		timing_file = File.new(file, "r") 
@@ -90,5 +101,20 @@ class Path
 			end
 		end
 	end
+	def self.select_paths(candidates, limit = 15)
+		covered_gates = Set.new
+		selected_paths = []
+		while limit > 0
+			candidates.sort!{|x,y| (x.arrival_time * x.fresh ) <=> (y.arrival_time * y.fresh) }
+			path = candidates.pop
+			selected_paths.push(path) 
+			covered_gates = covered_gates + path.gates
+			candidates.each do |p|
+				p.update_fresh(covered_gates)
+			end
+			limit = limit - 1
+		end
+		selected_paths
+	end
 end
-		
+
