@@ -5,11 +5,15 @@ class Path
 	TIMING_PATH = 3
 	TIMING_PATH_START = 4
 	TIMING_PATH_END =5
+	FINISH = 6
 	def initialize(startpoint = nil, endpoint = nil, at = 0)
 		@startpoint = startpoint
 		@endpoint = endpoint
 		@arrival_time = at
 		@gates_along_path = []
+	end
+	def arrival_time
+		@arrival_time 
 	end
 	def startpoint
 		@startpoint 
@@ -24,7 +28,7 @@ class Path
 		@gates_along_path.delete(gate) if @gates_along_path[-1] == gate
 		@gates_along_path.push(gate)
 	end
-	def self.parse_timing_file(file = "timing.path")
+	def self.parse_timing_file(file = "timing.path", threshold = 0.75)
 		timing_file = File.new(file, "r") 
 		state = INITIAL
 		design_name = " " 
@@ -62,9 +66,14 @@ class Path
 				line_seg = line.split(/[\s()\/]+/)
 				line_seg.delete("")
 				if line_seg[0] == "data" and line_seg[1] == "arrival" and line_seg[2] = "time"
-					path.set_arrival_time(line_seg[3].to_f)
-					critical_paths.push(path) 
-					state = TIMING_PATH_END
+					at = line_seg[3].to_f
+					if critical_paths.length == 0 or at >= threshold * critical_paths[0].arrival_time			
+						path.set_arrival_time( at )
+						critical_paths.push(path) 
+						state = TIMING_PATH_END
+					else
+						state = FINISH
+					end
 				elsif line_seg.length == 3 and (line_seg[2] == "r" or line_seg[2] == "f"  ) 
 				else
 					path.add_gate(line_seg[0])
@@ -75,9 +84,11 @@ class Path
 				if line_seg[0] == "slack"
 					state = TIMING_PATH_HEADER
 				end
+			elsif state == FINISH
+				timing_file.close		
+				return critical_paths
 			end
 		end
-		critical_paths
 	end
 end
 		
