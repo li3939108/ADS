@@ -3,7 +3,8 @@ INITIAL = 0
 HEADER = 1
 TIMING_PATH_HEADER = 2
 TIMING_PATH = 3
-TIMING_PATH_MULTILINE = 4
+TIMING_PATH_START = 4
+TIMING_PATH_END =5 
 class Path
 	def initialize(startpoint = nil, endpoint = nil, at = 0)
 		@startpoint = startpoint
@@ -11,8 +12,15 @@ class Path
 		@arrival_time = at
 		@gates_along_path = []
 	end
+	def startpoint
+		@startpoint 
+	end 
 	def set_endpoint ( endpoint) 
 		@endpoint = endpoint
+	end
+	def add_gate(gate)
+		@gates_along_path.delete(gate)
+		@gates_along_path.push(gate)
 	end
 end
 timing_file = File.new('timing.path', "r") 
@@ -47,18 +55,26 @@ timing_file.each do | line |
 		end
 	elsif state == TIMING_PATH
 		line_seg = line.split(/[\s()\/]+/)
-			
-		if line_seg[-1] == "r" or line_seg[-1] == "f"
-			if line_seg [-3] != "0.00"
-				if line_seg.length == 4			
-					path.add_gates(line_seg[1], line_seg[2], line_seg[3] ) 
-					state = TIMING_PATH_MULTILINE
-				elsif line_seg.length == 6
-					path.add_gates(line_seg[1], nil , line_seg[2] ) 
-				end
-			end
-		elsif line_seg[1] == "data" and line_seg[2] == "arrival" and line_seg[3] == "time"
+		line_seg.delete("")
+		if line_seg[0] == path.startpoint 
+			path.add_gate(line_seg[0] ) 
+			state = TIMING_PATH_START
 		end
-		#critical_paths.push(path) 
+		
+	elsif state == TIMING_PATH_START
+		line_seg = line.split(/[\s()\/]+/)
+		line_seg.delete("")
+		if line_seg[0] == "data" and line_seg[1] == "arrival" and line_seg[2] = "time"
+			critical_paths.push(path) 
+			state = TIMING_PATH_END
+		else
+			path.add_gate(line_seg[0])
+		end
+	elsif state == TIMING_PATH_END
+		line_seg = line.split(/[\s()\/]+/)
+		line_seg.delete("")
+		if line_seg[0] == "slack"
+			state = TIMING_PATH_HEADER
+		end
 	end
 end
