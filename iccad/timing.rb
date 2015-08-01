@@ -13,6 +13,9 @@ class Cluster
 			@clustered_gates[cluster].add( gate ) 
 		end
 	end
+	def g2c(gate)
+		@gate_cluster[gate]
+	end
 	def to_s
 		@clustered_gates.merge(@clustered_gates) do |k,v|
 			v.length 
@@ -27,6 +30,7 @@ class Cluster
 		end
 		cluster
 	end
+	
 end
 class Path
 	INITIAL = 0
@@ -42,7 +46,7 @@ class Path
 		@arrival_time = at
 		@gates_along_path = Set.new
 		@fresh = 1
-		@cluster_factor = {}
+		@cluster_count = {}
 	end
 	def fresh
 		@fresh
@@ -71,6 +75,16 @@ class Path
 	end
 	def add_gate(gate)
 		@gates_along_path.add(gate)
+	end
+	def cluster(clt)
+		@gates_along_path.each do |g|
+			c = clt.g2c(g) 
+			if @cluster_count[c] == nil
+				@cluster_count[c] = 1
+			else
+				@cluster_count[c] += 1
+			end
+		end
 	end
 	def self.parse_timing_file(file = "timing.path", threshold = 0.75)
 		timing_file = File.new(file, "r") 
@@ -150,3 +164,5 @@ class Path
 		selected_paths
 	end
 end
+
+
