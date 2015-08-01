@@ -30,6 +30,9 @@ class Path
 	def startpoint
 		@startpoint 
 	end 
+	def endpoint
+		@endpoint
+	end
 	def set_arrival_time(at)
 		@arrival_time = at
 	end
@@ -117,4 +120,3 @@ class Path
 		selected_paths
 	end
 end
-
