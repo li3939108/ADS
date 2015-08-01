@@ -1,4 +1,33 @@
 require 'set'
+
+class Cluster
+	def initialize
+		@gate_cluster = {}
+		@clustered_gates = {}
+	end
+	def set_gate_cluster(gate, cluster) 
+		@gate_cluster[gate] = cluster
+		if @clustered_gates[cluster] == nil
+			@clustered_gates[cluster ] = [gate].to_set
+		else
+			@clustered_gates[cluster].add( gate ) 
+		end
+	end
+	def to_s
+		@clustered_gates.merge(@clustered_gates) do |k,v|
+			v.length 
+		end
+	end
+	def self.parse_GinC_file(file = 'GinC.txt')
+		ginc_file = File.new(file, "r") 
+		cluster = Cluster.new
+		ginc_file.each do |line|
+			line_seg = line.split(/\s/)
+			cluster.set_gate_cluster( line_seg[0], line_seg[1].to_i )
+		end
+		cluster
+	end
+end
 class Path
 	INITIAL = 0
 	HEADER = 1
@@ -13,6 +42,7 @@ class Path
 		@arrival_time = at
 		@gates_along_path = Set.new
 		@fresh = 1
+		@cluster_factor = {}
 	end
 	def fresh
 		@fresh
