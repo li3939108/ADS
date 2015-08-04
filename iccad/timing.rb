@@ -32,6 +32,39 @@ class Cluster
 	end
 	
 end
+class Placement
+	INITIAL = 0
+	COMPONENTS_START = 1
+	FINISH = 2
+	def initialize 
+		@gate_loc = {}
+	end
+	def parse_def(file = 'out.def.txt')
+		state = INITIAL
+		def_file = File.new(file, "r") 
+		def_file.each do |line|
+			if state == INITIAL
+				line_seg = line.split(' ') 
+				if line_seg[0] == 'COMPONENTS'
+					state = COMPONENTS_START
+				end
+			elsif state == COMPONENTS_START
+				line_seg = line.split(/[-+();\s]+/)
+				line_seg.delete("")
+				if line_seg.length == 6  and line_seg[2] == 'PLACED'
+					@gate_loc[ line_seg[0] ] = [line_seg[3].to_i, line_seg[4].to_i]
+				elsif line_seg.length == 2 and line_seg[0] == 'END' and line_seg[1] == 'COMPONENTS'
+					state = FINISH
+				end
+			elsif state == FINISH
+				return
+			end
+		end
+	end
+	def g2l(gate)
+		@gate_loc[gate]
+	end
+end
 class Path
 	INITIAL = 0
 	HEADER = 1
