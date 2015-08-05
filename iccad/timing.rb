@@ -30,8 +30,8 @@ class Cluster
 		end
 		cluster
 	end
-	
 end
+
 class Path
 	INITIAL = 0
 	HEADER = 1
@@ -47,6 +47,7 @@ class Path
 		@gates_along_path = Set.new
 		@fresh = 1
 		@cluster_count = {}
+		@important_cluster = Set.new
 	end
 	def fresh
 		@fresh
@@ -76,7 +77,7 @@ class Path
 	def add_gate(gate)
 		@gates_along_path.add(gate)
 	end
-	def cluster(clt)
+	def cluster(clt, threshold = 0.25)
 		@gates_along_path.each do |g|
 			c = clt.g2c(g) 
 			if @cluster_count[c] == nil
@@ -85,6 +86,9 @@ class Path
 				@cluster_count[c] += 1
 			end
 		end
+		@important_cluster = @cluster_count.select{|k,v|
+			(v + 0.0) / (@gates_along_path.length + 0.0) >= threshold
+		}.keys
 	end
 	def self.parse_timing_file(file = "timing.path", threshold = 0.75)
 		timing_file = File.new(file, "r") 
@@ -164,5 +168,4 @@ class Path
 		selected_paths
 	end
 end
-
 
