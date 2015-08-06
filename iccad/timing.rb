@@ -64,6 +64,9 @@ class Placement
 	def g2l(gate)
 		@gate_loc[gate]
 	end
+	def dist(g1, g2)
+		@gate_loc[g1].map.with_index{|v, i| v - @gate_loc[g2][i] }
+	end
 end
 class Path
 	INITIAL = 0
@@ -81,6 +84,9 @@ class Path
 		@fresh = 1
 		@cluster_count = {}
 		@important_cluster = Set.new
+	end
+	def affecting_cluster
+		@important_cluster
 	end
 	def fresh
 		@fresh
@@ -200,5 +206,12 @@ class Path
 		end
 		selected_paths
 	end
+
+end
+def mat_gen(paths, clt)
+	paths.each do |p|
+		p.cluster(clt)
+	end
+	paths.map{|p|  p.affecting_cluster }.reduce(Set.new, :+)
 end
 
