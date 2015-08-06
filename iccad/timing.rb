@@ -117,6 +117,9 @@ class Path
 		@gates_along_path.add(gate)
 	end
 	def cluster(clt, threshold = 0.25)
+		if @important_cluster.length == 0
+			return 
+		end
 		@gates_along_path.each do |g|
 			c = clt.g2c(g) 
 			if @cluster_count[c] == nil
@@ -212,6 +215,15 @@ def mat_gen(paths, clt)
 	paths.each do |p|
 		p.cluster(clt)
 	end
-	paths.map{|p|  p.affecting_cluster }.reduce(Set.new, :+)
+	aff_clt_set = paths.map{|p|  p.affecting_cluster }
+	ret = aff_clt_set.reduce(Set.new, :+).map do |c|
+		aff_clt_set.map{|clt|  clt.include?(c) ? 1 : 0 }
+	end
+	ret.each do |row|
+		row.each do |colomn|
+			print colomn,' '
+		end
+		print "\n"
+	end
 end
 
