@@ -117,7 +117,7 @@ class Path
 		@gates_along_path.add(gate)
 	end
 	def cluster(clt, threshold = 0.25)
-		if @important_cluster.length == 0
+		if @important_cluster.length != 0
 			return 
 		end
 		@gates_along_path.each do |g|
@@ -226,4 +226,3 @@ def mat_gen(paths, clt)
 		print "\n"
 	end
 end
-
