@@ -1,5 +1,37 @@
 require 'set'
 
+class RandomGaussian
+	def initialize(mean, stddev, rand_helper = lambda { Kernel.rand })
+		@rand_helper = rand_helper
+		@mean = mean
+		@stddev = stddev
+		@valid = false
+		@next = 0
+	end
+
+	def rand
+		if @valid then
+			@valid = false
+			return @next
+		else
+			@valid = true
+			x, y = self.class.gaussian(@mean, @stddev, @rand_helper)
+			@next = y
+			return x
+		end
+	end
+
+	private
+	def self.gaussian(mean, stddev, rand)
+		theta = 2 * Math::PI * rand.call
+		rho = Math.sqrt(-2 * Math.log(1 - rand.call))
+		scale = stddev * rho
+		x = mean + scale * Math.cos(theta)
+		y = mean + scale * Math.sin(theta)
+		return x, y
+	end
+end
+
 class Cluster
 	def initialize
 		@gate_cluster = {}
@@ -38,6 +70,7 @@ class Placement
 	FINISH = 2
 	def initialize 
 		@gate_loc = {}
+		@gate_delay_derate = {}
 	end
 	def parse_def(file = 'out.def.txt')
 		state = INITIAL
@@ -64,10 +97,14 @@ class Placement
 	def g2l(gate)
 		@gate_loc[gate]
 	end
+	def random_variation(u = 1, sigma )
+		
+	end
 	def dist(g1, g2)
 		@gate_loc[g1].map.with_index{|v, i| v - @gate_loc[g2][i] }
 	end
 end
+
 class Path
 	INITIAL = 0
 	HEADER = 1
@@ -216,9 +253,9 @@ class Path
 	end
 
 end
-def mat_gen(paths, clt)
+def mat_gen(paths, clt, cluster_th = 0.3)
 	paths.each do |p|
-		p.cluster(clt)
+		p.cluster(clt, cluster_th)
 	end
 	aff_clt_set = paths.map{|p|  p.affecting_cluster }
 	affected_paths = aff_clt_set.reduce(Set.new, :+).map do |c|
@@ -237,8 +274,6 @@ def mat_gen(paths, clt)
 		end
 	end
 	ret = affected_paths.map do |path_with_number|
-		print path_with_number, "\n"
-		print paths.length, "\n"
 		(0..paths.length - 1).map{|index|  
 			path_with_number[1].include?(paths[index]) ? 1 : 0}
 	end
