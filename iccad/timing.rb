@@ -76,6 +76,11 @@ class Path
 	TIMING_PATH_START = 4
 	TIMING_PATH_END =5
 	FINISH = 6
+	def to_s
+		{'startpoint'=>@startpoint, 'endpoint' => @endpoint, 'arrival_time'=>@arrival_time, 
+		'length of gates along path'=>@gates_along_path.length,
+		'fresh rate'=>@fresh, 'cluster'=> @important_cluster }
+	end
 	def initialize(startpoint = nil, endpoint = nil, at = 0)
 		@startpoint = startpoint
 		@endpoint = endpoint
@@ -216,9 +221,31 @@ def mat_gen(paths, clt)
 		p.cluster(clt)
 	end
 	aff_clt_set = paths.map{|p|  p.affecting_cluster }
-	ret = aff_clt_set.reduce(Set.new, :+).map do |c|
-		aff_clt_set.map{|clt|  clt.include?(c) ? 1 : 0 }
+	affected_paths = aff_clt_set.reduce(Set.new, :+).map do |c|
+		[c, paths.select{|p| p.affecting_cluster.include?(c) }.to_set]
 	end
+	for i in (0..affected_paths.length - 1) do 
+		affected_paths.sort!{|b,a| a[1].length <=> b[1].length}
+		for j in (i+1..affected_paths.length - 1) do
+			offset = affected_paths[j][1] - affected_paths[i][1] 
+			intersection = affected_paths[j][1] & affected_paths[i][1] 
+			if intersection.length < offset.length
+				affected_paths[j][1] = affected_paths[j][1] - intersection
+			else
+				affected_paths[j][1] = affected_paths[j][1] - offset
+			end
+		end
+	end
+	ret = affected_paths.map do |path_with_number|
+		print path_with_number, "\n"
+		print paths.length, "\n"
+		(0..paths.length - 1).map{|index|  
+			path_with_number[1].include?(paths[index]) ? 1 : 0}
+	end
+#	ret = aff_clt_set.reduce(Set.new, :+).map do |c|
+#		aff_clt_set.map{|clt|  clt.include?(c) ? 1 : 0 }
+#	end
+#	
 	ret.each do |row|
 		row.each do |colomn|
 			print colomn,' '
