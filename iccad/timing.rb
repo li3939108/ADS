@@ -111,8 +111,7 @@ class Placement
 		@gate_delay_derate
 	end
 	def generate_tcl
-		prefix = "set_timing_derate –late "
-		
+		prefix = "set_timing_derate -late "
 	end
 	def dist(g1, g2)
 		@gate_loc[g1].map.with_index{|v, i| v - @gate_loc[g2][i] }
