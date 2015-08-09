@@ -48,6 +48,12 @@ class Cluster
 	def g2c(gate)
 		@gate_cluster[gate]
 	end
+
+	def to_length
+		@clustered_gates.merge(@clustered_gates) do |k,v|
+			v.length 
+		end
+	end
 	def to_s
 		@clustered_gates.merge(@clustered_gates) do |k,v|
 			v.length 
@@ -270,6 +276,12 @@ def simu_knob(affected_paths, on_indices)
 	affected_paths.sort!{|b,a| b[1].length 	<=>  b[1].length }
 	
 end
+def cost_gen(affected_paths, clt)
+	cost_file = File.new("cost_input", "w") 
+	affected_paths.each do |paths_with_cluster|
+		cost_file.print clt.to_length[ paths_with_cluster[0] ], " "
+	end
+end
 def mat_gen(paths, clt, cluster_th = 0.3)
 	paths.each do |p|
 		p.cluster(clt, cluster_th)
@@ -298,11 +310,12 @@ def mat_gen(paths, clt, cluster_th = 0.3)
 #		aff_clt_set.map{|clt|  clt.include?(c) ? 1 : 0 }
 #	end
 #	
+	mat_file = File.new("mat_input", "w") 
 	mat.each do |row|
 		row.each do |colomn|
-			print colomn,' '
+			mat_file.print colomn,' '
 		end
-		print "\n"
+		mat_file.print "\n"
 	end
 	affected_paths
 end

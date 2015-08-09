@@ -557,8 +557,8 @@ void get_cost(FILE *cost_input, float *cost, int nrow){
 	}
 }
 int main(){
-	FILE *fp = fopen("input", "r") ;
-	FILE *cost_input = fopen("cost", "r") ;
+	FILE *fp = fopen("mat_input", "r") ;
+	FILE *cost_input = fopen("cost_input", "r") ;
 	int nrow, ncol ;
 	/* convert the pointer to multidimensional array */
 	char *temp_mat =  get_matrix(fp, &nrow, &ncol) ;
