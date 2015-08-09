@@ -101,9 +101,18 @@ class Placement
 	def update_variation(u = 1, sigma )
 		if @rand == nil
 			@rand =  RandomGaussian.new(u, sigma ) 
+		end
 		@gate_loc.keys.each do |gate|
 			@gate_delay_derate[gate] = @rand.rand
 		end
+		@gate_delay_derate.length
+	end
+	def derate
+		@gate_delay_derate
+	end
+	def generate_tcl
+		prefix = "set_timing_derate –late "
+		
 	end
 	def dist(g1, g2)
 		@gate_loc[g1].map.with_index{|v, i| v - @gate_loc[g2][i] }
