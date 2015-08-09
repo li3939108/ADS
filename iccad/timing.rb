@@ -69,6 +69,7 @@ class Placement
 	COMPONENTS_START = 1
 	FINISH = 2
 	def initialize 
+		@rand = nil
 		@gate_loc = {}
 		@gate_delay_derate = {}
 	end
@@ -97,8 +98,12 @@ class Placement
 	def g2l(gate)
 		@gate_loc[gate]
 	end
-	def random_variation(u = 1, sigma )
-		
+	def update_variation(u = 1, sigma )
+		if @rand == nil
+			@rand =  RandomGaussian.new(u, sigma ) 
+		@gate_loc.keys.each do |gate|
+			@gate_delay_derate[gate] = @rand.rand
+		end
 	end
 	def dist(g1, g2)
 		@gate_loc[g1].map.with_index{|v, i| v - @gate_loc[g2][i] }
