@@ -266,6 +266,10 @@ class Path
 	end
 
 end
+def simu_knob(affected_paths, on_indices)
+	affected_paths.sort!{|b,a| b[1].length 	<=>  b[1].length }
+	
+end
 def mat_gen(paths, clt, cluster_th = 0.3)
 	paths.each do |p|
 		p.cluster(clt, cluster_th)
@@ -286,7 +290,7 @@ def mat_gen(paths, clt, cluster_th = 0.3)
 			end
 		end
 	end
-	ret = affected_paths.map do |path_with_number|
+	mat = affected_paths.map do |path_with_number|
 		(0..paths.length - 1).map{|index|  
 			path_with_number[1].include?(paths[index]) ? 1 : 0}
 	end
@@ -294,10 +298,11 @@ def mat_gen(paths, clt, cluster_th = 0.3)
 #		aff_clt_set.map{|clt|  clt.include?(c) ? 1 : 0 }
 #	end
 #	
-	ret.each do |row|
+	mat.each do |row|
 		row.each do |colomn|
 			print colomn,' '
 		end
 		print "\n"
 	end
+	affected_paths
 end

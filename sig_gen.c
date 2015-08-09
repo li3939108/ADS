@@ -480,6 +480,7 @@ void signal_gen(void *temp_mat, int nrow, int ncol, int sorted_index[], float co
 }
 int cost_fun(FILE *input , void *mat, int nrow, int ncol, int row_number){
 	int i, ret = 0 ;
+	
 	if(row_number < nrow){
 		for ( i = 0; i < ncol; i++){
 			ret += (unsigned int ) ((char (*)[ncol])mat)[row_number ][i] ;
@@ -489,6 +490,8 @@ int cost_fun(FILE *input , void *mat, int nrow, int ncol, int row_number){
 		fprintf(stderr, "specified row number %d too large", row_number);
 		exit(EXIT_FAILURE) ;
 	}
+
+	
 }
 int cost_cmp(const void *a, const void *b, void *cost){
 	if(  ( (int const *)cost)[*(int const *)a] <  ( (int const *)cost)[*(int const *)b] ){
@@ -542,8 +545,20 @@ void print_keys(char *temp_mat, int nrow, int ncol, float const cost[], int cons
 	}
 }
 #endif
+void get_cost(FILE *cost_input, float *cost, int nrow){
+	int temp[nrow], i;
+	if(cost_input == NULL){
+		perror("no cost file");
+		exit(EXIT_FAILURE);
+	}
+	for(i = 0; i< nrow ; i++){
+		fscanf(cost_input, "%d", temp + i) ;
+		cost[i] = (float) temp[i] ;
+	}
+}
 int main(){
 	FILE *fp = fopen("input", "r") ;
+	FILE *cost_input = fopen("cost", "r") ;
 	int nrow, ncol ;
 	/* convert the pointer to multidimensional array */
 	char *temp_mat =  get_matrix(fp, &nrow, &ncol) ;
@@ -561,10 +576,11 @@ int main(){
 
 	cost_original[0] = INFINITY ;
 	
-	for(i = 0; i < nrow; i++){
-		cost[i] = cost_fun(NULL, mat, nrow, ncol, i) ;
-		index[i] = i ;
-	}
+	get_cost(cost_input, cost, nrow) ;
+//	for(i = 0; i < nrow; i++){
+//		cost[i] = cost_fun(NULL, mat, nrow, ncol, i) ;
+//		index[i] = i ;
+//	}
 	qsort_r(index, nrow, sizeof *index, cost_cmp, cost) ;
 	signal_gen(temp_mat, nrow, ncol, index, cost) ;
 	qsort(keys, nkeys, sizeof (char *), key_nsensors_cmp); 
@@ -596,3 +612,4 @@ int main(){
 	free(temp_mat);
 	fclose(fp) ;
 } 
+
