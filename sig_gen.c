@@ -494,9 +494,9 @@ int cost_fun(FILE *input , void *mat, int nrow, int ncol, int row_number){
 	
 }
 int cost_cmp(const void *a, const void *b, void *cost){
-	if(  ( (int const *)cost)[*(int const *)a] <  ( (int const *)cost)[*(int const *)b] ){
+	if(  ( (float const *)cost)[*(int const *)a] <  ( (float const *)cost)[*(int const *)b] ){
 		return -1;
-	}else if( ( (int const *)cost)[*(int const *)a] == ( (int const *)cost)[*(int const *)b] ){
+	}else if( ( (float const *)cost)[*(int const *)a] == ( (float const *)cost)[*(int const *)b] ){
 		return 0;
 	}else{	return 1;}
 }
@@ -546,14 +546,14 @@ void print_keys(char *temp_mat, int nrow, int ncol, float const cost[], int cons
 }
 #endif
 void get_cost(FILE *cost_input, float *cost, int nrow){
-	int temp[nrow], i;
+	int temp, i;
 	if(cost_input == NULL){
 		perror("no cost file");
 		exit(EXIT_FAILURE);
 	}
 	for(i = 0; i< nrow ; i++){
-		fscanf(cost_input, "%d", temp + i) ;
-		cost[i] = (float) temp[i] ;
+		fscanf(cost_input, "%d", &temp) ;
+		cost[i] = (float) temp ;
 	}
 }
 int main(){
@@ -577,10 +577,10 @@ int main(){
 	cost_original[0] = INFINITY ;
 	
 	get_cost(cost_input, cost, nrow) ;
-//	for(i = 0; i < nrow; i++){
+	for(i = 0; i < nrow; i++){
 //		cost[i] = cost_fun(NULL, mat, nrow, ncol, i) ;
-//		index[i] = i ;
-//	}
+		index[i] = i ;
+	}
 	qsort_r(index, nrow, sizeof *index, cost_cmp, cost) ;
 	signal_gen(temp_mat, nrow, ncol, index, cost) ;
 	qsort(keys, nkeys, sizeof (char *), key_nsensors_cmp); 
