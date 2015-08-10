@@ -142,6 +142,7 @@ class Path
 		@endpoint = endpoint
 		@arrival_time = at
 		@gates_along_path = Set.new
+		@gate_delay = {}
 		@fresh = 1
 		@cluster_count = {}
 		@important_cluster = Set.new
@@ -159,6 +160,9 @@ class Path
 	def gates
 		@gates_along_path
 	end
+	def delay(gate)
+		@gate_delay[gate]
+	end
 	def arrival_time
 		@arrival_time 
 	end
@@ -167,6 +171,9 @@ class Path
 	end 
 	def endpoint
 		@endpoint
+	end
+	def set_gate_delay(gate, value)
+		@gate_delay[gate] = value
 	end
 	def set_arrival_time(at)
 		@arrival_time = at
@@ -199,6 +206,7 @@ class Path
 		design_name = " " 
 		critical_paths = []
 		path = nil
+		temp_gate = nil
 		timing_file.each do | line |
 			if state == INITIAL
 				if line.include?("***************************")
@@ -240,8 +248,12 @@ class Path
 						state = FINISH
 					end
 				elsif line_seg.length == 3 and (line_seg[2] == "r" or line_seg[2] == "f"  ) 
-				else
+					path.set_gate_delay(temp_gate, line_seg[0].to_f )
+				elsif line_seg.length == 3 
+					temp_gate = line_seg[0] 
+				elsif line_seg.length == 6 
 					path.add_gate(line_seg[0])
+					path.set_gate_delay(line_seg[0], line_seg[3].to_f) 
 				end
 			elsif state == TIMING_PATH_END
 				line_seg = line.split(/[\s()\/]+/)
