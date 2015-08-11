@@ -106,6 +106,9 @@ class Circuit
 		@gate_delay = {}
 		@critical_paths = []
 	end
+	def clusters
+		@clusters
+	end
 	def set_gate_delay(gate, delay)
 		@gate_delay[gate] = delay
 	end
@@ -132,6 +135,15 @@ class Circuit
 			limit = limit - 1
 		end
 		@critical_paths = selected_paths 
+	end
+	def parse_GinC_file(file = 'GinC.txt' )
+		ginc_file = File.new(file, "r") 
+		@clusters = Cluster.new(self)
+		ginc_file.each do |line|
+			line_seg = line.split(/\s/)
+			@clusters.set_gate_cluster( line_seg[0], line_seg[1].to_i )
+		end
+		@clusters
 	end
 	def parse_timing_file(file = "timing.path", threshold = 0.75)
 		timing_file = File.new(file, "r") 
@@ -221,24 +233,14 @@ class Cluster
 	end
 
 	def to_cost
-		@clustered_gates.merge(@clustered_gates) do |k,v|
-			v.map{|g| ckt.gate_delay[g] }.reduce(0.0, :+)
-		end
+		to_s
 	end
 	def to_s
 		@clustered_gates.merge(@clustered_gates) do |k,v|
 			v.length 
 		end
 	end
-	def self.parse_GinC_file(file = 'GinC.txt')
-		ginc_file = File.new(file, "r") 
-		cluster = Cluster.new
-		ginc_file.each do |line|
-			line_seg = line.split(/\s/)
-			cluster.set_gate_cluster( line_seg[0], line_seg[1].to_i )
-		end
-		cluster
-	end
+	
 end
 
 class Placement
