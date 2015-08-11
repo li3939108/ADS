@@ -5,7 +5,8 @@
 
 #include "struct.h"
 
-//#define NOT_GATE "INV_X1"
+#define NOT_GATE "INV_X1"
+#define AND_GATE "AND_X1"
 
 void sig2gates(char *keys[__MAX_NUMBER_OF_SIGNALS__], int nkeys, int level){
 	int i = 0;
@@ -27,7 +28,7 @@ void sig2gates(char *keys[__MAX_NUMBER_OF_SIGNALS__], int nkeys, int level){
 			}
 			l -= 1 ;
 		}
-		fprintf(stdout, "and sgg%dlevel%d(sg%s_level%d,", i, level, sk->signal_key, level);
+		fprintf(stdout, "%s sgg%dlevel%d(sg%s_level%d,",AND_GATE, i, level, sk->signal_key, level);
 		for (j = 0; j < sk->nsensors ; j++){
 			if(j != sk->nsensors - 1) {
 				fprintf(stdout, "sensor%d_level%d, ", sk->sensors_index_list[j] , level);
@@ -66,13 +67,13 @@ void isig2gates(char *keys[], int nkeys, int level){
 			l -= 1 ;
 		}
 		if(sk->ndominated_sig > 0){
-			fprintf(stderr, "not notsgg%d_level%d(notsg%s_level%d, sg%s_level%d);\n", 
+			fprintf(stderr, "%s notsgg%d_level%d(notsg%s_level%d, sg%s_level%d);\n", NOT_GATE,
 				i, level, sk->signal_key, level, sk->signal_key, level) ;
 		}
 		if(sk->significant == 0){
 			continue;
 		}
-		fprintf(stdout, "and isgg%d_level%d(isg%s_level%d, sg%s_level%d, ", i, level,
+		fprintf(stdout, "%s isgg%d_level%d(isg%s_level%d, sg%s_level%d, ",AND_GATE ,i, level,
 			sk->signal_key, level, sk->signal_key, level);
 		for( j =0; j < sk->ndominating_sig; j++){
 			if(j != sk->ndominating_sig - 1) {
