@@ -105,6 +105,13 @@ class Circuit
 	def initialize
 		@gate_delay = {}
 		@critical_paths = []
+		@gate_reference = {}
+		parse_gates
+		parse_timing_file
+		select_paths
+	end
+	def to_s
+		{:critical_paths => @critical_paths.map{|p| p.arrival_time}, :number_of_gates => @gate_reference.length}
 	end
 	def clusters
 		@clusters
@@ -120,6 +127,16 @@ class Circuit
 	end
 	def critical_paths
 		@critical_paths
+	end
+	def parse_gates(file = 'gates.txt')
+		gates_file = File.new(file, "r")
+		gates_file.each do |line|
+			seg = line.split(/[\s]+/)
+			seg.delete("")
+			if seg.length >= 2 
+				@gate_reference[ seg[1] ] = seg[0] 
+			end
+		end
 	end
 	def select_paths( limit = 15)
 		covered_gates = Set.new
@@ -368,12 +385,14 @@ class Path
 			(v + 0.0) / (@gates_along_path.length + 0.0) >= threshold
 		}.keys
 	end
-	
-	
-
 end
-def simu_knob(affected_paths, on_indices)
-	affected_paths.sort!{|b,a| b[1].length 	<=>  b[1].length }
+def simu_knob(affected_paths, on_paths)
+	sorted_paths = affected_paths.sort{|b,a| b[1].length 	<=>  b[1].length }
+	sorted_paths.each do |p|
+		if p[1].include?(on_paths) 
+			return p[0]
+		end
+	end
 end
 def cost_gen(affected_paths, clt)
 	cost_file = File.new("cost_input", "w") 
@@ -418,4 +437,3 @@ def mat_gen(paths, clt, cluster_th = 0.3)
 	end
 	affected_paths
 end
-
