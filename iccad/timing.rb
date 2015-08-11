@@ -31,11 +31,182 @@ class RandomGaussian
 		return x, y
 	end
 end
-
-class Cluster
+class Library
+	INITIAL = 0
+	ENTER_LIB = 1
+	OP_CON = 2
+	CELL = 3
+	def initialize(file_name)
+		@area = {}
+		@leackage = {}
+		file = File.new(file_name)
+		state = INITIAL
+		brace = 0
+		cell = nil
+		file.each do |line|
+			if state == INITIAL 
+				line_seg = line.split(/[()\{\s]+/)
+				if line_seg.length == 2 and line_seg[0] == 'library' 
+					@name = line_seg[1] 
+					state = ENTER_LIB
+				end
+			elsif state == ENTER_LIB
+				line_seg = line.split(/[()\{\s]+/)
+				line_seg.delete("")
+				if line_seg.length == 2 and line_seg[0] == 'operating_conditions'
+					state = OP_CON
+				elsif line_seg.length == 2 and line_seg[0] == "cell" 
+					state = CELL
+					cell = line_seg[1] 
+					brace = 0
+				end
+			elsif state == OP_CON
+				line_seg = line.split(/[\s:;]+/) 
+				line_seg.delete("")
+				if line_seg.length == 1 and line_seg[0] == "}"
+					state = ENTER_LIB
+				elsif line_seg.length == 2 and line_seg[0] == "voltage"
+					@voltage = line_seg[1].to_f 
+				end
+			elsif state = CELL
+				line_seg = line.split(/[\s:;]+/)
+				line_seg.delete("")
+				if line_seg.last == "{"
+					brace += 1
+				elsif line_seg.last == "}"
+					if brace == 0
+						state = ENTER_LIB
+					else
+						brace -= 1
+					end
+				elsif line_seg.length == 2 and line_seg[0] == 'area'
+					@area[cell]  =  line_seg[1]
+				elsif line_seg.length == 2 and line_seg[0] == 'cell_leakage_power'
+					@leackage[cell]  =  line_seg[1]
+				end
+			end
+		end
+	end
+	def area(cell)
+		@area[cell]
+	end
+	def leackage(cell)
+		@leackage[cell]
+	end
+end
+class Circuit
+	INITIAL = 0
+	HEADER = 1
+	TIMING_PATH_HEADER = 2
+	TIMING_PATH = 3
+	TIMING_PATH_START = 4
+	TIMING_PATH_END =5
+	FINISH = 6
 	def initialize
+		@gate_delay = {}
+		@critical_paths = []
+	end
+	def set_gate_delay(gate, delay)
+		@gate_delay[gate] = delay
+	end
+	def add_critical_path(path)
+		@critical_paths.push(path)
+	end
+	def gate_delay(gate)
+		@gate_delay[gate]
+	end
+	def critical_paths
+		@critical_paths
+	end
+	def select_paths( limit = 15)
+		covered_gates = Set.new
+		selected_paths = []
+		while limit > 0
+			@critical_paths.sort!{|x,y| (x.arrival_time * x.fresh ) <=> (y.arrival_time * y.fresh) }
+			path = @critical_paths.pop
+			selected_paths.push(path) 
+			covered_gates = covered_gates + path.gates
+			@critical_paths.each do |p|
+				p.update_fresh(covered_gates)
+			end
+			limit = limit - 1
+		end
+		@critical_paths = selected_paths 
+	end
+	def parse_timing_file(file = "timing.path", threshold = 0.75)
+		timing_file = File.new(file, "r") 
+		state = INITIAL
+		design_name = " " 
+		path = nil
+		temp_gate = nil
+		timing_file.each do | line |
+			if state == INITIAL
+				if line.include?("***************************")
+					state = HEADER 
+				end
+			elsif state == HEADER 
+				if line[0..7] == "Design :"
+					design_name = line[9..-2] 
+				elsif line.include?("***************************") 
+					state = TIMING_PATH_HEADER 
+				end
+			elsif state == TIMING_PATH_HEADER 
+				line_seg = line.split(/[\s:]+/) 
+				if line_seg.length < 2
+				elsif line_seg[1] == "Startpoint"
+					path = Path.new(line_seg[2] ) 
+				elsif line_seg[1] == "Endpoint"
+					path.set_endpoint ( line_seg[2] ) 
+				elsif line_seg[1].include?("------------------------") 
+					state = TIMING_PATH
+				end
+			elsif state == TIMING_PATH
+				line_seg = line.split(/[\s()\/]+/)
+				line_seg.delete("")
+				if line_seg[0] == path.startpoint 
+					path.add_gate(line_seg[0] ) 
+					state = TIMING_PATH_START
+				end
+			elsif state == TIMING_PATH_START
+				line_seg = line.split(/[\s()\/]+/)
+				line_seg.delete("")
+				if line_seg[0] == "data" and line_seg[1] == "arrival" and line_seg[2] = "time"
+					at = line_seg[3].to_f
+					if @critical_paths.length == 0 or at >= threshold * @critical_paths[0].arrival_time
+						path.set_arrival_time( at )
+						@critical_paths.push(path) 
+						state = TIMING_PATH_END
+					else
+						state = FINISH
+					end
+				elsif line_seg.length == 3 and (line_seg[2] == "r" or line_seg[2] == "f"  ) 
+					path.set_gate_delay(temp_gate, line_seg[0].to_f )
+					set_gate_delay(line_seg[0], line_seg[3].to_f)
+				elsif line_seg.length == 3 
+					temp_gate = line_seg[0] 
+				elsif line_seg.length == 6 
+					path.add_gate(line_seg[0])
+					path.set_gate_delay(line_seg[0], line_seg[3].to_f) 
+					set_gate_delay(line_seg[0], line_seg[3].to_f)
+				end
+			elsif state == TIMING_PATH_END
+				line_seg = line.split(/[\s()\/]+/)
+				line_seg.delete("")
+				if line_seg[0] == "slack"
+					state = TIMING_PATH_HEADER
+				end
+			elsif state == FINISH
+				timing_file.close		
+				return self
+			end
+		end
+	end
+end
+class Cluster
+	def initialize(ckt)
 		@gate_cluster = {}
 		@clustered_gates = {}
+		@circuit = ckt
 	end
 	def set_gate_cluster(gate, cluster) 
 		@gate_cluster[gate] = cluster
@@ -49,9 +220,9 @@ class Cluster
 		@gate_cluster[gate]
 	end
 
-	def to_length
+	def to_cost
 		@clustered_gates.merge(@clustered_gates) do |k,v|
-			v.length 
+			v.map{|g| ckt.gate_delay[g] }.reduce(0.0, :+)
 		end
 	end
 	def to_s
@@ -125,13 +296,7 @@ class Placement
 end
 
 class Path
-	INITIAL = 0
-	HEADER = 1
-	TIMING_PATH_HEADER = 2
-	TIMING_PATH = 3
-	TIMING_PATH_START = 4
-	TIMING_PATH_END =5
-	FINISH = 6
+	
 	def to_s
 		{'startpoint'=>@startpoint, 'endpoint' => @endpoint, 'arrival_time'=>@arrival_time, 
 		'length of gates along path'=>@gates_along_path.length,
@@ -155,7 +320,8 @@ class Path
 	end
 	def update_fresh(covered_gates = Set.new) 
 		uncovered_gates = @gates_along_path - covered_gates
-		@fresh = (uncovered_gates.length + 0.0) / (@gates_along_path.length + 0.0)
+		uncovered_delay = uncovered_gates.map{|g| @gate_delay[g] }.reduce(0.0, :+) 
+		@fresh = uncovered_delay / @arrival_time 
 	end
 	def gates
 		@gates_along_path
@@ -200,98 +366,17 @@ class Path
 			(v + 0.0) / (@gates_along_path.length + 0.0) >= threshold
 		}.keys
 	end
-	def self.parse_timing_file(file = "timing.path", threshold = 0.75)
-		timing_file = File.new(file, "r") 
-		state = INITIAL
-		design_name = " " 
-		critical_paths = []
-		path = nil
-		temp_gate = nil
-		timing_file.each do | line |
-			if state == INITIAL
-				if line.include?("***************************")
-					state = HEADER 
-				end
-			elsif state == HEADER 
-				if line[0..7] == "Design :"
-					design_name = line[9..-2] 
-				elsif line.include?("***************************") 
-					state = TIMING_PATH_HEADER 
-				end
-			elsif state == TIMING_PATH_HEADER 
-				line_seg = line.split(/[\s:]+/) 
-				if line_seg.length < 2
-				elsif line_seg[1] == "Startpoint"
-					path = Path.new(line_seg[2] ) 
-				elsif line_seg[1] == "Endpoint"
-					path.set_endpoint ( line_seg[2] ) 
-				elsif line_seg[1].include?("------------------------") 
-					state = TIMING_PATH
-				end
-			elsif state == TIMING_PATH
-				line_seg = line.split(/[\s()\/]+/)
-				line_seg.delete("")
-				if line_seg[0] == path.startpoint 
-					path.add_gate(line_seg[0] ) 
-					state = TIMING_PATH_START
-				end
-			elsif state == TIMING_PATH_START
-				line_seg = line.split(/[\s()\/]+/)
-				line_seg.delete("")
-				if line_seg[0] == "data" and line_seg[1] == "arrival" and line_seg[2] = "time"
-					at = line_seg[3].to_f
-					if critical_paths.length == 0 or at >= threshold * critical_paths[0].arrival_time			
-						path.set_arrival_time( at )
-						critical_paths.push(path) 
-						state = TIMING_PATH_END
-					else
-						state = FINISH
-					end
-				elsif line_seg.length == 3 and (line_seg[2] == "r" or line_seg[2] == "f"  ) 
-					path.set_gate_delay(temp_gate, line_seg[0].to_f )
-				elsif line_seg.length == 3 
-					temp_gate = line_seg[0] 
-				elsif line_seg.length == 6 
-					path.add_gate(line_seg[0])
-					path.set_gate_delay(line_seg[0], line_seg[3].to_f) 
-				end
-			elsif state == TIMING_PATH_END
-				line_seg = line.split(/[\s()\/]+/)
-				line_seg.delete("")
-				if line_seg[0] == "slack"
-					state = TIMING_PATH_HEADER
-				end
-			elsif state == FINISH
-				timing_file.close		
-				return critical_paths
-			end
-		end
-	end
-	def self.select_paths(candidates, limit = 15)
-		covered_gates = Set.new
-		selected_paths = []
-		while limit > 0
-			candidates.sort!{|x,y| (x.arrival_time * x.fresh ) <=> (y.arrival_time * y.fresh) }
-			path = candidates.pop
-			selected_paths.push(path) 
-			covered_gates = covered_gates + path.gates
-			candidates.each do |p|
-				p.update_fresh(covered_gates)
-			end
-			limit = limit - 1
-		end
-		selected_paths
-	end
+	
+	
 
 end
 def simu_knob(affected_paths, on_indices)
 	affected_paths.sort!{|b,a| b[1].length 	<=>  b[1].length }
-	
 end
 def cost_gen(affected_paths, clt)
 	cost_file = File.new("cost_input", "w") 
 	affected_paths.each do |paths_with_cluster|
-		cost_file.print clt.to_length[ paths_with_cluster[0] ], " "
+		cost_file.print clt.to_cost[ paths_with_cluster[0] ], " "
 	end
 end
 def mat_gen(paths, clt, cluster_th = 0.3)
@@ -331,3 +416,4 @@ def mat_gen(paths, clt, cluster_th = 0.3)
 	end
 	affected_paths
 end
+
