@@ -106,12 +106,17 @@ class Circuit
 		@gate_delay = {}
 		@critical_paths = []
 		@gate_reference = {}
+		@total_area = 0
+		@total_leakage = 0
 		parse_gates
 		parse_timing_file
 		select_paths
 	end
 	def to_s
-		{:critical_paths => @critical_paths.map{|p| p.arrival_time}, :number_of_gates => @gate_reference.length}
+		{:critical_paths => @critical_paths.map{|p| p.arrival_time}, 
+		:number_of_gates => @gate_reference.length, 
+		:area => @total_area, 
+		:leakage => @total_leakage}
 	end
 	def clusters
 		@clusters
@@ -128,13 +133,15 @@ class Circuit
 	def critical_paths
 		@critical_paths
 	end
-	def parse_gates(file = 'gates.txt')
+	def parse_gates(file = 'gates.txt', library )
 		gates_file = File.new(file, "r")
 		gates_file.each do |line|
 			seg = line.split(/[\s]+/)
 			seg.delete("")
 			if seg.length >= 2 
 				@gate_reference[ seg[1] ] = seg[0] 
+				@total_area += library.area(seg[0])
+				@total_leakage += library.leackage(seg[0])
 			end
 		end
 	end
@@ -386,7 +393,7 @@ class Path
 	end
 end
 def simu_knob(affected_paths, on_paths, clt)
-	sorted_paths = affected_paths.sort{|b,a| b[1].length 	<=>  b[1].length }
+	sorted_paths = affected_paths.sort{|b,a| b[1].length <=> b[1].length }
 	intersections = []
 	cluster_paths = []
 	sorted_paths.each do |p|
@@ -405,6 +412,7 @@ def simu_knob(affected_paths, on_paths, clt)
 			end
 		end
 	end
+	cluster_paths
 end
 def cost_gen(affected_paths, clt)
 	cost_file = File.new("cost_input", "w") 
