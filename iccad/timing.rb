@@ -9,7 +9,7 @@ class RandomGaussian
 		@next = 0
 	end
 
-	def rand
+	 def rand
 		if @valid then
 			@valid = false
 			return @next
@@ -315,7 +315,6 @@ class Placement
 end
 
 class Path
-	
 	def to_s
 		{'startpoint'=>@startpoint, 'endpoint' => @endpoint, 'arrival_time'=>@arrival_time, 
 		'length of gates along path'=>@gates_along_path.length,
@@ -386,11 +385,24 @@ class Path
 		}.keys
 	end
 end
-def simu_knob(affected_paths, on_paths)
+def simu_knob(affected_paths, on_paths, clt)
 	sorted_paths = affected_paths.sort{|b,a| b[1].length 	<=>  b[1].length }
+	intersections = []
+	cluster_paths = []
 	sorted_paths.each do |p|
-		if p[1].include?(on_paths) 
-			return p[0]
+		intersect =  on_paths & p[1]
+		if intersect.length == 0
+		else
+			i_to_replace = intersections.index ( intersect )
+			if i_to_replace == nil
+				cluster_paths.push(p)
+				intersections.push(intersect) 
+			elsif  clt.to_cost[ cluster_paths[i_to_replace][0] ] > clt.to_cost[ p[0] ] 
+				cluster_paths.delete_at(i_to_replace)
+				intersections.delete_at(i_to_replace)
+				cluster_paths.push(p)
+				intersections.push(intersect) 
+			end
 		end
 	end
 end
