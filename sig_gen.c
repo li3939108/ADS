@@ -583,19 +583,19 @@ int main(){
 	}
 	qsort_r(index, nrow, sizeof *index, cost_cmp, cost) ;
 	signal_gen(temp_mat, nrow, ncol, index, cost) ;
-	qsort(keys, nkeys, sizeof (char *), key_nsensors_cmp); 
-	add_next_level(keys, nkeys, cost);
+//	qsort(keys, nkeys, sizeof (char *), key_nsensors_cmp); 
+//	add_next_level(keys, nkeys, cost);
 	#ifdef DEBUG
 	print_keys((char *)mat, nrow, ncol, cost, index, 0) ;
 	#endif
 	sk_chain_pruning(cost, 0) ;	
 	#ifdef DEBUG
 	print_keys((char *)mat, nrow, ncol, cost, index, 0) ;
-	print_keys((char *)mat, nrow, ncol, cost, index, 1) ;
+//	print_keys((char *)mat, nrow, ncol, cost, index, 1) ;
 	sig2gates(keys, nkeys, 0) ;
-	sig2gates(keys, nkeys, 1) ;
+//	sig2gates(keys, nkeys, 1) ;
 	isig2gates(keys, nkeys, 0) ;
-	isig2gates(keys, nkeys, 1) ;
+//	isig2gates(keys, nkeys, 1) ;
 	#endif
 	for( i = 0; i < nkeys ; i++){
 		ENTRY e={ keys[i], NULL};
