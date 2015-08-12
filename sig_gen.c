@@ -94,7 +94,7 @@ void remove_dominated_sig(SIG_KNOB sk, SIG_KNOB sk_to_remove){
 	sk->dominated_signal = dominated_signal ;
 	fprintf(stderr, "remove_dominated : %s(%d) - %s\n", sk->signal_key, sk->ndominated_sig, sk_to_remove->signal_key ) ;
 	sk->ndominated_sig = sk->ndominated_sig  - 1;
-	fprintf(stderr, "dominated: %s %s \n", sk->dominated_signal[0]->signal_key, sk->dominated_signal[1]->signal_key ) ;
+	//fprintf(stderr, "dominated: %s %s \n", sk->dominated_signal[0]->signal_key, sk->dominated_signal[1]->signal_key ) ;
 	
 }
 void remove_dominating_sig(SIG_KNOB sk, SIG_KNOB sk_to_remove){
@@ -511,7 +511,7 @@ void print_keys(char *temp_mat, int nrow, int ncol, float const cost[], int cons
 		}
 		fprintf(stderr, "   cost is %f, sorted cost is %d\n", cost[i], index[i]) ;
 	}
-	fprintf(stderr, "cost of 2 : %d\n",  cost_fun(NULL, mat, nrow, ncol, 2)) ;
+	//fprintf(stderr, "cost of 2 : %d\n",  cost_fun(NULL, mat, nrow, ncol, 2)) ;
 
 	fprintf(stderr, "level %d\n\n\n", level );
 	for(i = 0; i < nkeys ; i++){
