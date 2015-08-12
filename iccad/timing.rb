@@ -80,9 +80,9 @@ class Library
 						brace -= 1
 					end
 				elsif line_seg.length == 2 and line_seg[0] == 'area'
-					@area[cell]  =  line_seg[1]
+					@area[cell]  =  line_seg[1].to_f
 				elsif line_seg.length == 2 and line_seg[0] == 'cell_leakage_power'
-					@leackage[cell]  =  line_seg[1]
+					@leackage[cell]  =  line_seg[1].to_f
 				end
 			end
 		end
@@ -102,15 +102,16 @@ class Circuit
 	TIMING_PATH_START = 4
 	TIMING_PATH_END =5
 	FINISH = 6
-	def initialize
+	def initialize(gates, library )
 		@gate_delay = {}
 		@critical_paths = []
 		@gate_reference = {}
 		@total_area = 0
 		@total_leakage = 0
-		parse_gates
+		parse_gates(gates, library)
 		parse_timing_file
 		select_paths
+		parse_GinC_file
 	end
 	def to_s
 		{:critical_paths => @critical_paths.map{|p| p.arrival_time}, 
