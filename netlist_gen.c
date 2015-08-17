@@ -6,7 +6,6 @@
 #include "struct.h"
 
 #define NOT_GATE "INV_X1"
-#define AND_GATE "AND2_X1"
 
 void sig2gates(char *keys[__MAX_NUMBER_OF_SIGNALS__], int nkeys, int level){
 	int i = 0;
@@ -28,16 +27,20 @@ void sig2gates(char *keys[__MAX_NUMBER_OF_SIGNALS__], int nkeys, int level){
 			}
 			l -= 1 ;
 		}
-		fprintf(stdout, "%s sgg%dlevel%d(sg%s_level%d,",AND_GATE, i, level, sk->signal_key, level);
+		if(j == 1){
+			fprintf(stdout, "AND%d_X1 sgg%dlevel%d( .ZN(sg%s_level%d),",2, i, level, sk->signal_key, level);
+		}else{
+			fprintf(stdout, "AND%d_X1 sgg%dlevel%d( .ZN(sg%s_level%d),",sk->nsensors, i, level, sk->signal_key, level);
+		}
 		for (j = 0; j < sk->nsensors ; j++){
 			if(j != sk->nsensors - 1) {
-				fprintf(stdout, "sensor%d_level%d, ", sk->sensors_index_list[j] , level);
+				fprintf(stdout, ".A%d(sensor%d_level%d), ", j+1, sk->sensors_index_list[j] , level);
 			}else{
-				fprintf(stdout, "sensor%d_level%d", sk->sensors_index_list[j], level );
+				fprintf(stdout, ".A%d(sensor%d_level%d)", j+1, sk->sensors_index_list[j], level );
 			}
 		}
 		if(j == 1){
-			fprintf(stdout, ", VDD);\n");
+			fprintf(stdout, ", .A2(VDD));\n");
 		}else{
 			fprintf(stdout, ");\n");
 		}
@@ -73,17 +76,22 @@ void isig2gates(char *keys[], int nkeys, int level){
 		if(sk->significant == 0){
 			continue;
 		}
-		fprintf(stdout, "%s isgg%d_level%d(isg%s_level%d, sg%s_level%d, ",AND_GATE ,i, level,
+		if( sk->ndominated_sig == 0){
+			fprintf(stdout, "AND%d_X1 isgg%d_level%d(.ZN(isg%s_level%d), .A1(sg%s_level%d), ",2 ,i, level,
 			sk->signal_key, level, sk->signal_key, level);
+		}else{
+			fprintf(stdout, "AND%d_X1 isgg%d_level%d(.ZN(isg%s_level%d), .A1(sg%s_level%d), ",sk->ndominated_sig+1 ,i, level,
+			sk->signal_key, level, sk->signal_key, level);
+		}
 		for( j =0; j < sk->ndominating_sig; j++){
 			if(j != sk->ndominating_sig - 1) {
-				fprintf(stdout, "notsg%s_level%d, ", sk->dominating_signal[j]->signal_key , level) ;
+				fprintf(stdout, ".A%d(notsg%s_level%d), ",j+2, sk->dominating_signal[j]->signal_key , level) ;
 			}else{
-				fprintf(stdout, "notsg%s_level%d", sk->dominating_signal[j]->signal_key , level) ;
+				fprintf(stdout, ".A%d(notsg%s_level%d)", j+2,sk->dominating_signal[j]->signal_key , level) ;
 			}
 		}
 		if(j == 0){
-			fprintf(stdout, "VDD);\n") ;
+			fprintf(stdout, ".A2(VDD));\n") ;
 		}else{
 			fprintf(stdout, ");\n") ;
 		}
