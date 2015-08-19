@@ -38,7 +38,7 @@ class Library
 	CELL = 3
 	def initialize(file_name)
 		@area = {}
-		@leackage = {}
+		@leakage = {}
 		file = File.new(file_name)
 		state = INITIAL
 		brace = 0
@@ -82,7 +82,7 @@ class Library
 				elsif line_seg.length == 2 and line_seg[0] == 'area'
 					@area[cell]  =  line_seg[1].to_f
 				elsif line_seg.length == 2 and line_seg[0] == 'cell_leakage_power'
-					@leackage[cell]  =  line_seg[1].to_f
+					@leakage[cell]  =  line_seg[1].to_f
 				end
 			end
 		end
@@ -90,8 +90,8 @@ class Library
 	def area(cell)
 		@area[cell]
 	end
-	def leackage(cell)
-		@leackage[cell]
+	def leakage(cell)
+		@leakage[cell]
 	end
 end
 class Circuit
@@ -134,6 +134,9 @@ class Circuit
 	def critical_paths
 		@critical_paths
 	end
+	def gate_reference( gate )
+		@gate_reference[ gate ]
+	end
 	def parse_gates(file = 'gates.txt', library )
 		gates_file = File.new(file, "r")
 		gates_file.each do |line|
@@ -142,7 +145,7 @@ class Circuit
 			if seg.length >= 2 
 				@gate_reference[ seg[1] ] = seg[0] 
 				@total_area += library.area(seg[0])
-				@total_leakage += library.leackage(seg[0])
+				@total_leakage += library.leakage(seg[0])
 			end
 		end
 	end
@@ -166,7 +169,10 @@ class Circuit
 		@clusters = Cluster.new(self)
 		ginc_file.each do |line|
 			line_seg = line.split(/\s/)
-			@clusters.set_gate_cluster( line_seg[0], line_seg[1].to_i )
+			line_seg.delete("")
+			if line_seg.length == 2
+				@clusters.set_gate_cluster( line_seg[0], line_seg[1].to_i )
+			end
 		end
 		@clusters
 	end
@@ -256,7 +262,9 @@ class Cluster
 	def g2c(gate)
 		@gate_cluster[gate]
 	end
-
+	def clustered_gates(cluster_id)
+		@clustered_gates[cluster_id]
+	end
 	def to_cost
 		to_s
 	end
@@ -265,7 +273,24 @@ class Cluster
 			v.length 
 		end
 	end
-	
+	def leakage( lib, cluster_id = nil)
+		if cluster_id == nil
+			@clustered_gates.merge(@clustered_gates) do |id, gates|
+				gates.map{|g|
+					lib.leakage( @circuit.gate_reference(g) )
+				}.reduce(0.0, :+) 
+			end
+		else
+			@clustered_gates[ cluster_id ].map{ |g|
+				if lib.leakage( @circuit.gate_reference(g))  == nil
+					print "nil", g, @circuit.gate_reference(g), "\n"
+					0.0
+				else
+					lib.leakage( @circuit.gate_reference(g))
+				end
+			}.reduce(0.0, :+) 
+		end
+	end
 end
 
 class Placement
