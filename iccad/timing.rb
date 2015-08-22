@@ -360,7 +360,7 @@ class Path
 		@gates_along_path = Set.new
 		@gate_delay = {}
 		@fresh = 1
-		@cluster_count = {}
+		@cluster_delay_sum = {}
 		@important_cluster = Set.new
 	end
 	def affecting_cluster
@@ -401,22 +401,30 @@ class Path
 	def add_gate(gate)
 		@gates_along_path.add(gate)
 	end
+
 	def cluster(clt, threshold = 0.25)
 		if @important_cluster.length != 0
 			return 
 		end
 		@gates_along_path.each do |g|
 			c = clt.g2c(g) 
-			if @cluster_count[c] == nil
-				@cluster_count[c] = 1
+			if @cluster_delay_sum[c] == nil
+				@cluster_delay_sum[c] = @gate_delay[g] 
 			else
-				@cluster_count[c] += 1
+				@cluster_delay_sum[c] += @gate_delay[g]
 			end
 		end
-		@important_cluster = @cluster_count.select{|k,v|
-			(v + 0.0) / (@gates_along_path.length + 0.0) >= threshold
+		@important_cluster = @cluster_delay_sum.select{|k,v|
+			(v + 0.0) / @arrival_time >= threshold
 		}.keys
 	end
+end
+def naive_simu_knob(affected_paths, on_paths, clt)
+	cluster_paths = []
+	on_paths.each do |p|
+		cluster_paths += affected_paths.select{|c| c[0] == p.affecting_cluster[0] }
+	end
+	cluster_paths
 end
 def simu_knob(affected_paths, on_paths, clt)
 	sorted_paths = affected_paths.sort{|b,a| b[1].length <=> b[1].length }
