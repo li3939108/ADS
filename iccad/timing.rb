@@ -176,6 +176,9 @@ class Circuit
 		end
 		@clusters
 	end
+	def random_paths(number = 1)
+		@critical_paths.sample(number ) 
+	end
 	def parse_timing_file(file = "timing.path", threshold = 0.75)
 		timing_file = File.new(file, "r") 
 		state = INITIAL
@@ -424,6 +427,7 @@ def leakage_diff(cluster_paths, clt, low_lib, high_lib)
 		clt.leakage(high_lib, c[0] ) - clt.leakage(low_lib, c[0] )
 	}.reduce(0.0, :+) 
 end
+
 def naive_simu_knob(affected_paths, on_paths, clt)
 	cluster_paths = []
 	on_paths.each do |p|
@@ -439,8 +443,15 @@ def simu_knob(affected_paths, on_paths, clt)
 		intersect =  on_paths & p[1]
 		if intersect.length == 0
 		else
+			contain = false
+			intersections.each do | intersect_exist| 
+				if intersect.subset?(intersect_exist )
+					contain = true
+				end
+			end
 			i_to_replace = intersections.index ( intersect )
-			if i_to_replace == nil
+			if contain == true
+			elsif i_to_replace == nil
 				cluster_paths.push(p)
 				intersections.push(intersect) 
 			elsif  clt.to_cost[ cluster_paths[i_to_replace][0] ] > clt.to_cost[ p[0] ] 
