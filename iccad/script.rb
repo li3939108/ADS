@@ -6,3 +6,10 @@ ckt = Circuit.new('gates.txt', lib)
 ap = mat_gen(ckt.critical_paths, ckt.clusters, 0.25)
 cost_gen(ap, ckt.clusters) 
 
+# compare 
+(0..100).each do |i|
+	sp = ckt.random_paths(2)
+	r = simu_knob(ap, sp.to_set, ckt.clusters)
+	rr = naive_simu_knob(ap, sp.to_set, ckt.clusters)
+	print leakage_diff(r, ckt.clusters, lib, lib2) , leakage_diff(rr, ckt.clusters, lib, lib2), "\n"
+end
