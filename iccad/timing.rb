@@ -419,6 +419,11 @@ class Path
 		}.keys
 	end
 end
+def leakage_diff(cluster_paths, clt, low_lib, high_lib)
+	cluster_paths.map { |c|
+		clt.leakage(high_lib, c[0] ) - clt.leakage(low_lib, c[0] )
+	}.reduce(0.0, :+) 
+end
 def naive_simu_knob(affected_paths, on_paths, clt)
 	cluster_paths = []
 	on_paths.each do |p|
