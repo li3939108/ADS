@@ -104,12 +104,14 @@ class Circuit
 	FINISH = 6
 	def initialize(gates, library )
 		@gate_delay = {}
+		@gate_delay_high_voltage = {}
 		@critical_paths = []
 		@gate_reference = {}
 		@total_area = 0
 		@total_leakage = 0
 		parse_gates(gates, library)
 		parse_timing_file
+		parse_timing_file('timing.high', 0.75, 'high')
 		select_paths
 		parse_GinC_file
 	end
@@ -122,14 +124,22 @@ class Circuit
 	def clusters
 		@clusters
 	end
-	def set_gate_delay(gate, delay)
-		@gate_delay[gate] = delay
+	def set_gate_delay(gate, delay, voltage = 'low')
+		if voltage == 'low'
+			@gate_delay[gate] = delay
+		elsif voltage == 'high'
+			@gate_delay_high_voltage[gate ] = delay
+		end
 	end
 	def add_critical_path(path)
 		@critical_paths.push(path)
 	end
-	def gate_delay(gate)
-		@gate_delay[gate]
+	def gate_delay(gate, voltage = 'low')
+		if voltage == 'low' 
+			@gate_delay[gate]
+		elsif voltage == 'high'
+			@gate_delay_high_voltage[gate]
+		end
 	end
 	def critical_paths
 		@critical_paths
@@ -179,7 +189,7 @@ class Circuit
 	def random_paths(number = 1)
 		@critical_paths.sample(number ) 
 	end
-	def parse_timing_file(file = "timing.path", threshold = 0.75)
+	def parse_timing_file(file = "timing.path", threshold = 0.75, voltage = 'low')
 		timing_file = File.new(file, "r") 
 		state = INITIAL
 		design_name = " " 
@@ -210,30 +220,30 @@ class Circuit
 				line_seg = line.split(/[\s()\/]+/)
 				line_seg.delete("")
 				if line_seg[0] == path.startpoint 
-					path.add_gate(line_seg[0] ) 
+					path.add_gate(line_seg[0] ) if voltage == 'low'
 					state = TIMING_PATH_START
 				end
 			elsif state == TIMING_PATH_START
 				line_seg = line.split(/[\s()\/]+/)
 				line_seg.delete("")
 				if line_seg[0] == "data" and line_seg[1] == "arrival" and line_seg[2] = "time"
-					at = line_seg[3].to_f
+					at = line_seg[3].to_f 
 					if @critical_paths.length == 0 or at >= threshold * @critical_paths[0].arrival_time
-						path.set_arrival_time( at )
-						@critical_paths.push(path) 
+						path.set_arrival_time( at ) 
+						@critical_paths.push(path) if voltage == 'low'
 						state = TIMING_PATH_END
 					else
 						state = FINISH
 					end
 				elsif line_seg.length == 3 and (line_seg[2] == "r" or line_seg[2] == "f"  ) 
-					path.set_gate_delay(temp_gate, line_seg[0].to_f )
-					set_gate_delay(line_seg[0], line_seg[3].to_f)
+					path.set_gate_delay(temp_gate, line_seg[0].to_f ) if voltage == 'low'
+					set_gate_delay(line_seg[0], line_seg[3].to_f, voltage)
 				elsif line_seg.length == 3 
-					temp_gate = line_seg[0] 
+					temp_gate = line_seg[0] if voltage == 'low'
 				elsif line_seg.length == 6 
-					path.add_gate(line_seg[0])
-					path.set_gate_delay(line_seg[0], line_seg[3].to_f) 
-					set_gate_delay(line_seg[0], line_seg[3].to_f)
+					path.add_gate(line_seg[0]) if voltage == 'low'
+					path.set_gate_delay(line_seg[0], line_seg[3].to_f) if voltage == 'low'
+					set_gate_delay(line_seg[0], line_seg[3].to_f, voltage)
 				end
 			elsif state == TIMING_PATH_END
 				line_seg = line.split(/[\s()\/]+/)
@@ -242,7 +252,7 @@ class Circuit
 					state = TIMING_PATH_HEADER
 				end
 			elsif state == FINISH
-				timing_file.close		
+				timing_file.close
 				return self
 			end
 		end
