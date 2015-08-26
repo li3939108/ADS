@@ -257,9 +257,9 @@ class Circuit
 					end
 				elsif line_seg.length == 3 and (line_seg[2] == "r" or line_seg[2] == "f"  ) 
 					path.set_gate_delay(temp_gate, line_seg[0].to_f ) if voltage == 'low'
-					set_gate_delay(line_seg[0], line_seg[3].to_f, voltage)
+					set_gate_delay(temp_gate, line_seg[0].to_f, voltage)
 				elsif line_seg.length == 3 
-					temp_gate = line_seg[0] if voltage == 'low'
+					temp_gate = line_seg[0] 
 				elsif line_seg.length == 6 
 					path.add_gate(line_seg[0]) if voltage == 'low'
 					path.set_gate_delay(line_seg[0], line_seg[3].to_f) if voltage == 'low'
@@ -277,9 +277,9 @@ class Circuit
 			end
 		end
 	end
-	def check_timing(rat)
+	def check_timing(rat, cluster_path, clt)
 		@origianal_critical_paths.each do |p|
-			if p.new_arrival_time > rat 
+			if p.new_arrival_time(cluster_path, clt) > rat 
 				return false
 			end
 		end
@@ -441,13 +441,18 @@ class Path
 	end
 	def new_arrival_time(cluster_paths, clt)
 		cluster_id = cluster_paths.map{|c| c[0] }
-		@gates_along_path.map do |g|
+		@gates_along_path.map { |g|
 			if cluster_id.include?( clt.g2c(g) )
-				@circuit.gate_delay(g, 'high') - @circuit.gate_delay(g) + delay(g, 'yes') 
+				if @circuit.gate_delay(g, 'high') == nil
+					print g, "\n"
+					delay(g, 'yes')
+				else
+					@circuit.gate_delay(g, 'high') - @circuit.gate_delay(g) + delay(g, 'yes') 
+				end
 			else
 				delay(g, 'yes') 
 			end
-		end
+		}.reduce(0.0, :+)
 	end
 	def set_gate_delay(gate, value)
 		@gate_delay[gate] = value

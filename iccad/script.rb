@@ -5,6 +5,7 @@ ckt = Circuit.new('gates.txt', lib)
 #control_ckt = Circuit.new('gates.control', lib)
 ap = mat_gen(ckt.critical_paths, ckt.clusters, 0.25)
 cost_gen(ap, ckt.clusters) 
+on_paths = ckt.simu_sensor(6.4)
 
 # compare 
 sum1 = 0
