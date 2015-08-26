@@ -120,7 +120,7 @@ class Circuit
 	end
 	def update_variation
 		@gate_delay.each_key do |g|
-			@gate_delay_variation[k] = @rand.rand
+			@gate_delay_variation[g] = @rand.rand
 		end
 	end
 	def gate_variation(gate)
@@ -406,14 +406,14 @@ class Path
 		if with_variation == 'no'
 			@gate_delay[gate]
 		elsif with_variation == 'yes'
-			@gate_delay[gate] * @circuit.gate_variation 
+			@gate_delay[gate] * @circuit.gate_variation(gate)
 		end
 	end
 	def arrival_time(with_variation = 'no')
 		if with_variation == 'no'
 			@arrival_time 
 		elsif with_variation == 'yes'
-			@gates_along_path.map{|g| delay(g, 'yes') }.reduce{0.0, :+)
+			@gates_along_path.map{|g| delay(g, 'yes') }.reduce(0.0, :+)
 		end
 	end
 	def startpoint
