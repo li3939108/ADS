@@ -427,6 +427,16 @@ class Path
 	def endpoint
 		@endpoint
 	end
+	def new_arrival_time(cluster_paths, clt)
+		cluster_id = cluster_paths.map{|c| c[0] }
+		@gates_along_path.map do |g|
+			if cluster_id.include?( clt.g2c(g) )
+				@circuit.gate_delay(g, 'high') - @circuit.gate_delay(g) + delay(g, 'yes') 
+			else
+				delay(g, 'yes') 
+			end
+		end
+	end
 	def set_gate_delay(gate, value)
 		@gate_delay[gate] = value
 	end
@@ -462,7 +472,6 @@ def leakage_diff(cluster_paths, clt, low_lib, high_lib)
 		clt.leakage(high_lib, c[0] ) - clt.leakage(low_lib, c[0] )
 	}.reduce(0.0, :+) 
 end
-
 def naive_simu_knob(affected_paths, on_paths, clt)
 	cluster_paths = []
 	on_paths.each do |p|
