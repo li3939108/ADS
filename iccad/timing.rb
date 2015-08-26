@@ -106,6 +106,7 @@ class Circuit
 		@gate_delay = {}
 		@gate_delay_high_voltage = {}
 		@gate_delay_variation = {}
+		@origianal_critical_paths = []
 		@critical_paths = []
 		@gate_reference = {}
 		@total_area = 0
@@ -246,7 +247,10 @@ class Circuit
 					at = line_seg[3].to_f 
 					if @critical_paths.length == 0 or at >= threshold * @critical_paths[0].arrival_time
 						path.set_arrival_time( at ) 
-						@critical_paths.push(path) if voltage == 'low'
+						if voltage == 'low'
+							@critical_paths.push(path) 
+							@origianal_critical_paths.push(path)
+						end
 						state = TIMING_PATH_END
 					else
 						state = FINISH
