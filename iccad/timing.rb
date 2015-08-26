@@ -102,7 +102,7 @@ class Circuit
 	TIMING_PATH_START = 4
 	TIMING_PATH_END =5
 	FINISH = 6
-	def initialize(gates, library , sigma = 0.1)
+	def initialize(gates, library , sigma = 0.3)
 		@gate_delay = {}
 		@gate_delay_high_voltage = {}
 		@gate_delay_variation = {}
@@ -157,6 +157,11 @@ class Circuit
 	end
 	def gate_reference( gate )
 		@gate_reference[ gate ]
+	end
+	def simu_sensor(on_arrival_time)
+		@critical_paths.select do |p|
+			p.arrival_time('yes') > on_arrival_time
+		end
 	end
 	def parse_gates(file = 'gates.txt', library )
 		gates_file = File.new(file, "r")
@@ -411,7 +416,7 @@ class Path
 	end
 	def arrival_time(with_variation = 'no')
 		if with_variation == 'no'
-			@arrival_time 
+			@gates_along_path.map{|g| delay(g) }.reduce(0.0, :+)
 		elsif with_variation == 'yes'
 			@gates_along_path.map{|g| delay(g, 'yes') }.reduce(0.0, :+)
 		end
