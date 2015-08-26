@@ -102,18 +102,29 @@ class Circuit
 	TIMING_PATH_START = 4
 	TIMING_PATH_END =5
 	FINISH = 6
-	def initialize(gates, library )
+	def initialize(gates, library , sigma = 0.1)
 		@gate_delay = {}
 		@gate_delay_high_voltage = {}
+		@gate_delay_variation = {}
 		@critical_paths = []
 		@gate_reference = {}
 		@total_area = 0
 		@total_leakage = 0
+		@rand =  RandomGaussian.new(1, sigma)
 		parse_gates(gates, library)
 		parse_timing_file
 		parse_timing_file('timing.high', 0.75, 'high')
 		select_paths
 		parse_GinC_file
+		update_variation 
+	end
+	def update_variation
+		@gate_delay.each_key do |g|
+			@gate_delay_variation[k] = @rand.rand
+		end
+	end
+	def gate_variation(gate)
+		@gate_delay_variation[gate]
 	end
 	def to_s
 		{:critical_paths => @critical_paths.map{|p| p.arrival_time}, 
@@ -210,7 +221,7 @@ class Circuit
 				line_seg = line.split(/[\s:]+/) 
 				if line_seg.length < 2
 				elsif line_seg[1] == "Startpoint"
-					path = Path.new(line_seg[2] ) 
+					path = Path.new(self, line_seg[2] ) 
 				elsif line_seg[1] == "Endpoint"
 					path.set_endpoint ( line_seg[2] ) 
 				elsif line_seg[1].include?("------------------------") 
@@ -366,7 +377,7 @@ class Path
 		'length of gates along path'=>@gates_along_path.length,
 		'fresh rate'=>@fresh, 'cluster'=> @important_cluster }
 	end
-	def initialize(startpoint = nil, endpoint = nil, at = 0)
+	def initialize(ckt, startpoint = nil, endpoint = nil, at = 0)
 		@startpoint = startpoint
 		@endpoint = endpoint
 		@arrival_time = at
@@ -375,6 +386,7 @@ class Path
 		@fresh = 1
 		@cluster_delay_sum = {}
 		@important_cluster = Set.new
+		@circuit = ckt
 	end
 	def affecting_cluster
 		@important_cluster
@@ -390,11 +402,19 @@ class Path
 	def gates
 		@gates_along_path
 	end
-	def delay(gate)
-		@gate_delay[gate]
+	def delay(gate, with_variation = 'no')
+		if with_variation == 'no'
+			@gate_delay[gate]
+		elsif with_variation == 'yes'
+			@gate_delay[gate] * @circuit.gate_variation 
+		end
 	end
-	def arrival_time
-		@arrival_time 
+	def arrival_time(with_variation = 'no')
+		if with_variation == 'no'
+			@arrival_time 
+		elsif with_variation == 'yes'
+			@gates_along_path.map{|g| delay(g, 'yes') }.reduce{0.0, :+)
+		end
 	end
 	def startpoint
 		@startpoint 
