@@ -277,6 +277,14 @@ class Circuit
 			end
 		end
 	end
+	def check_timing(rat)
+		@origianal_critical_paths.each do |p|
+			if p.new_arrival_time > rat 
+				return false
+			end
+		end
+		true
+	end
 end
 class Cluster
 	def initialize(ckt)
