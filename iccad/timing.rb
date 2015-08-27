@@ -114,7 +114,7 @@ class Circuit
 		@rand =  RandomGaussian.new(1, sigma)
 		parse_gates(gates, library)
 		parse_timing_file
-		parse_timing_file('timing.high', 0.75, 'high')
+		parse_timing_file('timing.high', 0, 'high')
 		select_paths
 		parse_GinC_file
 		update_variation 
@@ -219,7 +219,7 @@ class Circuit
 				end
 			elsif state == HEADER 
 				if line[0..7] == "Design :"
-					design_name = line[9..-2] 
+					design_name = line[9..-2] if voltage == 'low'
 				elsif line.include?("***************************") 
 					state = TIMING_PATH_HEADER 
 				end
