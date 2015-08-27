@@ -277,9 +277,9 @@ class Circuit
 			end
 		end
 	end
-	def check_timing(rat, cluster_path, clt)
+	def check_timing(rat, cluster_path)
 		@origianal_critical_paths.each do |p|
-			if p.new_arrival_time(cluster_path, clt) > rat 
+			if p.new_arrival_time(cluster_path, @clusters) > rat 
 				return false
 			end
 		end
@@ -444,7 +444,6 @@ class Path
 		@gates_along_path.map { |g|
 			if cluster_id.include?( clt.g2c(g) )
 				if @circuit.gate_delay(g, 'high') == nil
-					print g, "\n"
 					delay(g, 'yes')
 				else
 					@circuit.gate_delay(g, 'high') - @circuit.gate_delay(g) + delay(g, 'yes') 
