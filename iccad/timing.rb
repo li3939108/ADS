@@ -309,6 +309,9 @@ class Cluster
 	def to_cost
 		to_s
 	end
+	def to_id
+		@clustered_gates.keys
+	end
 	def to_s
 		@clustered_gates.merge(@clustered_gates) do |k,v|
 			v.length 

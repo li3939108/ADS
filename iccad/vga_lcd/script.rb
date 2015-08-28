@@ -37,15 +37,15 @@ times = 5000
 
 (1..times).each do |i|
 	ckt.update_variation
-	on = ckt.simu_sensor(6.4)
+	on = ckt.simu_sensor(2)
 	r = simu_knob(ap, on.to_set, ckt.clusters)
 	rr = naive_simu_knob(ap, on.to_set, ckt.clusters)
 	ld1 = leakage_diff(r, ckt.clusters, lib, lib2)
 	sum1 += ld1
 	ld2 = leakage_diff(rr, ckt.clusters, lib, lib2)
 	sum2 += ld2
-	true_count1 += 1 if ckt.check_timing(6.5, r)
-	true_count2 += 1 if ckt.check_timing(6.5, rr)
+	true_count1 += 1 if ckt.check_timing(2.1, r)
+	true_count2 += 1 if ckt.check_timing(2.1, rr)
 end
 
 
