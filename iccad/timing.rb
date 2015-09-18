@@ -159,9 +159,14 @@ class Circuit
 	def gate_reference( gate )
 		@gate_reference[ gate ]
 	end
-	def simu_sensor(on_arrival_time)
+	def simu_sensor(on_arrival_time, rat = nil)
 		@critical_paths.select do |p|
-			p.arrival_time('yes') > on_arrival_time
+			at = p.arrival_time('yes')  
+			if rat == nil
+				at > on_arrival_time
+			else
+				at < rat and at > on_arrival_time
+			end
 		end
 	end
 	def parse_gates(file = 'gates.txt', library )
