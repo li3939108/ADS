@@ -36,12 +36,12 @@ true_count_naive = 0
 true_count_all_low = 0
 true_count_all_high = 0
 times = 5000
-rat = 2.1
+rat = 2.05
 all_cluster_paths = ckt.clusters.to_id.map{|id| [id,[]] }
 
 (1..times).each do |i|
 	ckt.update_variation
-	on = ckt.simu_sensor(2)
+	on = ckt.simu_sensor(rat)
 	r = simu_knob(ap, on.to_set, ckt.clusters)
 	rr = naive_simu_knob(ap, on.to_set, ckt.clusters)
 	ld_logic = leakage_diff(r, ckt.clusters, lib, lib2)
