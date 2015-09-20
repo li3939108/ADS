@@ -27,7 +27,7 @@ void sig2gates(char *keys[__MAX_NUMBER_OF_SIGNALS__], int nkeys, int level){
 			}
 			l -= 1 ;
 		}
-		if(j == 1){
+		if(sk->nsensors == 1){
 			fprintf(stdout, "AND%d_X1 sgg%dlevel%d( .ZN(sg%s_level%d),",2, i, level, sk->signal_key, level);
 		}else{
 			fprintf(stdout, "AND%d_X1 sgg%dlevel%d( .ZN(sg%s_level%d),",sk->nsensors, i, level, sk->signal_key, level);
@@ -40,7 +40,7 @@ void sig2gates(char *keys[__MAX_NUMBER_OF_SIGNALS__], int nkeys, int level){
 			}
 		}
 		if(j == 1){
-			fprintf(stdout, ", .A2(VDD));\n");
+			fprintf(stdout, ", .A2(vdd));\n");
 		}else{
 			fprintf(stdout, ");\n");
 		}
