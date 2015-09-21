@@ -132,25 +132,25 @@ void isig2gates(char *keys[], int nkeys, int level){
 			}
 			l -= 1 ;
 		}
-		if(sk->ndominated_sig > 0){
+		if(sk->ndominating_sig > 0){
 			fprintf(stdout, "%s notsgg%d_level%d(notsg%s_level%d, sg%s_level%d);\n", NOT_GATE,
 				i, level, sk->signal_key, level, sk->signal_key, level) ;
 		}
 		if(sk->significant == 0){
 			continue;
 		}
-		if( sk->ndominated_sig == 0){
+		if( sk->ndominating_sig == 0){
 			fprintf(stdout, "AND%d_X1 isgg%d_level%d(.ZN(isg%s_level%d), .A1(sg%s_level%d), ",2 ,i, level,
 			sk->signal_key, level, sk->signal_key, level);
 		}else{
-			fprintf(stdout, "AND%d_X1 isgg%d_level%d(.ZN(isg%s_level%d), .A1(sg%s_level%d), ",sk->ndominated_sig+1 ,i, level,
+			fprintf(stdout, "AND%d_X1 isgg%d_level%d(.ZN(isg%s_level%d), .A1(sg%s_level%d), ",sk->ndominating_sig+1 ,i, level,
 			sk->signal_key, level, sk->signal_key, level);
 		}
-		for( j =0; j < sk->ndominated_sig; j++){
-			if(j != sk->ndominated_sig - 1) {
-				fprintf(stdout, ".A%d(notsg%s_level%d), ",j+2, sk->dominated_signal[j]->signal_key , level) ;
+		for( j =0; j < sk->ndominating_sig; j++){
+			if(j != sk->ndominating_sig - 1) {
+				fprintf(stdout, ".A%d(notsg%s_level%d), ",j+2, sk->dominating_signal[j]->signal_key , level) ;
 			}else{
-				fprintf(stdout, ".A%d(notsg%s_level%d)", j+2,sk->dominated_signal[j]->signal_key , level) ;
+				fprintf(stdout, ".A%d(notsg%s_level%d)", j+2,sk->dominating_signal[j]->signal_key , level) ;
 			}
 		}
 		if(j == 0){
