@@ -1,4 +1,4 @@
-module control_mgc(
+module(
 sensor0_level0,
 sensor1_level0,
 sensor2_level0,
@@ -31,8 +31,24 @@ isg3_level0,
 isg6_level0,
 isg12x13_level0,
 isg11x12_level0,
-isg10x12_level0
-);
+isg10x12_level0);
+input 
+sensor0_level0,
+sensor1_level0,
+sensor2_level0,
+sensor3_level0,
+sensor4_level0,
+sensor5_level0,
+sensor6_level0,
+sensor7_level0,
+sensor8_level0,
+sensor9_level0,
+sensor10_level0,
+sensor11_level0,
+sensor12_level0,
+sensor13_level0,
+sensor14_level0,
+vdd;
 wire 
 sg12_level0,
 sg0_level0,
@@ -147,23 +163,6 @@ isg6_level0,
 isg12x13_level0,
 isg11x12_level0,
 isg10x12_level0;
-input 
-sensor0_level0,
-sensor1_level0,
-sensor2_level0,
-sensor3_level0,
-sensor4_level0,
-sensor5_level0,
-sensor6_level0,
-sensor7_level0,
-sensor8_level0,
-sensor9_level0,
-sensor10_level0,
-sensor11_level0,
-sensor12_level0,
-sensor13_level0,
-sensor14_level0,
-vdd;
 AND2_X1 sgg0level0( .ZN(sg12_level0),.A1(sensor12_level0), .A2(vdd));
 AND2_X1 sgg1level0( .ZN(sg0_level0),.A1(sensor0_level0), .A2(vdd));
 AND2_X1 sgg2level0( .ZN(sg13_level0),.A1(sensor13_level0), .A2(vdd));
@@ -240,19 +239,19 @@ AND4_X1 sgg72level0( .ZN(sg3x4x7x8_level0),.A1(sensor3_level0), .A2(sensor4_leve
 AND4_X1 sgg73level0( .ZN(sg3x4x5x14_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor5_level0), .A4(sensor14_level0));
 AND4_X1 sgg74level0( .ZN(sg3x4x5x8_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor5_level0), .A4(sensor8_level0));
 AND4_X1 sgg75level0( .ZN(sg3x4x5x7_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor5_level0), .A4(sensor7_level0));
-AND4_X1 sgg76factor0level0( .ZN(sg4x5x7x8x14_factor0_level0),.A1(sensor4_level0), .A2(sensor5_level0), .A3(sensor7_level0), .A4(sensor8_level0), );
+AND4_X1 sgg76factor0level0( .ZN(sg4x5x7x8x14_factor0_level0),.A1(sensor4_level0), .A2(sensor5_level0), .A3(sensor7_level0), .A4(sensor8_level0));
 AND2_X1 sgg76level0(.ZN(sg4x5x7x8x14_level0), .A1(sensor4_level0), .A2(sg4x5x7x8x14_factor0_level0)); 
-AND4_X1 sgg77factor0level0( .ZN(sg3x5x7x8x14_factor0_level0),.A1(sensor3_level0), .A2(sensor5_level0), .A3(sensor7_level0), .A4(sensor8_level0), );
+AND4_X1 sgg77factor0level0( .ZN(sg3x5x7x8x14_factor0_level0),.A1(sensor3_level0), .A2(sensor5_level0), .A3(sensor7_level0), .A4(sensor8_level0));
 AND2_X1 sgg77level0(.ZN(sg3x5x7x8x14_level0), .A1(sensor4_level0), .A2(sg3x5x7x8x14_factor0_level0)); 
-AND4_X1 sgg78factor0level0( .ZN(sg3x4x7x8x14_factor0_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor7_level0), .A4(sensor8_level0), );
+AND4_X1 sgg78factor0level0( .ZN(sg3x4x7x8x14_factor0_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor7_level0), .A4(sensor8_level0));
 AND2_X1 sgg78level0(.ZN(sg3x4x7x8x14_level0), .A1(sensor4_level0), .A2(sg3x4x7x8x14_factor0_level0)); 
-AND4_X1 sgg79factor0level0( .ZN(sg3x4x5x8x14_factor0_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor5_level0), .A4(sensor8_level0), );
+AND4_X1 sgg79factor0level0( .ZN(sg3x4x5x8x14_factor0_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor5_level0), .A4(sensor8_level0));
 AND2_X1 sgg79level0(.ZN(sg3x4x5x8x14_level0), .A1(sensor4_level0), .A2(sg3x4x5x8x14_factor0_level0)); 
-AND4_X1 sgg80factor0level0( .ZN(sg3x4x5x7x14_factor0_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor5_level0), .A4(sensor7_level0), );
+AND4_X1 sgg80factor0level0( .ZN(sg3x4x5x7x14_factor0_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor5_level0), .A4(sensor7_level0));
 AND2_X1 sgg80level0(.ZN(sg3x4x5x7x14_level0), .A1(sensor4_level0), .A2(sg3x4x5x7x14_factor0_level0)); 
-AND4_X1 sgg81factor0level0( .ZN(sg3x4x5x7x8_factor0_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor5_level0), .A4(sensor7_level0), );
+AND4_X1 sgg81factor0level0( .ZN(sg3x4x5x7x8_factor0_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor5_level0), .A4(sensor7_level0));
 AND2_X1 sgg81level0(.ZN(sg3x4x5x7x8_level0), .A1(sensor4_level0), .A2(sg3x4x5x7x8_factor0_level0)); 
-AND4_X1 sgg82factor0level0( .ZN(sg3x4x5x7x8x14_factor0_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor5_level0), .A4(sensor7_level0), );
+AND4_X1 sgg82factor0level0( .ZN(sg3x4x5x7x8x14_factor0_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor5_level0), .A4(sensor7_level0));
 AND2_X1 sgg82level0( .ZN(sg3x4x5x7x8x14_factor1_level0),.A1(sensor8_level0), .A2(sensor14_level0));
 AND2_X1 sgg82level0(.ZN(sg3x4x5x7x8x14_level0), .A1(sg3x4x5x7x8x14_factor0_level0), .A2(sg3x4x5x7x8x14_factor1_level0)); 
 INV_X1 notsgg0_level0(notsg12_level0, sg12_level0);
@@ -276,4 +275,5 @@ AND2_X1 isgg13_level0(.ZN(isg6_level0), .A1(sg6_level0), .A2(vdd));
 AND2_X1 isgg14_level0(.ZN(isg12x13_level0), .A1(sg12x13_level0), .A2(vdd));
 AND2_X1 isgg16_level0(.ZN(isg11x12_level0), .A1(sg11x12_level0), .A2(vdd));
 AND2_X1 isgg18_level0(.ZN(isg10x12_level0), .A1(sg10x12_level0), .A2(vdd));
+
 endmodule
