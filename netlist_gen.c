@@ -27,22 +27,85 @@ void sig2gates(char *keys[__MAX_NUMBER_OF_SIGNALS__], int nkeys, int level){
 			}
 			l -= 1 ;
 		}
-		if(sk->nsensors == 1){
-			fprintf(stdout, "AND%d_X1 sgg%dlevel%d( .ZN(sg%s_level%d),",2, i, level, sk->signal_key, level);
-		}else{
-			fprintf(stdout, "AND%d_X1 sgg%dlevel%d( .ZN(sg%s_level%d),",sk->nsensors, i, level, sk->signal_key, level);
-		}
-		for (j = 0; j < sk->nsensors ; j++){
-			if(j != sk->nsensors - 1) {
-				fprintf(stdout, ".A%d(sensor%d_level%d), ", j+1, sk->sensors_index_list[j] , level);
+		if(sk->nsensors <= 4){
+			if(sk->nsensors == 1){
+				fprintf(stdout, "AND%d_X1 sgg%dlevel%d( .ZN(sg%s_level%d),",2, i, level, sk->signal_key, level);
 			}else{
-				fprintf(stdout, ".A%d(sensor%d_level%d)", j+1, sk->sensors_index_list[j], level );
+				fprintf(stdout, "AND%d_X1 sgg%dlevel%d( .ZN(sg%s_level%d),",sk->nsensors, i, level, sk->signal_key, level);
 			}
-		}
-		if(j == 1){
-			fprintf(stdout, ", .A2(vdd));\n");
+			for (j = 0; j < sk->nsensors ; j++){
+				if(j != sk->nsensors - 1) {
+					fprintf(stdout, ".A%d(sensor%d_level%d), ", j+1, sk->sensors_index_list[j] , level);
+				}else{
+					fprintf(stdout, ".A%d(sensor%d_level%d)", j+1, sk->sensors_index_list[j], level );
+				}
+			}
+			if(sk->nsensors == 1){
+				fprintf(stdout, ", .A2(vdd));\n");
+			}else{
+				fprintf(stdout, ");\n");
+			}
 		}else{
-			fprintf(stdout, ");\n");
+			int remaining_sensors = sk->nsensors , factor = 0, j = 0, k=0;	
+			while(remaining_sensors > 4){
+				int j = 0;
+				fprintf(stdout, "AND%d_X1 sgg%dfactor%dlevel%d( .ZN(sg%s_factor%d_level%d),",4, i, factor,level, sk->signal_key, factor, level);
+				for (j = 0; j < 4; j++){
+					if(j != 4) {
+						fprintf(stdout, ".A%d(sensor%d_level%d), ", j +1, sk->sensors_index_list[j+ factor * 4] , level);
+					}else{
+						fprintf(stdout, ".A%d(sensor%d_level%d)", j+1, sk->sensors_index_list[j+ factor * 4], level );
+					}
+				}
+				fprintf(stdout, ");\n");
+				factor += 1;remaining_sensors -= 4 ;
+			}
+			if(remaining_sensors == 1 ){
+				fprintf(stdout, "AND%d_X1 sgg%dlevel%d(.ZN(sg%s_level%d), .A1(sensor%d_level%d), ", factor+1, i, level, sk->signal_key, level, factor*4, level) ;
+				for(k = 0; k < factor; k++){
+					if(k != factor - 1 ) { 
+						fprintf(stdout, ".A%d(sg%s_factor%d_level%d), ", k+2, sk->signal_key, k, level); 
+					}else{
+						fprintf(stdout, ".A%d(sg%s_factor%d_level%d)); \n", k+2, sk->signal_key, k, level); 
+					}
+				}
+			}else if( remaining_sensors == 0){
+				fprintf(stdout, "AND%d_X1 sgg%dlevel%d(.ZN(sg%s_level%d), ", factor, i, level, sk->signal_key, level) ;
+				for(k = 0; k < factor; k++){
+					if(k != factor - 1 ) { 
+						fprintf(stdout, ".A%d(sg%s_factor%d_level%d), ", k+1, sk->signal_key, k, level); 
+					}else{
+						fprintf(stdout, ".A%d(sg%s_factor%d_level%d)); \n", k+1, sk->signal_key, k, level); 
+					}
+				}
+			}else{
+				if(remaining_sensors != 1){
+					fprintf(stdout, "AND%d_X1 sgg%dlevel%d( .ZN(sg%s_factor%d_level%d),",remaining_sensors, i, level, sk->signal_key, factor, level);
+				}else{
+					fprintf(stdout, "AND%d_X1 sgg%dlevel%d( .ZN(sg%s_factor%d_level%d),",2, i, level, sk->signal_key, factor, level);
+				}
+				for (j = factor * 4; j < sk->nsensors ; j++){
+					if(j != sk->nsensors - 1) {
+						fprintf(stdout, ".A%d(sensor%d_level%d), ", j +1 -factor*4, sk->sensors_index_list[j] ,  level);
+					}else{
+						fprintf(stdout, ".A%d(sensor%d_level%d)", j+1 -factor*4, sk->sensors_index_list[j ], level );
+					}
+				}
+				if(remaining_sensors == 1){
+					fprintf(stdout, ", .A2(vdd));\n");
+				}else{
+					fprintf(stdout, ");\n");
+				}
+				fprintf(stdout, "AND%d_X1 sgg%dlevel%d(.ZN(sg%s_level%d), ", factor+1, i, level, sk->signal_key, level) ;
+				for(k = 0; k <= factor; k++){
+					if(k != factor ) { 
+						fprintf(stdout, ".A%d(sg%s_factor%d_level%d), ", k+1, sk->signal_key, k, level); 
+					}else{
+						fprintf(stdout, ".A%d(sg%s_factor%d_level%d)); \n", k+1, sk->signal_key, k, level); 
+					}
+				}
+			}
+			
 		}
 			
 		}
@@ -83,15 +146,15 @@ void isig2gates(char *keys[], int nkeys, int level){
 			fprintf(stdout, "AND%d_X1 isgg%d_level%d(.ZN(isg%s_level%d), .A1(sg%s_level%d), ",sk->ndominated_sig+1 ,i, level,
 			sk->signal_key, level, sk->signal_key, level);
 		}
-		for( j =0; j < sk->ndominating_sig; j++){
-			if(j != sk->ndominating_sig - 1) {
-				fprintf(stdout, ".A%d(notsg%s_level%d), ",j+2, sk->dominating_signal[j]->signal_key , level) ;
+		for( j =0; j < sk->ndominated_sig; j++){
+			if(j != sk->ndominated_sig - 1) {
+				fprintf(stdout, ".A%d(notsg%s_level%d), ",j+2, sk->dominated_signal[j]->signal_key , level) ;
 			}else{
-				fprintf(stdout, ".A%d(notsg%s_level%d)", j+2,sk->dominating_signal[j]->signal_key , level) ;
+				fprintf(stdout, ".A%d(notsg%s_level%d)", j+2,sk->dominated_signal[j]->signal_key , level) ;
 			}
 		}
 		if(j == 0){
-			fprintf(stdout, ".A2(VDD));\n") ;
+			fprintf(stdout, ".A2(vdd));\n") ;
 		}else{
 			fprintf(stdout, ");\n") ;
 		}
