@@ -1,4 +1,5 @@
 module control_vga(
+<<<<<<< HEAD
 sensor0_level0,
 sensor1_level0,
 sensor2_level0,
@@ -10,6 +11,8 @@ sensor7_level0,
 sensor8_level0,
 sensor9_level0,
 vdd,
+=======
+>>>>>>> 0e9b5e5d7b10fe6653444f71d6d6e0ae5657aa83
 isg1_level0,
 isg9_level0,
 isg8_level0,
