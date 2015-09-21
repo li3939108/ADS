@@ -1,15 +1,4 @@
 module control_vga(
-output 
-isg1_level0,
-isg9_level0,
-isg8_level0,
-isg7_level0,
-isg6_level0,
-isg5_level0,
-isg0_level0,
-isg4_level0,
-isg3_level0,
-isg2_level0,
 sensor0_level0,
 sensor1_level0,
 sensor2_level0,
@@ -20,7 +9,30 @@ sensor6_level0,
 sensor7_level0,
 sensor8_level0,
 sensor9_level0,
-vdd);
+vdd,
+isg1_level0,
+isg9_level0,
+isg8_level0,
+isg7_level0,
+isg6_level0,
+isg5_level0,
+isg0_level0,
+isg4_level0,
+isg3_level0,
+isg2_level0
+);
+input 
+sensor0_level0,
+sensor1_level0,
+sensor2_level0,
+sensor3_level0,
+sensor4_level0,
+sensor5_level0,
+sensor6_level0,
+sensor7_level0,
+sensor8_level0,
+sensor9_level0,
+vdd;
 wire 
 sg1_level0,
 sg9_level0,
@@ -112,18 +124,6 @@ isg0_level0,
 isg4_level0,
 isg3_level0,
 isg2_level0;
-input 
-sensor0_level0,
-sensor1_level0,
-sensor2_level0,
-sensor3_level0,
-sensor4_level0,
-sensor5_level0,
-sensor6_level0,
-sensor7_level0,
-sensor8_level0,
-sensor9_level0,
-vdd;
 AND2_X1 sgg0level0( .ZN(sg1_level0),.A1(sensor1_level0), .A2(vdd));
 AND2_X1 sgg1level0( .ZN(sg9_level0),.A1(sensor9_level0), .A2(vdd));
 AND2_X1 sgg2level0( .ZN(sg8_level0),.A1(sensor8_level0), .A2(vdd));
@@ -213,5 +213,5 @@ AND2_X1 isgg6_level0(.ZN(isg0_level0), .A1(sg0_level0), .A2(vdd));
 AND2_X1 isgg7_level0(.ZN(isg4_level0), .A1(sg4_level0), .A2(vdd));
 AND2_X1 isgg8_level0(.ZN(isg3_level0), .A1(sg3_level0), .A2(vdd));
 AND2_X1 isgg9_level0(.ZN(isg2_level0), .A1(sg2_level0), .A2(vdd));
-endmodule
 
+endmodule
