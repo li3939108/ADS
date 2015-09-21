@@ -1,5 +1,4 @@
 module control_vga(
-output 
 isg1_level0,
 isg9_level0,
 isg8_level0,
