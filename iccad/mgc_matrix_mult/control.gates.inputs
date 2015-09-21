@@ -1,4 +1,4 @@
-input 
+module control_mgc(
 sensor0_level0,
 sensor1_level0,
 sensor2_level0,
@@ -14,8 +14,25 @@ sensor11_level0,
 sensor12_level0,
 sensor13_level0,
 sensor14_level0,
-vdd;
-
+vdd,
+isg12_level0,
+isg0_level0,
+isg13_level0,
+isg11_level0,
+isg10_level0,
+isg2_level0,
+isg1_level0,
+isg14_level0,
+isg8_level0,
+isg7_level0,
+isg5_level0,
+isg4_level0,
+isg3_level0,
+isg6_level0,
+isg12x13_level0,
+isg11x12_level0,
+isg10x12_level0
+);
 wire 
 sg12_level0,
 sg0_level0,
@@ -130,7 +147,23 @@ isg6_level0,
 isg12x13_level0,
 isg11x12_level0,
 isg10x12_level0;
-
+input 
+sensor0_level0,
+sensor1_level0,
+sensor2_level0,
+sensor3_level0,
+sensor4_level0,
+sensor5_level0,
+sensor6_level0,
+sensor7_level0,
+sensor8_level0,
+sensor9_level0,
+sensor10_level0,
+sensor11_level0,
+sensor12_level0,
+sensor13_level0,
+sensor14_level0,
+vdd;
 AND2_X1 sgg0level0( .ZN(sg12_level0),.A1(sensor12_level0), .A2(vdd));
 AND2_X1 sgg1level0( .ZN(sg0_level0),.A1(sensor0_level0), .A2(vdd));
 AND2_X1 sgg2level0( .ZN(sg13_level0),.A1(sensor13_level0), .A2(vdd));
@@ -243,4 +276,4 @@ AND2_X1 isgg13_level0(.ZN(isg6_level0), .A1(sg6_level0), .A2(vdd));
 AND2_X1 isgg14_level0(.ZN(isg12x13_level0), .A1(sg12x13_level0), .A2(vdd));
 AND2_X1 isgg16_level0(.ZN(isg11x12_level0), .A1(sg11x12_level0), .A2(vdd));
 AND2_X1 isgg18_level0(.ZN(isg10x12_level0), .A1(sg10x12_level0), .A2(vdd));
-
+endmodule

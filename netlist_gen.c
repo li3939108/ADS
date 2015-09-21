@@ -67,7 +67,7 @@ void sig2gates(char *keys[__MAX_NUMBER_OF_SIGNALS__], int nkeys, int level){
 				fprintf(stdout, "AND%d_X1 sgg%dfactor%dlevel%d( .ZN(sg%s_factor%d_level%d),",4, i, factor,level, sk->signal_key, factor, level);
 				sprintf(wires[wire_ct++], "sg%s_factor%d_level%d", sk->signal_key, factor, 0) ;
 				for (j = 0; j < 4; j++){
-					if(j != 4) {
+					if(j != 4 - 1) {
 						fprintf(stdout, ".A%d(sensor%d_level%d), ", j +1, sk->sensors_index_list[j+ factor * 4] , level);
 					}else{
 						fprintf(stdout, ".A%d(sensor%d_level%d)", j+1, sk->sensors_index_list[j+ factor * 4], level );
