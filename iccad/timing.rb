@@ -102,11 +102,11 @@ class Circuit
 	TIMING_PATH_START = 4
 	TIMING_PATH_END =5
 	FINISH = 6
-	def initialize(gates, library , sigma = 0.3)
+	def initialize(gates, library , sensor_limit = 15, sigma = 0.3)
 		@gate_delay = {}
 		@gate_delay_high_voltage = {}
 		@gate_delay_variation = {}
-		@origianal_critical_paths = []
+		@original_critical_paths = []
 		@critical_paths = []
 		@gate_reference = {}
 		@total_area = 0
@@ -115,7 +115,7 @@ class Circuit
 		parse_gates(gates, library)
 		parse_timing_file
 		parse_timing_file('timing.high', 0, 'high')
-		select_paths
+		select_paths(sensor_limit)
 		parse_GinC_file
 		update_variation 
 	end
@@ -254,7 +254,7 @@ class Circuit
 						path.set_arrival_time( at ) 
 						if voltage == 'low'
 							@critical_paths.push(path) 
-							@origianal_critical_paths.push(path)
+							@original_critical_paths.push(path)
 						end
 						state = TIMING_PATH_END
 					else
@@ -283,7 +283,7 @@ class Circuit
 		end
 	end
 	def check_timing(rat, cluster_path)
-		@origianal_critical_paths.each do |p|
+		@original_critical_paths.each do |p|
 			if p.new_arrival_time(cluster_path, @clusters) > rat 
 				return false
 			end
@@ -538,6 +538,7 @@ def cost_gen(affected_paths, clt)
 	affected_paths.each do |paths_with_cluster|
 		cost_file.print clt.to_cost[ paths_with_cluster[0] ], " "
 	end
+	cost_file.close
 end
 def mat_gen(paths, clt, cluster_th = 0.3)
 	paths.each do |p|
@@ -574,5 +575,6 @@ def mat_gen(paths, clt, cluster_th = 0.3)
 		end
 		mat_file.print "\n"
 	end
+	mat_file.close
 	affected_paths
 end
