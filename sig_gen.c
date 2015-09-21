@@ -16,6 +16,9 @@ int nkeys = 0 ;
 
 extern void sig2gates(char *keys[__MAX_NUMBER_OF_SIGNALS__], int nkeys, int level ); 
 extern void isig2gates(char *keys[], int nkeys, int level) ;
+extern void inputs(int ncolumn); 
+extern void wires_gen();
+extern void outputs_gen();
 
 int key_nsensors_cmp(const void *a, const void *b){
 	ENTRY ea = {*(char * const *)a, NULL}, eb = {*(char * const *)b, NULL}, *ar, *br ;
@@ -591,12 +594,15 @@ int main(){
 	sk_chain_pruning(cost, 0) ;	
 	#ifdef DEBUG
 	print_keys((char *)mat, nrow, ncol, cost, index, 0) ;
+	#endif
 //	print_keys((char *)mat, nrow, ncol, cost, index, 1) ;
+	inputs(ncol) ;
 	sig2gates(keys, nkeys, 0) ;
 //	sig2gates(keys, nkeys, 1) ;
 	isig2gates(keys, nkeys, 0) ;
 //	isig2gates(keys, nkeys, 1) ;
-	#endif
+	wires_gen();
+	outputs_gen();
 	for( i = 0; i < nkeys ; i++){
 		ENTRY e={ keys[i], NULL};
 		et = hsearch(e, FIND) ;

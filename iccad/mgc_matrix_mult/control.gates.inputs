@@ -1,0 +1,246 @@
+input 
+sensor0_level0,
+sensor1_level0,
+sensor2_level0,
+sensor3_level0,
+sensor4_level0,
+sensor5_level0,
+sensor6_level0,
+sensor7_level0,
+sensor8_level0,
+sensor9_level0,
+sensor10_level0,
+sensor11_level0,
+sensor12_level0,
+sensor13_level0,
+sensor14_level0,
+vdd;
+
+wire 
+sg12_level0,
+sg0_level0,
+sg13_level0,
+sg11_level0,
+sg10_level0,
+sg2_level0,
+sg1_level0,
+sg14_level0,
+sg8_level0,
+sg7_level0,
+sg5_level0,
+sg4_level0,
+sg3_level0,
+sg6_level0,
+sg12x13_level0,
+sg11x13_level0,
+sg11x12_level0,
+sg10x13_level0,
+sg10x12_level0,
+sg10x11_level0,
+sg1x2_level0,
+sg8x14_level0,
+sg7x14_level0,
+sg7x8_level0,
+sg5x14_level0,
+sg5x8_level0,
+sg5x7_level0,
+sg4x14_level0,
+sg4x8_level0,
+sg4x7_level0,
+sg4x5_level0,
+sg3x14_level0,
+sg3x8_level0,
+sg3x7_level0,
+sg3x5_level0,
+sg3x4_level0,
+sg11x12x13_level0,
+sg10x12x13_level0,
+sg10x11x13_level0,
+sg10x11x12_level0,
+sg7x8x14_level0,
+sg5x8x14_level0,
+sg5x7x14_level0,
+sg5x7x8_level0,
+sg4x8x14_level0,
+sg4x7x14_level0,
+sg4x7x8_level0,
+sg4x5x14_level0,
+sg4x5x8_level0,
+sg4x5x7_level0,
+sg3x8x14_level0,
+sg3x7x14_level0,
+sg3x7x8_level0,
+sg3x5x14_level0,
+sg3x5x8_level0,
+sg3x5x7_level0,
+sg3x4x14_level0,
+sg3x4x8_level0,
+sg3x4x7_level0,
+sg3x4x5_level0,
+sg10x11x12x13_level0,
+sg5x7x8x14_level0,
+sg4x7x8x14_level0,
+sg4x5x8x14_level0,
+sg4x5x7x14_level0,
+sg4x5x7x8_level0,
+sg3x7x8x14_level0,
+sg3x5x8x14_level0,
+sg3x5x7x14_level0,
+sg3x5x7x8_level0,
+sg3x4x8x14_level0,
+sg3x4x7x14_level0,
+sg3x4x7x8_level0,
+sg3x4x5x14_level0,
+sg3x4x5x8_level0,
+sg3x4x5x7_level0,
+sg4x5x7x8x14_factor0_level0,
+sg4x5x7x8x14_level0,
+sg3x5x7x8x14_factor0_level0,
+sg3x5x7x8x14_level0,
+sg3x4x7x8x14_factor0_level0,
+sg3x4x7x8x14_level0,
+sg3x4x5x8x14_factor0_level0,
+sg3x4x5x8x14_level0,
+sg3x4x5x7x14_factor0_level0,
+sg3x4x5x7x14_level0,
+sg3x4x5x7x8_factor0_level0,
+sg3x4x5x7x8_level0,
+sg3x4x5x7x8x14_factor0_level0,
+sg3x4x5x7x8x14_factor1_level0,
+sg3x4x5x7x8x14_level0,
+nogsg12_level0,
+nogsg13_level0,
+nogsg11_level0,
+nogsg10_level0;
+output 
+isg12_level0,
+isg0_level0,
+isg13_level0,
+isg11_level0,
+isg10_level0,
+isg2_level0,
+isg1_level0,
+isg14_level0,
+isg8_level0,
+isg7_level0,
+isg5_level0,
+isg4_level0,
+isg3_level0,
+isg6_level0,
+isg12x13_level0,
+isg11x12_level0,
+isg10x12_level0;
+
+AND2_X1 sgg0level0( .ZN(sg12_level0),.A1(sensor12_level0), .A2(vdd));
+AND2_X1 sgg1level0( .ZN(sg0_level0),.A1(sensor0_level0), .A2(vdd));
+AND2_X1 sgg2level0( .ZN(sg13_level0),.A1(sensor13_level0), .A2(vdd));
+AND2_X1 sgg3level0( .ZN(sg11_level0),.A1(sensor11_level0), .A2(vdd));
+AND2_X1 sgg4level0( .ZN(sg10_level0),.A1(sensor10_level0), .A2(vdd));
+AND2_X1 sgg5level0( .ZN(sg2_level0),.A1(sensor2_level0), .A2(vdd));
+AND2_X1 sgg6level0( .ZN(sg1_level0),.A1(sensor1_level0), .A2(vdd));
+AND2_X1 sgg7level0( .ZN(sg14_level0),.A1(sensor14_level0), .A2(vdd));
+AND2_X1 sgg8level0( .ZN(sg8_level0),.A1(sensor8_level0), .A2(vdd));
+AND2_X1 sgg9level0( .ZN(sg7_level0),.A1(sensor7_level0), .A2(vdd));
+AND2_X1 sgg10level0( .ZN(sg5_level0),.A1(sensor5_level0), .A2(vdd));
+AND2_X1 sgg11level0( .ZN(sg4_level0),.A1(sensor4_level0), .A2(vdd));
+AND2_X1 sgg12level0( .ZN(sg3_level0),.A1(sensor3_level0), .A2(vdd));
+AND2_X1 sgg13level0( .ZN(sg6_level0),.A1(sensor6_level0), .A2(vdd));
+AND2_X1 sgg14level0( .ZN(sg12x13_level0),.A1(sensor12_level0), .A2(sensor13_level0));
+AND2_X1 sgg15level0( .ZN(sg11x13_level0),.A1(sensor11_level0), .A2(sensor13_level0));
+AND2_X1 sgg16level0( .ZN(sg11x12_level0),.A1(sensor11_level0), .A2(sensor12_level0));
+AND2_X1 sgg17level0( .ZN(sg10x13_level0),.A1(sensor10_level0), .A2(sensor13_level0));
+AND2_X1 sgg18level0( .ZN(sg10x12_level0),.A1(sensor10_level0), .A2(sensor12_level0));
+AND2_X1 sgg19level0( .ZN(sg10x11_level0),.A1(sensor10_level0), .A2(sensor11_level0));
+AND2_X1 sgg20level0( .ZN(sg1x2_level0),.A1(sensor1_level0), .A2(sensor2_level0));
+AND2_X1 sgg21level0( .ZN(sg8x14_level0),.A1(sensor8_level0), .A2(sensor14_level0));
+AND2_X1 sgg22level0( .ZN(sg7x14_level0),.A1(sensor7_level0), .A2(sensor14_level0));
+AND2_X1 sgg23level0( .ZN(sg7x8_level0),.A1(sensor7_level0), .A2(sensor8_level0));
+AND2_X1 sgg24level0( .ZN(sg5x14_level0),.A1(sensor5_level0), .A2(sensor14_level0));
+AND2_X1 sgg25level0( .ZN(sg5x8_level0),.A1(sensor5_level0), .A2(sensor8_level0));
+AND2_X1 sgg26level0( .ZN(sg5x7_level0),.A1(sensor5_level0), .A2(sensor7_level0));
+AND2_X1 sgg27level0( .ZN(sg4x14_level0),.A1(sensor4_level0), .A2(sensor14_level0));
+AND2_X1 sgg28level0( .ZN(sg4x8_level0),.A1(sensor4_level0), .A2(sensor8_level0));
+AND2_X1 sgg29level0( .ZN(sg4x7_level0),.A1(sensor4_level0), .A2(sensor7_level0));
+AND2_X1 sgg30level0( .ZN(sg4x5_level0),.A1(sensor4_level0), .A2(sensor5_level0));
+AND2_X1 sgg31level0( .ZN(sg3x14_level0),.A1(sensor3_level0), .A2(sensor14_level0));
+AND2_X1 sgg32level0( .ZN(sg3x8_level0),.A1(sensor3_level0), .A2(sensor8_level0));
+AND2_X1 sgg33level0( .ZN(sg3x7_level0),.A1(sensor3_level0), .A2(sensor7_level0));
+AND2_X1 sgg34level0( .ZN(sg3x5_level0),.A1(sensor3_level0), .A2(sensor5_level0));
+AND2_X1 sgg35level0( .ZN(sg3x4_level0),.A1(sensor3_level0), .A2(sensor4_level0));
+AND3_X1 sgg36level0( .ZN(sg11x12x13_level0),.A1(sensor11_level0), .A2(sensor12_level0), .A3(sensor13_level0));
+AND3_X1 sgg37level0( .ZN(sg10x12x13_level0),.A1(sensor10_level0), .A2(sensor12_level0), .A3(sensor13_level0));
+AND3_X1 sgg38level0( .ZN(sg10x11x13_level0),.A1(sensor10_level0), .A2(sensor11_level0), .A3(sensor13_level0));
+AND3_X1 sgg39level0( .ZN(sg10x11x12_level0),.A1(sensor10_level0), .A2(sensor11_level0), .A3(sensor12_level0));
+AND3_X1 sgg40level0( .ZN(sg7x8x14_level0),.A1(sensor7_level0), .A2(sensor8_level0), .A3(sensor14_level0));
+AND3_X1 sgg41level0( .ZN(sg5x8x14_level0),.A1(sensor5_level0), .A2(sensor8_level0), .A3(sensor14_level0));
+AND3_X1 sgg42level0( .ZN(sg5x7x14_level0),.A1(sensor5_level0), .A2(sensor7_level0), .A3(sensor14_level0));
+AND3_X1 sgg43level0( .ZN(sg5x7x8_level0),.A1(sensor5_level0), .A2(sensor7_level0), .A3(sensor8_level0));
+AND3_X1 sgg44level0( .ZN(sg4x8x14_level0),.A1(sensor4_level0), .A2(sensor8_level0), .A3(sensor14_level0));
+AND3_X1 sgg45level0( .ZN(sg4x7x14_level0),.A1(sensor4_level0), .A2(sensor7_level0), .A3(sensor14_level0));
+AND3_X1 sgg46level0( .ZN(sg4x7x8_level0),.A1(sensor4_level0), .A2(sensor7_level0), .A3(sensor8_level0));
+AND3_X1 sgg47level0( .ZN(sg4x5x14_level0),.A1(sensor4_level0), .A2(sensor5_level0), .A3(sensor14_level0));
+AND3_X1 sgg48level0( .ZN(sg4x5x8_level0),.A1(sensor4_level0), .A2(sensor5_level0), .A3(sensor8_level0));
+AND3_X1 sgg49level0( .ZN(sg4x5x7_level0),.A1(sensor4_level0), .A2(sensor5_level0), .A3(sensor7_level0));
+AND3_X1 sgg50level0( .ZN(sg3x8x14_level0),.A1(sensor3_level0), .A2(sensor8_level0), .A3(sensor14_level0));
+AND3_X1 sgg51level0( .ZN(sg3x7x14_level0),.A1(sensor3_level0), .A2(sensor7_level0), .A3(sensor14_level0));
+AND3_X1 sgg52level0( .ZN(sg3x7x8_level0),.A1(sensor3_level0), .A2(sensor7_level0), .A3(sensor8_level0));
+AND3_X1 sgg53level0( .ZN(sg3x5x14_level0),.A1(sensor3_level0), .A2(sensor5_level0), .A3(sensor14_level0));
+AND3_X1 sgg54level0( .ZN(sg3x5x8_level0),.A1(sensor3_level0), .A2(sensor5_level0), .A3(sensor8_level0));
+AND3_X1 sgg55level0( .ZN(sg3x5x7_level0),.A1(sensor3_level0), .A2(sensor5_level0), .A3(sensor7_level0));
+AND3_X1 sgg56level0( .ZN(sg3x4x14_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor14_level0));
+AND3_X1 sgg57level0( .ZN(sg3x4x8_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor8_level0));
+AND3_X1 sgg58level0( .ZN(sg3x4x7_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor7_level0));
+AND3_X1 sgg59level0( .ZN(sg3x4x5_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor5_level0));
+AND4_X1 sgg60level0( .ZN(sg10x11x12x13_level0),.A1(sensor10_level0), .A2(sensor11_level0), .A3(sensor12_level0), .A4(sensor13_level0));
+AND4_X1 sgg61level0( .ZN(sg5x7x8x14_level0),.A1(sensor5_level0), .A2(sensor7_level0), .A3(sensor8_level0), .A4(sensor14_level0));
+AND4_X1 sgg62level0( .ZN(sg4x7x8x14_level0),.A1(sensor4_level0), .A2(sensor7_level0), .A3(sensor8_level0), .A4(sensor14_level0));
+AND4_X1 sgg63level0( .ZN(sg4x5x8x14_level0),.A1(sensor4_level0), .A2(sensor5_level0), .A3(sensor8_level0), .A4(sensor14_level0));
+AND4_X1 sgg64level0( .ZN(sg4x5x7x14_level0),.A1(sensor4_level0), .A2(sensor5_level0), .A3(sensor7_level0), .A4(sensor14_level0));
+AND4_X1 sgg65level0( .ZN(sg4x5x7x8_level0),.A1(sensor4_level0), .A2(sensor5_level0), .A3(sensor7_level0), .A4(sensor8_level0));
+AND4_X1 sgg66level0( .ZN(sg3x7x8x14_level0),.A1(sensor3_level0), .A2(sensor7_level0), .A3(sensor8_level0), .A4(sensor14_level0));
+AND4_X1 sgg67level0( .ZN(sg3x5x8x14_level0),.A1(sensor3_level0), .A2(sensor5_level0), .A3(sensor8_level0), .A4(sensor14_level0));
+AND4_X1 sgg68level0( .ZN(sg3x5x7x14_level0),.A1(sensor3_level0), .A2(sensor5_level0), .A3(sensor7_level0), .A4(sensor14_level0));
+AND4_X1 sgg69level0( .ZN(sg3x5x7x8_level0),.A1(sensor3_level0), .A2(sensor5_level0), .A3(sensor7_level0), .A4(sensor8_level0));
+AND4_X1 sgg70level0( .ZN(sg3x4x8x14_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor8_level0), .A4(sensor14_level0));
+AND4_X1 sgg71level0( .ZN(sg3x4x7x14_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor7_level0), .A4(sensor14_level0));
+AND4_X1 sgg72level0( .ZN(sg3x4x7x8_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor7_level0), .A4(sensor8_level0));
+AND4_X1 sgg73level0( .ZN(sg3x4x5x14_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor5_level0), .A4(sensor14_level0));
+AND4_X1 sgg74level0( .ZN(sg3x4x5x8_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor5_level0), .A4(sensor8_level0));
+AND4_X1 sgg75level0( .ZN(sg3x4x5x7_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor5_level0), .A4(sensor7_level0));
+AND4_X1 sgg76factor0level0( .ZN(sg4x5x7x8x14_factor0_level0),.A1(sensor4_level0), .A2(sensor5_level0), .A3(sensor7_level0), .A4(sensor8_level0), );
+AND2_X1 sgg76level0(.ZN(sg4x5x7x8x14_level0), .A1(sensor4_level0), .A2(sg4x5x7x8x14_factor0_level0)); 
+AND4_X1 sgg77factor0level0( .ZN(sg3x5x7x8x14_factor0_level0),.A1(sensor3_level0), .A2(sensor5_level0), .A3(sensor7_level0), .A4(sensor8_level0), );
+AND2_X1 sgg77level0(.ZN(sg3x5x7x8x14_level0), .A1(sensor4_level0), .A2(sg3x5x7x8x14_factor0_level0)); 
+AND4_X1 sgg78factor0level0( .ZN(sg3x4x7x8x14_factor0_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor7_level0), .A4(sensor8_level0), );
+AND2_X1 sgg78level0(.ZN(sg3x4x7x8x14_level0), .A1(sensor4_level0), .A2(sg3x4x7x8x14_factor0_level0)); 
+AND4_X1 sgg79factor0level0( .ZN(sg3x4x5x8x14_factor0_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor5_level0), .A4(sensor8_level0), );
+AND2_X1 sgg79level0(.ZN(sg3x4x5x8x14_level0), .A1(sensor4_level0), .A2(sg3x4x5x8x14_factor0_level0)); 
+AND4_X1 sgg80factor0level0( .ZN(sg3x4x5x7x14_factor0_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor5_level0), .A4(sensor7_level0), );
+AND2_X1 sgg80level0(.ZN(sg3x4x5x7x14_level0), .A1(sensor4_level0), .A2(sg3x4x5x7x14_factor0_level0)); 
+AND4_X1 sgg81factor0level0( .ZN(sg3x4x5x7x8_factor0_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor5_level0), .A4(sensor7_level0), );
+AND2_X1 sgg81level0(.ZN(sg3x4x5x7x8_level0), .A1(sensor4_level0), .A2(sg3x4x5x7x8_factor0_level0)); 
+AND4_X1 sgg82factor0level0( .ZN(sg3x4x5x7x8x14_factor0_level0),.A1(sensor3_level0), .A2(sensor4_level0), .A3(sensor5_level0), .A4(sensor7_level0), );
+AND2_X1 sgg82level0( .ZN(sg3x4x5x7x8x14_factor1_level0),.A1(sensor8_level0), .A2(sensor14_level0));
+AND2_X1 sgg82level0(.ZN(sg3x4x5x7x8x14_level0), .A1(sg3x4x5x7x8x14_factor0_level0), .A2(sg3x4x5x7x8x14_factor1_level0)); 
+INV_X1 notsgg0_level0(notsg12_level0, sg12_level0);
+AND4_X1 isgg0_level0(.ZN(isg12_level0), .A1(sg12_level0), .A2(notsg12x13_level0), .A3(notsg11x12_level0), .A4(notsg10x12_level0));
+AND2_X1 isgg1_level0(.ZN(isg0_level0), .A1(sg0_level0), .A2(vdd));
+INV_X1 notsgg2_level0(notsg13_level0, sg13_level0);
+AND2_X1 isgg2_level0(.ZN(isg13_level0), .A1(sg13_level0), .A2(notsg12x13_level0));
+INV_X1 notsgg3_level0(notsg11_level0, sg11_level0);
+AND2_X1 isgg3_level0(.ZN(isg11_level0), .A1(sg11_level0), .A2(notsg11x12_level0));
+INV_X1 notsgg4_level0(notsg10_level0, sg10_level0);
+AND2_X1 isgg4_level0(.ZN(isg10_level0), .A1(sg10_level0), .A2(notsg10x12_level0));
+AND2_X1 isgg5_level0(.ZN(isg2_level0), .A1(sg2_level0), .A2(vdd));
+AND2_X1 isgg6_level0(.ZN(isg1_level0), .A1(sg1_level0), .A2(vdd));
+AND2_X1 isgg7_level0(.ZN(isg14_level0), .A1(sg14_level0), .A2(vdd));
+AND2_X1 isgg8_level0(.ZN(isg8_level0), .A1(sg8_level0), .A2(vdd));
+AND2_X1 isgg9_level0(.ZN(isg7_level0), .A1(sg7_level0), .A2(vdd));
+AND2_X1 isgg10_level0(.ZN(isg5_level0), .A1(sg5_level0), .A2(vdd));
+AND2_X1 isgg11_level0(.ZN(isg4_level0), .A1(sg4_level0), .A2(vdd));
+AND2_X1 isgg12_level0(.ZN(isg3_level0), .A1(sg3_level0), .A2(vdd));
+AND2_X1 isgg13_level0(.ZN(isg6_level0), .A1(sg6_level0), .A2(vdd));
+AND2_X1 isgg14_level0(.ZN(isg12x13_level0), .A1(sg12x13_level0), .A2(vdd));
+AND2_X1 isgg16_level0(.ZN(isg11x12_level0), .A1(sg11x12_level0), .A2(vdd));
+AND2_X1 isgg18_level0(.ZN(isg10x12_level0), .A1(sg10x12_level0), .A2(vdd));
+
