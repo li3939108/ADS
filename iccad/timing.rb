@@ -265,7 +265,7 @@ class Circuit
 					set_gate_delay(temp_gate, line_seg[0].to_f, voltage)
 				elsif line_seg.length == 3 
 					temp_gate = line_seg[0] 
-				elsif line_seg.length == 6 
+				elsif line_seg.length == 6 or line_seg.length == 7
 					path.add_gate(line_seg[0]) if voltage == 'low'
 					path.set_gate_delay(line_seg[0], line_seg[3].to_f) if voltage == 'low'
 					set_gate_delay(line_seg[0], line_seg[3].to_f, voltage)
