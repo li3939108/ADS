@@ -149,7 +149,7 @@ void isig2gates(char *keys[], int nkeys, int level){
 			l -= 1 ;
 		}
 		if(sk->ndominating_sig > 0){
-			fprintf(stdout, "%s notsgg%d_level%d(notsg%s_level%d, sg%s_level%d);\n", NOT_GATE,
+			fprintf(stdout, "%s notsgg%d_level%d(.ZN(notsg%s_level%d), .A(sg%s_level%d));\n", NOT_GATE,
 				i, level, sk->signal_key, level, sk->signal_key, level) ;
 			sprintf(wires[wire_ct++], "nogsg%s_level%d", sk->signal_key, 0) ;
 		}
