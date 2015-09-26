@@ -114,7 +114,7 @@ class Circuit
 		@rand =  RandomGaussian.new(1, sigma)
 		parse_gates(gates, library)
 		parse_timing_file
-		parse_timing_file('timing.high', 0, 'high')
+		parse_timing_file('timing.pr.high', 0, 'high')
 		select_paths(sensor_limit)
 		parse_GinC_file
 		update_variation 
@@ -211,7 +211,7 @@ class Circuit
 	def random_paths(number = 1)
 		@critical_paths.sample(number ) 
 	end
-	def parse_timing_file(file = "timing.path", threshold = 0.75, voltage = 'low')
+	def parse_timing_file(file = "timing.pr.low", threshold = 0.75, voltage = 'low')
 		timing_file = File.new(file, "r") 
 		state = INITIAL
 		design_name = " " 
@@ -260,7 +260,8 @@ class Circuit
 					else
 						state = FINISH
 					end
-				elsif line_seg.length == 3 and (line_seg[2] == "r" or line_seg[2] == "f"  ) 
+				elsif (line_seg.length == 3 and (line_seg[2] == "r" or line_seg[2] == "f"  ) ) or
+					(line_seg.length == 4 and (line_seg[3] == "r" or line_seg[3] == "f" ))
 					path.set_gate_delay(temp_gate, line_seg[0].to_f ) if voltage == 'low'
 					set_gate_delay(temp_gate, line_seg[0].to_f, voltage)
 				elsif line_seg.length == 3 
