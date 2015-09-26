@@ -475,13 +475,14 @@ class Path
 		@gates_along_path.add(gate)
 	end
 
-	def cluster(clt, threshold = 0.25)
+	def cluster(clt, threshold = 0.2)
 		if @important_cluster.length != 0
 			return 
 		end
 		@gates_along_path.each do |g|
 			c = clt.g2c(g) 
-			if @cluster_delay_sum[c] == nil
+			if c == nil
+			elsif @cluster_delay_sum[c] == nil
 				@cluster_delay_sum[c] = @gate_delay[g] 
 			else
 				@cluster_delay_sum[c] += @gate_delay[g]
