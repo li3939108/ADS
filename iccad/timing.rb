@@ -102,7 +102,7 @@ class Circuit
 	TIMING_PATH_START = 4
 	TIMING_PATH_END =5
 	FINISH = 6
-	def initialize(gates, library , sensor_limit = 15, sigma = 0.3)
+	def initialize(gates, library , sensor_limit = 15, sigma = 0.3, stage = "pr", potential = 0.8)
 		@gate_delay = {}
 		@gate_delay_high_voltage = {}
 		@gate_delay_variation = {}
@@ -113,8 +113,8 @@ class Circuit
 		@total_leakage = 0
 		@rand =  RandomGaussian.new(1, sigma)
 		parse_gates(gates, library)
-		parse_timing_file
-		parse_timing_file('timing.pr.high', 0, 'high')
+		parse_timing_file("timing.#{stage}.low", potential, 'low') 
+		parse_timing_file("timing.#{stage}.high", 0, 'high')
 		select_paths(sensor_limit)
 		parse_GinC_file
 		update_variation 
@@ -429,9 +429,10 @@ class Path
 		@gates_along_path
 	end
 	def delay(gate, with_variation = 'no')
-		if with_variation == 'no'
+		# remove large wire delay
+		if with_variation == 'no' or @gate_delay[gate] > 1
 			@gate_delay[gate]
-		elsif with_variation == 'yes'
+		elsif with_variation == 'yes' 
 			@gate_delay[gate] * @circuit.gate_variation(gate)
 		end
 	end
@@ -476,20 +477,23 @@ class Path
 	end
 
 	def cluster(clt, threshold = 0.2)
+		sum_effective_at = 0
 		if @important_cluster.length != 0
 			return 
 		end
 		@gates_along_path.each do |g|
 			c = clt.g2c(g) 
-			if c == nil
+			if c == nil or @gate_delay[g] > 1
 			elsif @cluster_delay_sum[c] == nil
 				@cluster_delay_sum[c] = @gate_delay[g] 
+				sum_effective_at +=  @gate_delay[g]
 			else
 				@cluster_delay_sum[c] += @gate_delay[g]
+				sum_effective_at +=  @gate_delay[g]
 			end
 		end
 		@important_cluster = @cluster_delay_sum.select{|k,v|
-			(v + 0.0) / @arrival_time >= threshold
+			(v + 0.0) /  sum_effective_at >= threshold
 		}.keys
 	end
 end
@@ -542,7 +546,7 @@ def cost_gen(affected_paths, clt)
 	end
 	cost_file.close
 end
-def mat_gen(paths, clt, cluster_th = 0.3)
+def mat_gen(paths, clt, cluster_th = 0.2)
 	paths.each do |p|
 		p.cluster(clt, cluster_th)
 	end
