@@ -511,7 +511,8 @@ def naive_simu_knob(affected_paths, on_paths, clt)
 	cluster_paths
 end
 def simu_knob(affected_paths, on_paths, clt)
-	sorted_paths = affected_paths.sort{|b,a| b[1].length <=> b[1].length }
+	# sorting in descending order
+	sorted_paths = affected_paths.sort{|b,a| a[1].length <=> b[1].length }
 	intersections = []
 	cluster_paths = []
 	sorted_paths.each do |p|
