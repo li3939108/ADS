@@ -16,6 +16,9 @@ int nkeys = 0 ;
 
 extern void sig2gates(char *keys[__MAX_NUMBER_OF_SIGNALS__], int nkeys, int level ); 
 extern void isig2gates(char *keys[], int nkeys, int level) ;
+extern void inputs(int ncolumn); 
+extern void wires_gen();
+extern void outputs_gen();
 
 int key_nsensors_cmp(const void *a, const void *b){
 	ENTRY ea = {*(char * const *)a, NULL}, eb = {*(char * const *)b, NULL}, *ar, *br ;
@@ -94,7 +97,7 @@ void remove_dominated_sig(SIG_KNOB sk, SIG_KNOB sk_to_remove){
 	sk->dominated_signal = dominated_signal ;
 	fprintf(stderr, "remove_dominated : %s(%d) - %s\n", sk->signal_key, sk->ndominated_sig, sk_to_remove->signal_key ) ;
 	sk->ndominated_sig = sk->ndominated_sig  - 1;
-	fprintf(stderr, "dominated: %s %s \n", sk->dominated_signal[0]->signal_key, sk->dominated_signal[1]->signal_key ) ;
+	//fprintf(stderr, "dominated: %s %s \n", sk->dominated_signal[0]->signal_key, sk->dominated_signal[1]->signal_key ) ;
 	
 }
 void remove_dominating_sig(SIG_KNOB sk, SIG_KNOB sk_to_remove){
@@ -480,6 +483,7 @@ void signal_gen(void *temp_mat, int nrow, int ncol, int sorted_index[], float co
 }
 int cost_fun(FILE *input , void *mat, int nrow, int ncol, int row_number){
 	int i, ret = 0 ;
+	
 	if(row_number < nrow){
 		for ( i = 0; i < ncol; i++){
 			ret += (unsigned int ) ((char (*)[ncol])mat)[row_number ][i] ;
@@ -489,11 +493,13 @@ int cost_fun(FILE *input , void *mat, int nrow, int ncol, int row_number){
 		fprintf(stderr, "specified row number %d too large", row_number);
 		exit(EXIT_FAILURE) ;
 	}
+
+	
 }
 int cost_cmp(const void *a, const void *b, void *cost){
-	if(  ( (int const *)cost)[*(int const *)a] <  ( (int const *)cost)[*(int const *)b] ){
+	if(  ( (float const *)cost)[*(int const *)a] <  ( (float const *)cost)[*(int const *)b] ){
 		return -1;
-	}else if( ( (int const *)cost)[*(int const *)a] == ( (int const *)cost)[*(int const *)b] ){
+	}else if( ( (float const *)cost)[*(int const *)a] == ( (float const *)cost)[*(int const *)b] ){
 		return 0;
 	}else{	return 1;}
 }
@@ -508,7 +514,7 @@ void print_keys(char *temp_mat, int nrow, int ncol, float const cost[], int cons
 		}
 		fprintf(stderr, "   cost is %f, sorted cost is %d\n", cost[i], index[i]) ;
 	}
-	fprintf(stderr, "cost of 2 : %d\n",  cost_fun(NULL, mat, nrow, ncol, 2)) ;
+	//fprintf(stderr, "cost of 2 : %d\n",  cost_fun(NULL, mat, nrow, ncol, 2)) ;
 
 	fprintf(stderr, "level %d\n\n\n", level );
 	for(i = 0; i < nkeys ; i++){
@@ -542,8 +548,20 @@ void print_keys(char *temp_mat, int nrow, int ncol, float const cost[], int cons
 	}
 }
 #endif
+void get_cost(FILE *cost_input, float *cost, int nrow){
+	int temp, i;
+	if(cost_input == NULL){
+		perror("no cost file");
+		exit(EXIT_FAILURE);
+	}
+	for(i = 0; i< nrow ; i++){
+		fscanf(cost_input, "%d", &temp) ;
+		cost[i] = (float) temp ;
+	}
+}
 int main(){
-	FILE *fp = fopen("input", "r") ;
+	FILE *fp = fopen("mat_input", "r") ;
+	FILE *cost_input = fopen("cost_input", "r") ;
 	int nrow, ncol ;
 	/* convert the pointer to multidimensional array */
 	char *temp_mat =  get_matrix(fp, &nrow, &ncol) ;
@@ -561,26 +579,30 @@ int main(){
 
 	cost_original[0] = INFINITY ;
 	
+	get_cost(cost_input, cost, nrow) ;
 	for(i = 0; i < nrow; i++){
-		cost[i] = cost_fun(NULL, mat, nrow, ncol, i) ;
+//		cost[i] = cost_fun(NULL, mat, nrow, ncol, i) ;
 		index[i] = i ;
 	}
 	qsort_r(index, nrow, sizeof *index, cost_cmp, cost) ;
 	signal_gen(temp_mat, nrow, ncol, index, cost) ;
-	qsort(keys, nkeys, sizeof (char *), key_nsensors_cmp); 
-	add_next_level(keys, nkeys, cost);
+//	qsort(keys, nkeys, sizeof (char *), key_nsensors_cmp); 
+//	add_next_level(keys, nkeys, cost);
 	#ifdef DEBUG
 	print_keys((char *)mat, nrow, ncol, cost, index, 0) ;
 	#endif
 	sk_chain_pruning(cost, 0) ;	
 	#ifdef DEBUG
 	print_keys((char *)mat, nrow, ncol, cost, index, 0) ;
-	print_keys((char *)mat, nrow, ncol, cost, index, 1) ;
-	sig2gates(keys, nkeys, 0) ;
-	sig2gates(keys, nkeys, 1) ;
-	isig2gates(keys, nkeys, 0) ;
-	isig2gates(keys, nkeys, 1) ;
 	#endif
+//	print_keys((char *)mat, nrow, ncol, cost, index, 1) ;
+	inputs(ncol) ;
+	sig2gates(keys, nkeys, 0) ;
+//	sig2gates(keys, nkeys, 1) ;
+	isig2gates(keys, nkeys, 0) ;
+//	isig2gates(keys, nkeys, 1) ;
+	wires_gen();
+	outputs_gen();
 	for( i = 0; i < nkeys ; i++){
 		ENTRY e={ keys[i], NULL};
 		et = hsearch(e, FIND) ;
@@ -596,3 +618,4 @@ int main(){
 	free(temp_mat);
 	fclose(fp) ;
 } 
+

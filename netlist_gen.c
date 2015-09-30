@@ -5,6 +5,21 @@
 
 #include "struct.h"
 
+#define NOT_GATE "INV_X1"
+static char wires[1<<16][1<<9] ;
+static int  wire_ct = 0;
+static char outputs[1<<10][1<<9];
+static int  output_ct = 0;
+
+void inputs(int nsensors){
+	int i ;
+	fprintf(stdout, "input \n");
+	for(i = 0; i < nsensors; i++){
+		fprintf(stdout, "sensor%d_level0,\n", i);
+	}
+	fprintf(stdout, "vdd;\n");
+}
+
 void sig2gates(char *keys[__MAX_NUMBER_OF_SIGNALS__], int nkeys, int level){
 	int i = 0;
 	for(i = 0; i < nkeys; i++){
@@ -25,18 +40,88 @@ void sig2gates(char *keys[__MAX_NUMBER_OF_SIGNALS__], int nkeys, int level){
 			}
 			l -= 1 ;
 		}
-		fprintf(stdout, "and sgg%dlevel%d(sg%s_level%d,", i, level, sk->signal_key, level);
-		for (j = 0; j < sk->nsensors ; j++){
-			if(j != sk->nsensors - 1) {
-				fprintf(stdout, "sensor%d_level%d, ", sk->sensors_index_list[j] , level);
+		if(sk->nsensors <= 4){
+			if(sk->nsensors == 1){
+				fprintf(stdout, "AND%d_X1 sgg%dlevel%d( .ZN(sg%s_level%d),",2, i, level, sk->signal_key, level);
+				sprintf(wires[wire_ct++], "sg%s_level%d", sk->signal_key, 0) ;
 			}else{
-				fprintf(stdout, "sensor%d_level%d", sk->sensors_index_list[j], level );
+				fprintf(stdout, "AND%d_X1 sgg%dlevel%d( .ZN(sg%s_level%d),",sk->nsensors, i, level, sk->signal_key, level);
+				sprintf(wires[wire_ct++], "sg%s_level%d", sk->signal_key, 0) ;
 			}
-		}
-		if(j == 1){
-			fprintf(stdout, ", VDD);\n");
+			for (j = 0; j < sk->nsensors ; j++){
+				if(j != sk->nsensors - 1) {
+					fprintf(stdout, ".A%d(sensor%d_level%d), ", j+1, sk->sensors_index_list[j] , level);
+				}else{
+					fprintf(stdout, ".A%d(sensor%d_level%d)", j+1, sk->sensors_index_list[j], level );
+				}
+			}
+			if(sk->nsensors == 1){
+				fprintf(stdout, ", .A2(vdd));\n");
+			}else{
+				fprintf(stdout, ");\n");
+			}
 		}else{
-			fprintf(stdout, ");\n");
+			int remaining_sensors = sk->nsensors , factor = 0, j = 0, k=0;	
+			while(remaining_sensors > 4){
+				int j = 0;
+				fprintf(stdout, "AND%d_X1 sgg%dfactor%dlevel%d( .ZN(sg%s_factor%d_level%d),",4, i, factor,level, sk->signal_key, factor, level);
+				sprintf(wires[wire_ct++], "sg%s_factor%d_level%d", sk->signal_key, factor, 0) ;
+				for (j = 0; j < 4; j++){
+					if(j != 4 - 1) {
+						fprintf(stdout, ".A%d(sensor%d_level%d), ", j +1, sk->sensors_index_list[j+ factor * 4] , level);
+					}else{
+						fprintf(stdout, ".A%d(sensor%d_level%d)", j+1, sk->sensors_index_list[j+ factor * 4], level );
+					}
+				}
+				fprintf(stdout, ");\n");
+				factor += 1;remaining_sensors -= 4 ;
+			}
+			if(remaining_sensors == 1 ){
+				fprintf(stdout, "AND%d_X1 sgg%dlevel%d(.ZN(sg%s_level%d), .A1(sensor%d_level%d), ", factor+1, i, level, sk->signal_key, level, factor*4, level) ;
+				sprintf(wires[wire_ct++], "sg%s_level%d", sk->signal_key, 0) ;
+				for(k = 0; k < factor; k++){
+					if(k != factor - 1 ) { 
+						fprintf(stdout, ".A%d(sg%s_factor%d_level%d), ", k+2, sk->signal_key, k, level); 
+					}else{
+						fprintf(stdout, ".A%d(sg%s_factor%d_level%d)); \n", k+2, sk->signal_key, k, level); 
+					}
+				}
+			}else if( remaining_sensors == 0){
+				fprintf(stdout, "AND%d_X1 sgg%dlevel%d(.ZN(sg%s_level%d), ", factor, i, level, sk->signal_key, level) ;
+				sprintf(wires[wire_ct++], "sg%s_level%d", sk->signal_key, 0) ;
+				for(k = 0; k < factor; k++){
+					if(k != factor - 1 ) { 
+						fprintf(stdout, ".A%d(sg%s_factor%d_level%d), ", k+1, sk->signal_key, k, level); 
+					}else{
+						fprintf(stdout, ".A%d(sg%s_factor%d_level%d)); \n", k+1, sk->signal_key, k, level); 
+					}
+				}
+			}else{
+				fprintf(stdout, "AND%d_X1 sgg%dfactor%dlevel%d( .ZN(sg%s_factor%d_level%d),",remaining_sensors, i,factor, level, sk->signal_key, factor, level);
+				sprintf(wires[wire_ct++], "sg%s_factor%d_level%d", sk->signal_key,factor, 0) ;
+				for (j = factor * 4; j < sk->nsensors ; j++){
+					if(j != sk->nsensors - 1) {
+						fprintf(stdout, ".A%d(sensor%d_level%d), ", j +1 -factor*4, sk->sensors_index_list[j] ,  level);
+					}else{
+						fprintf(stdout, ".A%d(sensor%d_level%d)", j+1 -factor*4, sk->sensors_index_list[j ], level );
+					}
+				}
+				if(remaining_sensors == 1){
+					fprintf(stdout, ", .A2(vdd));\n");
+				}else{
+					fprintf(stdout, ");\n");
+				}
+				fprintf(stdout, "AND%d_X1 sgg%dlevel%d(.ZN(sg%s_level%d), ", factor+1, i, level, sk->signal_key, level) ;
+				sprintf(wires[wire_ct++], "sg%s_level%d", sk->signal_key, 0) ;
+				for(k = 0; k <= factor; k++){
+					if(k != factor ) { 
+						fprintf(stdout, ".A%d(sg%s_factor%d_level%d), ", k+1, sk->signal_key, k, level); 
+					}else{
+						fprintf(stdout, ".A%d(sg%s_factor%d_level%d)); \n", k+1, sk->signal_key, k, level); 
+					}
+				}
+			}
+			
 		}
 			
 		}
@@ -63,30 +148,59 @@ void isig2gates(char *keys[], int nkeys, int level){
 			}
 			l -= 1 ;
 		}
-		if(sk->ndominated_sig > 0){
-			fprintf(stderr, "not notsgg%d_level%d(notsg%s_level%d, sg%s_level%d);\n", 
+		if(sk->ndominating_sig > 0){
+			fprintf(stdout, "%s notsgg%d_level%d(.ZN(notsg%s_level%d), .A(sg%s_level%d));\n", NOT_GATE,
 				i, level, sk->signal_key, level, sk->signal_key, level) ;
+			sprintf(wires[wire_ct++], "nogsg%s_level%d", sk->signal_key, 0) ;
 		}
 		if(sk->significant == 0){
 			continue;
 		}
-		fprintf(stdout, "and isgg%d_level%d(isg%s_level%d, sg%s_level%d, ", i, level,
+		if( sk->ndominating_sig == 0){
+			fprintf(stdout, "AND%d_X1 isgg%d_level%d(.ZN(isg%s_level%d), .A1(sg%s_level%d), ",2 ,i, level,
 			sk->signal_key, level, sk->signal_key, level);
+			sprintf(outputs[output_ct++], "isg%s_level%d", sk->signal_key, 0) ;
+		}else{
+			fprintf(stdout, "AND%d_X1 isgg%d_level%d(.ZN(isg%s_level%d), .A1(sg%s_level%d), ",sk->ndominating_sig+1 ,i, level,
+			sk->signal_key, level, sk->signal_key, level);
+			sprintf(outputs[output_ct++], "isg%s_level%d", sk->signal_key, 0) ;
+		}
 		for( j =0; j < sk->ndominating_sig; j++){
 			if(j != sk->ndominating_sig - 1) {
-				fprintf(stdout, "notsg%s_level%d, ", sk->dominating_signal[j]->signal_key , level) ;
+				fprintf(stdout, ".A%d(notsg%s_level%d), ",j+2, sk->dominating_signal[j]->signal_key , level) ;
 			}else{
-				fprintf(stdout, "notsg%s_level%d", sk->dominating_signal[j]->signal_key , level) ;
+				fprintf(stdout, ".A%d(notsg%s_level%d)", j+2,sk->dominating_signal[j]->signal_key , level) ;
 			}
 		}
 		if(j == 0){
-			fprintf(stdout, "VDD);\n") ;
+			fprintf(stdout, ".A2(vdd));\n") ;
 		}else{
 			fprintf(stdout, ");\n") ;
 		}
 
 
-
 		}
 	}	
+}
+void wires_gen(){
+	int i;
+	fprintf(stdout, "wire \n");
+	for(i = 0; i < wire_ct; i++){
+		if(i != wire_ct - 1){
+			fprintf(stdout, "%s,\n", wires[i] ) ;
+		}else{
+			fprintf(stdout, "%s;\n", wires[i] ) ;
+		}
+	}
+}
+void outputs_gen(){
+	int i ;
+	fprintf(stdout, "output \n");
+	for(i = 0; i < output_ct; i++){
+		if(i != output_ct - 1){
+			fprintf(stdout, "%s,\n", outputs[i] ) ;
+		}else{
+			fprintf(stdout, "%s;\n", outputs[i] ) ;
+		}
+	}
 }
