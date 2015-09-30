@@ -103,6 +103,7 @@ class Circuit
 	TIMING_PATH_END =5
 	FINISH = 6
 	def initialize(gates, library , sensor_limit = 15, sigma = 0.3, stage = "pr", potential = 0.8)
+		@library = library 
 		@gate_delay = {}
 		@gate_delay_high_voltage = {}
 		@gate_delay_variation = {}
@@ -118,6 +119,12 @@ class Circuit
 		select_paths(sensor_limit)
 		parse_GinC_file
 		update_variation 
+	end
+	def library
+		@library
+	end
+	def lib
+		@library
 	end
 	def update_variation
 		@gate_delay.each_key do |g|
@@ -313,7 +320,9 @@ class Cluster
 		@clustered_gates[cluster_id]
 	end
 	def to_cost
-		to_s
+		@clustered_gates.merge(@clustered_gates) do |k,v|
+			leakage(@circuit.library, k) 
+		end
 	end
 	def to_id
 		@clustered_gates.keys
