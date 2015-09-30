@@ -1,5 +1,5 @@
 #! /usr/bin/env ruby
-require './timing.rb'
+require '../timing.rb'
 lib = Library.new('NangateOpenCellLibrary_typical_ccs.lib')
 lib2 = Library.new('NangateOpenCellLibrary_fast_ccs.lib')
 ckt = Circuit.new('gates.txt', lib, 10, [0.0441, 0.0491], 'br')
