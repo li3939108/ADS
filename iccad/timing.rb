@@ -506,35 +506,60 @@ end
 def naive_simu_knob(affected_paths, on_paths, clt)
 	cluster_paths = []
 	on_paths.each do |p|
-		cluster_paths += affected_paths.select{|c| c[0] == p.affecting_cluster[0] }
+		#choose min cost cluster
+		cluster_paths += affected_paths.select{|c| c[0] == p.affecting_cluster.min{|c| clt.to_cost[c] } }
 	end
 	cluster_paths
 end
 def simu_knob(affected_paths, on_paths, clt)
 	# sorting in descending order
-	sorted_paths = affected_paths.sort{|b,a| a[1].length <=> b[1].length }
+	sorted_paths = affected_paths.sort{|a,b| a[1].length <=> b[1].length }
 	intersections = []
 	cluster_paths = []
 	sorted_paths.each do |p|
 		intersect =  on_paths & p[1]
+		temp_intersect = intersect 
+		
 		if intersect.length == 0
 		else
-			contain = false
+			fully_coverd = false
+			contain_equal_set = []
 			intersections.each do | intersect_exist| 
-				if intersect.subset?(intersect_exist )
-					contain = true
+				if intersect_exist.subset?(temp_intersect) 
+					temp_intersect = temp_intersect - intersect_exist 
+					contain_equal_set.push(intersect_exist)
 				end
+				fully_coverd = true if temp_intersect.empty?
+				#if intersect.subset?(intersect_exist )
+				#	contain = true
+				#end
 			end
-			i_to_replace = intersections.index ( intersect )
-			if contain == true
-			elsif i_to_replace == nil
+#			i_to_replace = intersections.index ( intersect )
+			i_to_replace = contain_equal_set.map{|is| intersections.index(is) }
+			if fully_coverd == true
+				coverd_cost = i_to_replace.map{|i| 
+					clt.to_cost[ cluster_paths[i][0] ] }.reduce(0,:+)
+				if coverd_cost > clt.to_cost[ p[0] ]
+					i_to_replace.each do |i|
+						cluster_paths.delete_at(i)
+						intersections.delete_at(i)
+					end
+					cluster_paths.push(p)
+					intersections.push(intersect) 
+				end
+			else
+				i_to_replace.each do |i|
+					cluster_paths.delete_at(i)
+					intersections.delete_at(i)
+				end
 				cluster_paths.push(p)
 				intersections.push(intersect) 
-			elsif  clt.to_cost[ cluster_paths[i_to_replace][0] ] > clt.to_cost[ p[0] ] 
-				cluster_paths.delete_at(i_to_replace)
-				intersections.delete_at(i_to_replace)
-				cluster_paths.push(p)
-				intersections.push(intersect) 
+#			elsif i_to_replace == nil
+#			elsif  clt.to_cost[ cluster_paths[i_to_replace][0] ] > clt.to_cost[ p[0] ] 
+#				cluster_paths.delete_at(i_to_replace)
+#				intersections.delete_at(i_to_replace)
+#				cluster_paths.push(p)
+#				intersections.push(intersect) 
 			end
 		end
 	end
