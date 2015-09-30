@@ -31,17 +31,30 @@ all_cluster_paths = ckt.clusters.to_id.map{|id| [id,[]] }
 		end
 		true_count_all_high += 1 if ckt.check_timing(rat, all_cluster_paths  )
 	else
+		on_2_count += 1 if on.length > 1
 		on_count += 1
 		r = simu_knob(ap, on.to_set, ckt.clusters)
 		rr = naive_simu_knob(ap, on.to_set, ckt.clusters)
-		ld_logic = leakage_diff(r, ckt.clusters, lib, lib2)
-		sum_logic += ld_logic
-		ld_naive = leakage_diff(rr, ckt.clusters, lib, lib2)
-		sum_naive += ld_naive
-		true_count_logic += 1 if ckt.check_timing(rat, r)
-		true_count_naive += 1 if ckt.check_timing(rat, rr)
-		true_count_all_low += 1 if ckt.check_timing(rat, [] ) 
-		true_count_all_high += 1 if ckt.check_timing(rat, all_cluster_paths  )
+		if (r == rr)
+			ld_logic = leakage_diff(r, ckt.clusters, lib, lib2)                   	
+		        sum_logic += ld_logic
+			sum_naive += ld_logic 
+			if ckt.check_timing(rat, r)
+				true_count_logic += 1 
+				true_count_naive += 1 
+			end
+			true_count_all_low += 1 if ckt.check_timing(rat, [] ) 
+			true_count_all_high += 1 if ckt.check_timing(rat, all_cluster_paths  )
+		else
+			ld_logic = leakage_diff(r, ckt.clusters, lib, lib2)
+			sum_logic += ld_logic
+			ld_naive = leakage_diff(rr, ckt.clusters, lib, lib2)
+			sum_naive += ld_naive
+			true_count_logic += 1 if ckt.check_timing(rat, r)
+			true_count_naive += 1 if ckt.check_timing(rat, rr)
+			true_count_all_low += 1 if ckt.check_timing(rat, [] ) 
+			true_count_all_high += 1 if ckt.check_timing(rat, all_cluster_paths  )
+		end
 	end
 end
 print "2 sensors on count:", on_2_count, "\n"
