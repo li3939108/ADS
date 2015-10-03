@@ -306,6 +306,7 @@ class Cluster
 		@gate_cluster = {}
 		@clustered_gates = {}
 		@circuit = ckt
+		@cost = {}
 	end
 	def set_gate_cluster(gate, cluster) 
 		@gate_cluster[gate] = cluster
