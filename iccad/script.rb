@@ -2,7 +2,7 @@
 require '../timing.rb'
 lib = Library.new('NangateOpenCellLibrary_typical_ccs.lib')
 lib2 = Library.new('NangateOpenCellLibrary_fast_ccs.lib')
-ckt = Circuit.new('gates.txt', lib, 10, [0.0441, 0.0491], 'br')
+ckt = Circuit.new('gates.txt', lib, 10, [0.0441, 0.0491], 'pr')
 #control_ckt = Circuit.new('gates.control', lib)
 ap = mat_gen(ckt.critical_paths, ckt.clusters, 0.2)
 cost_gen(ap, ckt.clusters) 
@@ -19,8 +19,36 @@ times = ARGV[1].to_i
 rat = 1.05 * ARGV[0].to_f
 all_cluster_paths = ckt.clusters.to_id.map{|id| [id,[]] }
 
+threads = 8
+times_per_thread = times / threads 
+
 (1..times).each do |i|
-	print (i-1)/(0.0+times), "...donw\n"
+	print (i-1)/(0.0+times), "...done\n"
+
+	if i % 50 == 0
+	print "2 sensors on count:", on_2_count, "\n"
+	print "on count:", on_count, "\n"
+	print "total count:", i, "\n"
+	print "proposed method \n"
+	print "------------\n"
+	print "leakage increase: ", sum_logic / (0.0 + i), ' ', sum_logic / (0.0 + on_count) , "\n"
+	print "timing yield: ", true_count_logic / (0.0 + i), "\n", "\n"
+
+	print "naive method \n"
+	print "------------\n"
+	print "leakage increase: ", sum_naive / (0.0 + i), ' ', sum_naive / (0.0 + on_count),"\n"
+	print "timing yield: ", true_count_naive / (0.0 + i), "\n", "\n"
+
+	print "all low \n"
+	print "-------------\n"
+	print "timing yield: ", true_count_all_low / (0.0 + i ), "\n", "\n"
+
+	print "all high \n"
+	print "-------------\n"
+	print "leakage increase: ", leakage_diff(all_cluster_paths, ckt.clusters, lib, lib2), "\n"
+	print "timing yield: ", true_count_all_high / (0.0 + i) , "\n", "\n"
+	end
+
 	ckt.update_variation
 	on = ckt.simu_sensor(rat)
 	if on.length == 0
@@ -57,24 +85,4 @@ all_cluster_paths = ckt.clusters.to_id.map{|id| [id,[]] }
 		end
 	end
 end
-print "2 sensors on count:", on_2_count, "\n"
-print "on count:", on_count, "\n"
-print "total count:", times, "\n"
-print "proposed method \n"
-print "------------\n"
-print "leakage increase: ", sum_logic / (0.0 + times), ' ', sum_logic / (0.0 + on_count) , "\n"
-print "timing yield: ", true_count_logic / (0.0 + times), "\n", "\n"
 
-print "naive method \n"
-print "------------\n"
-print "leakage increase: ", sum_naive / (0.0 + times), ' ', sum_naive / (0.0 + on_count),"\n"
-print "timing yield: ", true_count_naive / (0.0 + times), "\n", "\n"
-
-print "all low \n"
-print "-------------\n"
-print "timing yield: ", true_count_all_low / (0.0 + times ), "\n", "\n"
-
-print "all high \n"
-print "-------------\n"
-print "leakage increase: ", leakage_diff(all_cluster_paths, ckt.clusters, lib, lib2), "\n"
-print "timing yield: ", true_count_all_high / (0.0 + times) , "\n", "\n"

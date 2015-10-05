@@ -87,12 +87,8 @@ class Library
 			end
 		end
 	end
-	def area(cell)
-		@area[cell]
-	end
-	def leakage(cell)
-		@leakage[cell]
-	end
+	attr_accessor :area
+	attr_accessor :leakage
 end
 class Circuit
 	INITIAL = 0
@@ -121,9 +117,7 @@ class Circuit
 		parse_GinC_file
 		update_variation 
 	end
-	def library
-		@library
-	end
+	attr_accessor :library
 	def lib
 		@library
 	end
@@ -162,9 +156,7 @@ class Circuit
 			@gate_delay_high_voltage[gate]
 		end
 	end
-	def critical_paths
-		@critical_paths
-	end
+	attr_accessor :critical_paths
 	def gate_reference( gate )
 		@gate_reference[ gate ]
 	end
@@ -185,8 +177,8 @@ class Circuit
 			seg.delete("")
 			if seg.length >= 2 
 				@gate_reference[ seg[1] ] = seg[0] 
-				@total_area += library.area(seg[0])
-				@total_leakage += library.leakage(seg[0])
+				@total_area += library.area[ seg[0] ]
+				@total_leakage += library.leakage[seg[0]]
 			end
 		end
 	end
@@ -307,6 +299,7 @@ class Cluster
 		@clustered_gates = {}
 		@circuit = ckt
 		@adaptivity = preassigned_adaptivity.to_set
+		@cost = {}
 	end
 	def set_gate_cluster(gate, cluster) 
 		@gate_cluster[gate] = cluster
@@ -339,16 +332,16 @@ class Cluster
 		if cluster_id == nil
 			@clustered_gates.merge(@clustered_gates) do |id, gates|
 				gates.map{|g|
-					lib.leakage( @circuit.gate_reference(g) )
+					lib.leakage[ @circuit.gate_reference(g) ]
 				}.reduce(0.0, :+) 
 			end
 		else
 			@clustered_gates[ cluster_id ].map{ |g|
-				if lib.leakage( @circuit.gate_reference(g))  == nil
+				if lib.leakage[  @circuit.gate_reference(g) ]  == nil
 					print "nil", g, @circuit.gate_reference(g), "\n"
 					0.0
 				else
-					lib.leakage( @circuit.gate_reference(g))
+					lib.leakage[  @circuit.gate_reference(g) ]
 				end
 			}.reduce(0.0, :+) 
 		end
@@ -511,7 +504,6 @@ class Path
 end
 def leakage_diff(cluster_paths, clt, low_lib, high_lib)
 	cluster_paths.map { |c|
-		#clt.leakage(high_lib, c[0] ) - clt.leakage(low_lib, c[0] )
 		0.5 * clt.leakage(low_lib, c[0] )
 	}.reduce(0.0, :+) 
 end
