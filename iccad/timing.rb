@@ -302,10 +302,11 @@ class Circuit
 	end
 end
 class Cluster
-	def initialize(ckt)
+	def initialize(ckt, preassigned_adaptivity = [])
 		@gate_cluster = {}
 		@clustered_gates = {}
 		@circuit = ckt
+		@adaptivity = preassigned_adaptivity.to_set
 	end
 	def set_gate_cluster(gate, cluster) 
 		@gate_cluster[gate] = cluster
@@ -518,7 +519,7 @@ def naive_simu_knob(affected_paths, on_paths, clt)
 	cluster_paths = []
 	on_paths.each do |p|
 		#choose min cost cluster
-		cluster_paths += affected_paths.select{|c| c[0] == p.affecting_cluster.min{|c| clt.to_cost[c] } }
+		cluster_paths += affected_paths.select{|c| c[0] == (clt.adaptivity & p.affecting_cluster).min{|c| clt.to_cost[c] } }
 	end
 	cluster_paths
 end
@@ -541,11 +542,7 @@ def simu_knob(affected_paths, on_paths, clt)
 					contain_equal_set.push(intersect_exist)
 				end
 				fully_coverd = true if temp_intersect.empty?
-				#if intersect.subset?(intersect_exist )
-				#	contain = true
-				#end
 			end
-#			i_to_replace = intersections.index ( intersect )
 			i_to_replace = contain_equal_set.map{|is| intersections.index(is) }
 			if fully_coverd == true
 				coverd_cost = i_to_replace.map{|i| 
@@ -565,12 +562,6 @@ def simu_knob(affected_paths, on_paths, clt)
 				end
 				cluster_paths.push(p)
 				intersections.push(intersect) 
-#			elsif i_to_replace == nil
-#			elsif  clt.to_cost[ cluster_paths[i_to_replace][0] ] > clt.to_cost[ p[0] ] 
-#				cluster_paths.delete_at(i_to_replace)
-#				intersections.delete_at(i_to_replace)
-#				cluster_paths.push(p)
-#				intersections.push(intersect) 
 			end
 		end
 	end
@@ -587,7 +578,7 @@ def mat_gen(paths, clt, cluster_th = 0.2)
 	paths.each do |p|
 		p.cluster(clt, cluster_th)
 	end
-	aff_clt_set = paths.map{|p|  p.affecting_cluster }
+	aff_clt_set = paths.map{|p|  p.affecting_cluster & clt.adaptivity }
 	affected_paths = aff_clt_set.reduce(Set.new, :+).map do |c|
 		[c, paths.select{|p| p.affecting_cluster.include?(c) }.to_set]
 	end
