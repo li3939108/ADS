@@ -19,7 +19,6 @@ void inputs(int nsensors){
 	}
 	fprintf(stdout, "vdd;\n");
 }
-
 void sig2gates(char *keys[__MAX_NUMBER_OF_SIGNALS__], int nkeys, int level){
 	int i = 0;
 	for(i = 0; i < nkeys; i++){
@@ -181,6 +180,117 @@ void isig2gates(char *keys[], int nkeys, int level){
 
 		}
 	}	
+}
+void or_isig_gates(char *keys[__MAX_NUMBER_OF_SIGNALS__], int nkeys,int nrow){
+	int i = 0;
+	SIG_KNOB *influencing_sigs[nrow];
+	int length[nrow] ;
+	for(i = 0; i < nrow ;i++){
+		influencing_sigs[i] = malloc(sizeof (SIG_KNOB) ) ;
+		influencing_sigs[i][0] = NULL ;
+		length[i] = 0 ;
+	}
+	for(i = 0; i < nkeys; i++){
+		ENTRY e={ keys[i], NULL}, *et = hsearch(e, FIND) ;
+		if(et == NULL){
+			fprintf(stderr, "nothing found\n");
+			exit(EXIT_FAILURE) ;
+		}else {
+		
+		int j;
+		SIG_KNOB sk= et->data;
+		if(sk->significant == 0){
+			continue;
+		}
+		
+		influencing_sigs[ sk->knobs[0] ][length[ sk->knobs[0] ] ++]  = sk ;
+		influencing_sigs[ sk->knobs[0] ] = realloc(influencing_sigs[ sk->knobs[0] ] , ( length[ sk->knobs[0] ]  + 1) * sizeof (SIG_KNOB) ) ;
+		influencing_sigs[ sk->knobs[0] ][length[ sk->knobs[0] ]  ] = NULL;
+
+		}
+	}
+
+	for(i = 0; i < nrow; i++){
+		if( length[i] <=  4){
+			int j = 0;
+			if(length[i] == 0){continue;}
+			else if(length[i] == 1){
+				fprintf(stdout, "AND2_X1 or%d(.ZN(output%d), .A1(isg%s_level0),.A2(vdd) ) ;\n", i, i, influencing_sigs[i][0]->signal_key );
+			}else{
+		
+			fprintf(stdout, "OR_X1 or%d(.ZN(output%d), ", i, i );
+			for (j = 0; j < length[i]; j++){
+				if(j < length[i] - 1){
+					fprintf( stdout, ".A%d(isg%s_level0), ", j+1, influencing_sigs[i][j]->signal_key );
+				}else{
+					fprintf( stdout,".A%d(isg%s_level0)) ;\n ", j+1, influencing_sigs[i][j]->signal_key );
+				}
+			}
+
+			}
+		}else{
+			int remaining_signals = length[i] ;
+			int factor = 0, j = 0, k=0;	
+			while(remaining_signals > 4){
+				int j = 0;
+				fprintf(stdout, "OR%d_X1 or%d_factor%d(.ZN(output%d_factor%d), ",4, i, factor, i, factor);
+				sprintf(wires[wire_ct++], "output%d_factor%d", i, factor) ;
+				for (j = 0; j < 4; j++){
+					if(j != 4 - 1) {
+						fprintf(stdout, ".A%d(isg%s_level0), ", j + 1, influencing_sigs[i][j+ factor * 4]->signal_key);
+					}else{
+						fprintf(stdout, ".A%d(isg%s_level0)", j + 1, influencing_sigs[i][j+ factor * 4]->signal_key);
+					}
+				}
+				fprintf(stdout, ");\n");
+				factor += 1;remaining_signals -= 4 ;
+			}
+			if(remaining_signals == 1 ){
+				fprintf(stdout, "OR%d_X1 or%d(.ZN(output%d), .A1(isg%s_level0), ", factor+1, i, i, influencing_sigs[i][ factor * 4]->signal_key) ;
+				for(k = 0; k < factor; k++){
+					if(k != factor - 1 ) { 
+						fprintf(stdout, ".A%d(output%d_factor%d), ", k+2, i, k); 
+					}else{
+						fprintf(stdout, ".A%d(output%d_factor%d)); \n", k+2, i, k); 
+					}
+				}
+			}else if( remaining_signals == 0){
+				fprintf(stdout, "OR%d_X1 or%d(.ZN(output%d), ", factor, i, i) ;
+				for(k = 0; k < factor; k++){
+					if(k != factor - 1 ) { 
+						fprintf(stdout, ".A%d(output%d_factor%d), ", k+1,i, k); 
+					}else{
+						fprintf(stdout, ".A%d(output%d_factor%d)); \n", k+1,i, k); 
+					}
+				}
+			}else{
+				fprintf(stdout, "OR%d_X1 or%dfactor%d( .ZN(output%d),",remaining_signals, i, factor, i);
+				for (j = factor * 4; j < length[i] ; j++){
+					if(j != length[i] - 1) {
+						fprintf(stdout, ".A%d(isg%s_level0), ", j +1 -factor*4, influencing_sigs[i][j]->signal_key);
+					}else{
+						fprintf(stdout, ".A%d(isg%s_level0)", j+1 -factor*4, influencing_sigs[i][j]->signal_key );
+					}
+				}
+				if(remaining_signals == 1){
+					fprintf(stdout, ", .A2(gnd));\n");
+				}else{
+					fprintf(stdout, ");\n");
+				}
+				fprintf(stdout, "OR%d_X1 or%d(.ZN(output%d), ", factor+1, i, i) ;
+				for(k = 0; k <= factor; k++){
+					if(k != factor ) { 
+						fprintf(stdout, ".A%d(output%d_factor%d), ", k+1, i, k); 
+					}else{
+						fprintf(stdout, ".A%d(output%d_factor%d)); \n", k+1, i, k); 
+					}
+				}
+			}
+			
+
+
+		}
+	}
 }
 void wires_gen(){
 	int i;

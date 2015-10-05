@@ -16,6 +16,7 @@ int nkeys = 0 ;
 
 extern void sig2gates(char *keys[__MAX_NUMBER_OF_SIGNALS__], int nkeys, int level ); 
 extern void isig2gates(char *keys[], int nkeys, int level) ;
+extern void or_isig_gates(char *keys[], int nkeys, int nrow);
 extern void inputs(int ncolumn); 
 extern void wires_gen();
 extern void outputs_gen();
@@ -601,6 +602,7 @@ int main(){
 //	sig2gates(keys, nkeys, 1) ;
 	isig2gates(keys, nkeys, 0) ;
 //	isig2gates(keys, nkeys, 1) ;
+	or_isig_gates(keys, nkeys, nrow) ;
 	wires_gen();
 	outputs_gen();
 	for( i = 0; i < nkeys ; i++){
