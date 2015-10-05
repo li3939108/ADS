@@ -98,7 +98,7 @@ class Circuit
 	TIMING_PATH_START = 4
 	TIMING_PATH_END =5
 	FINISH = 6
-	def initialize(gates, library , sensor_limit = 15, sigma = [0.0441, 0.0491], stage = "pr", potential = 0.8)
+	def initialize(gates, library , sensor_limit = 15, sigma = [0.0441, 0.0491], stage = "pr", potential = 0.8, preassigned_adaptivity = nil)
 		@library = library 
 		@gate_delay = {}
 		@gate_delay_high_voltage = {}
@@ -114,7 +114,7 @@ class Circuit
 		parse_timing_file("timing.#{stage}.low", potential, 'low') 
 		parse_timing_file("timing.#{stage}.high", 0, 'high')
 		select_paths(sensor_limit)
-		parse_GinC_file
+		parse_GinC_file('GinC.txt', preassigned_adaptivity) 
 		update_variation 
 	end
 	attr_accessor :library
@@ -197,15 +197,18 @@ class Circuit
 		end
 		@critical_paths = selected_paths 
 	end
-	def parse_GinC_file(file = 'GinC.txt' )
+	def parse_GinC_file(file = 'GinC.txt' , preassigned_adaptivity = nil)
 		ginc_file = File.new(file, "r") 
-		@clusters = Cluster.new(self)
+		@clusters = Cluster.new(self, preassigned_adaptivity)
 		ginc_file.each do |line|
 			line_seg = line.split(/\s/)
 			line_seg.delete("")
 			if line_seg.length == 2
 				@clusters.set_gate_cluster( line_seg[0], line_seg[1].to_i )
 			end
+		end
+		if @clusters.adaptivity == nil
+			@clusters.adaptivity = @clusters.clustered_gates.keys 
 		end
 		@clusters
 	end
@@ -294,13 +297,18 @@ class Circuit
 	end
 end
 class Cluster
-	def initialize(ckt, preassigned_adaptivity = [])
+	def initialize(ckt, preassigned_adaptivity = nil)
 		@gate_cluster = {}
 		@clustered_gates = {}
 		@circuit = ckt
-		@adaptivity = preassigned_adaptivity.to_set
+		if preassigned_adaptivity == nil
+			@adaptivity = nil
+		elsif preassigned_adaptivity.kind_of?(Array)
+			@adaptivity = preassigned_adaptivity.to_set 
+		end
 		@cost = {}
 	end
+	attr_accessor :adaptivity
 	def set_gate_cluster(gate, cluster) 
 		@gate_cluster[gate] = cluster
 		if @clustered_gates[cluster] == nil
@@ -312,9 +320,10 @@ class Cluster
 	def g2c(gate)
 		@gate_cluster[gate]
 	end
-	def clustered_gates(cluster_id)
-		@clustered_gates[cluster_id]
-	end
+	attr_accessor :clustered_gates
+	#def clustered_gates(cluster_id)
+	#	@clustered_gates[cluster_id]
+	#end
 	def to_cost
 		@clustered_gates.merge(@clustered_gates) do |k,v|
 			leakage(@circuit.library, k) 
