@@ -278,6 +278,7 @@ class Circuit
 						elsif voltage == 'high'
 							state = TIMING_PATH_END
 						end
+
 					end
 				elsif (line_seg.length == 3 and (line_seg[2] == "r" or line_seg[2] == "f"  ) ) or
 					(line_seg.length == 4 and (line_seg[3] == "r" or line_seg[3] == "f" ))
