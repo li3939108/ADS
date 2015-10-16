@@ -345,6 +345,10 @@ class Cluster
 	def g2c(gate)
 		@gate_cluster[gate]
 	end
+	attr_accessor :clustered_gates
+	#def clustered_gates(cluster_id)
+	#	@clustered_gates[cluster_id]
+	#end
 	def to_cost
 		@clustered_gates.merge(@clustered_gates) do |k,v|
 			leakage(@circuit.library, k) 
