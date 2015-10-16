@@ -2,7 +2,11 @@
 require '../timing.rb'
 lib = Library.new('NangateOpenCellLibrary_typical_ccs.lib')
 lib2 = Library.new('NangateOpenCellLibrary_fast_ccs.lib')
-ckt = Circuit.new('gates.txt', lib, 10, [0.0441, 0.0491], 'pr')
+if ARGV[3] != nil
+	ckt = Circuit.new('gates.txt', lib, ARGV[2].to_i, [0.0441, 0.0491], 'pr' ,0.8 , ARGV[3].split(",").map{|i| i.to_i} ) 
+else
+	ckt = Circuit.new('gates.txt', lib, ARGV[2].to_i, [0.0441, 0.0491], 'pr' ,0.8 )
+end
 #control_ckt = Circuit.new('gates.control', lib)
 ap = mat_gen(ckt.critical_paths, ckt.clusters, 0.2)
 cost_gen(ap, ckt.clusters) 
@@ -19,8 +23,8 @@ times = ARGV[1].to_i
 rat = 1.05 * ARGV[0].to_f
 all_cluster_paths = ckt.clusters.to_id.map{|id| [id,[]] }
 
-threads = 8
-times_per_thread = times / threads 
+print "total_leakage: ", ckt.total_leakage, "\n"
+
 
 (1..times).each do |i|
 	print (i-1)/(0.0+times), "...done\n"
