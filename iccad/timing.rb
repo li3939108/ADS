@@ -108,16 +108,21 @@ class Circuit
 		@gate_reference = {}
 		@total_area = 0
 		@total_leakage = 0
+		@max_delay = 0
+		@arrival_time = []
+		@full_paths = []
 		@rand =  RandomGaussian.new(1, sigma[0])
 		@rand2 = RandomGaussian.new(1, sigma[1])
 		parse_gates(gates, library)
 		parse_timing_file("timing.#{stage}.low", potential, 'low') 
 		parse_timing_file("timing.#{stage}.high", 0, 'high')
-		select_paths(sensor_limit)
+		select_paths(sensor_limit, potential)
 		parse_GinC_file('GinC.txt', preassigned_adaptivity) 
 		update_variation 
 	end
-	attr_accessor :library
+	attr_accessor :max_delay,:library,:arrival_time, :total_leakage, :gate_arrival_time, :original_critical_paths, :full_paths
+	def atdist
+	end
 	def lib
 		@library
 	end
@@ -182,12 +187,15 @@ class Circuit
 			end
 		end
 	end
-	def select_paths( limit = 15)
+	def select_paths( limit = 15, potential)
 		covered_gates = Set.new
 		selected_paths = []
 		while limit > 0
-			@critical_paths.sort!{|x,y| (x.arrival_time * x.fresh ) <=> (y.arrival_time * y.fresh) }
+			@critical_paths.sort!{|x,y| (( x.arrival_time - @max_delay * potential) * x.fresh ) <=> 
+				( (y.arrival_time - @max_delay * potential) * y.fresh) }
+			#@critical_paths.sort!{|x,y| (( x.arrival_time ) * x.fresh ) <=> ( (y.arrival_time ) * y.fresh) }
 			path = @critical_paths.pop
+			print "fresh: ", path.fresh, " arrivel: ", path.arrival_time, "\n"
 			selected_paths.push(path) 
 			covered_gates = covered_gates + path.gates
 			@critical_paths.each do |p|
@@ -208,7 +216,7 @@ class Circuit
 			end
 		end
 		if @clusters.adaptivity == nil
-			@clusters.adaptivity = @clusters.clustered_gates.keys 
+			@clusters.adaptivity = @clusters.clustered_gates.keys.to_set
 		end
 		@clusters
 	end
@@ -254,25 +262,40 @@ class Circuit
 				line_seg.delete("")
 				if line_seg[0] == "data" and line_seg[1] == "arrival" and line_seg[2] = "time"
 					at = line_seg[3].to_f 
+					@arrival_time.push ( at ) if voltage == 'low'
+					@full_paths.push(path)  if voltage == 'low'
 					if @critical_paths.length == 0 or at >= threshold * @critical_paths[0].arrival_time
 						path.set_arrival_time( at ) 
 						if voltage == 'low'
+							@max_delay = path.arrival_time if @critical_paths.length == 0
 							@critical_paths.push(path) 
 							@original_critical_paths.push(path)
 						end
 						state = TIMING_PATH_END
 					else
-						state = FINISH
+						if voltage == 'low'
+							state = FINISH
+						elsif voltage == 'high'
+							state = TIMING_PATH_END
+						end
 					end
 				elsif (line_seg.length == 3 and (line_seg[2] == "r" or line_seg[2] == "f"  ) ) or
 					(line_seg.length == 4 and (line_seg[3] == "r" or line_seg[3] == "f" ))
-					path.set_gate_delay(temp_gate, line_seg[0].to_f ) if voltage == 'low'
+					if voltage == 'low'
+						path.set_gate_delay(temp_gate, line_seg[0].to_f ) 
+						path.gate_arrival_time.push([temp_gate, line_seg[2]]) if  (line_seg[3] == "r" or line_seg[3] == "f" ) 
+						path.gate_arrival_time.push([temp_gate, line_seg[1]]) if (line_seg[2] == "r" or line_seg[2] == "f"  )
+					end
 					set_gate_delay(temp_gate, line_seg[0].to_f, voltage)
 				elsif line_seg.length == 3 
 					temp_gate = line_seg[0] 
 				elsif line_seg.length == 6 or line_seg.length == 7
 					path.add_gate(line_seg[0]) if voltage == 'low'
-					path.set_gate_delay(line_seg[0], line_seg[3].to_f) if voltage == 'low'
+					if voltage == 'low'
+						path.set_gate_delay(line_seg[0], line_seg[3].to_f) 
+						path.gate_arrival_time.push([line_seg[0], line_seg[5] ]) if  (line_seg[6] == "r" or line_seg[6] == "f" ) 
+						path.gate_arrival_time.push([line_seg[0], line_seg[4] ]) if (line_seg[5] == "r" or line_seg[5] == "f"  )
+					end
 					set_gate_delay(line_seg[0], line_seg[3].to_f, voltage)
 				end
 			elsif state == TIMING_PATH_END
@@ -309,6 +332,8 @@ class Cluster
 		@cost = {}
 	end
 	attr_accessor :adaptivity
+	attr_accessor :clustered_gates
+	attr_accessor :gate_cluster 
 	def set_gate_cluster(gate, cluster) 
 		@gate_cluster[gate] = cluster
 		if @clustered_gates[cluster] == nil
@@ -320,10 +345,6 @@ class Cluster
 	def g2c(gate)
 		@gate_cluster[gate]
 	end
-	attr_accessor :clustered_gates
-	#def clustered_gates(cluster_id)
-	#	@clustered_gates[cluster_id]
-	#end
 	def to_cost
 		@clustered_gates.merge(@clustered_gates) do |k,v|
 			leakage(@circuit.library, k) 
@@ -427,7 +448,9 @@ class Path
 		@cluster_delay_sum = {}
 		@important_cluster = Set.new
 		@circuit = ckt
+		@gate_arrival_time = []
 	end
+	attr_accessor :gate_arrival_time
 	def affecting_cluster
 		@important_cluster
 	end
@@ -444,7 +467,7 @@ class Path
 	end
 	def delay(gate, with_variation = 'no')
 		# remove large wire delay
-		if with_variation == 'no' or @gate_delay[gate] > 1
+		if with_variation == 'no' 
 			@gate_delay[gate]
 		elsif with_variation == 'yes' 
 			@gate_delay[gate] * @circuit.gate_variation(gate)
@@ -470,7 +493,7 @@ class Path
 				if @circuit.gate_delay(g, 'high') == nil
 					delay(g, 'yes')
 				else
-					@circuit.gate_delay(g, 'high') - @circuit.gate_delay(g) + delay(g, 'yes') 
+					@circuit.gate_delay(g, 'high') - delay(g, 'no') + delay(g, 'yes') 
 				end
 			else
 				delay(g, 'yes') 
@@ -508,7 +531,7 @@ class Path
 		end
 		@important_cluster = @cluster_delay_sum.select{|k,v|
 			(v + 0.0) /  sum_effective_at >= threshold
-		}.keys
+		}.keys.to_set 
 	end
 end
 def leakage_diff(cluster_paths, clt, low_lib, high_lib)
@@ -517,10 +540,10 @@ def leakage_diff(cluster_paths, clt, low_lib, high_lib)
 	}.reduce(0.0, :+) 
 end
 def naive_simu_knob(affected_paths, on_paths, clt)
-	cluster_paths = []
+	cluster_paths = [].to_set
 	on_paths.each do |p|
 		#choose min cost cluster
-		cluster_paths += affected_paths.select{|c| c[0] == (clt.adaptivity & p.affecting_cluster).min{|c| clt.to_cost[c] } }
+		cluster_paths += affected_paths.select{|c| c[0] == (clt.adaptivity & p.affecting_cluster).min{|c| clt.to_cost[c] } }.to_set
 	end
 	cluster_paths
 end
@@ -583,27 +606,29 @@ def mat_gen(paths, clt, cluster_th = 0.2)
 	affected_paths = aff_clt_set.reduce(Set.new, :+).map do |c|
 		[c, paths.select{|p| p.affecting_cluster.include?(c) }.to_set]
 	end
-	for i in (0..affected_paths.length - 1) do 
-		affected_paths.sort!{|b,a| a[1].length <=> b[1].length}
-		for j in (i+1..affected_paths.length - 1) do
-			offset = affected_paths[j][1] - affected_paths[i][1] 
-			intersection = affected_paths[j][1] & affected_paths[i][1] 
-			if intersection.length < offset.length
-				affected_paths[j][1] = affected_paths[j][1] - intersection
-			else
-				affected_paths[j][1] = affected_paths[j][1] - offset
-			end
-		end
-	end
+	
+#	for i in (0..affected_paths.length - 1) do 
+#		affected_paths.sort!{|b,a| a[1].length <=> b[1].length}
+#		#affected_paths = affected_paths[0,i] + affected_paths[i..-1].sort{|a,b| clt.to_cost[ a[0] ]<=>clt.to_cost[ b[0] ]}
+#		for j in (i+1..affected_paths.length - 1) do
+#			offset = affected_paths[j][1] - affected_paths[i][1] 
+#			intersection = affected_paths[j][1] & affected_paths[i][1] 
+##			if intersection.length < offset.length
+#			if offset.length > 0
+#				affected_paths[j][1] = affected_paths[j][1] - intersection
+#			end
+##			else
+##				affected_paths[j][1] = affected_paths[j][1] - offset
+##			end
+#		end
+#	end
+	index_file = File.new("index_cluster", "w")
+	mat_file = File.new("mat_input", "w") 
 	mat = affected_paths.map do |path_with_number|
+		index_file.print path_with_number[0], ' '
 		(0..paths.length - 1).map{|index|  
 			path_with_number[1].include?(paths[index]) ? 1 : 0}
 	end
-#	ret = aff_clt_set.reduce(Set.new, :+).map do |c|
-#		aff_clt_set.map{|clt|  clt.include?(c) ? 1 : 0 }
-#	end
-#	
-	mat_file = File.new("mat_input", "w") 
 	mat.each do |row|
 		row.each do |colomn|
 			mat_file.print colomn,' '
@@ -611,5 +636,49 @@ def mat_gen(paths, clt, cluster_th = 0.2)
 		mat_file.print "\n"
 	end
 	mat_file.close
+	index_file.close
 	affected_paths
+end
+def  block_dist(paths_of_interest, cluster_id = nil, clt)
+	if cluster_id == nil
+		ret = {}
+		paths_of_interest.each do |p|
+			pre_g = nil
+			p.gate_arrival_time.each do |g|
+				if pre_g == nil 
+					pre_g = g
+					next
+				end
+				if clt.gate_cluster[g[0] ] == clt.gate_cluster[pre_g[0] ] 
+					pre_g = g
+				else
+					if ret[ clt.gate_cluster[pre_g[0] ] ] == nil 
+						ret[ clt.gate_cluster[pre_g[0] ] ] = [ pre_g[1] ]
+						pre_g = g
+					else
+						ret[ clt.gate_cluster[pre_g[0] ] ].push(pre_g[1] )
+						pre_g = g
+					end
+				end
+			end
+		end
+	else
+		ret = []
+		paths_of_interest.each do |p|
+			pre_g = nil
+			p.gate_arrival_time.each do |g|
+				if pre_g == nil 
+					pre_g = g
+					next
+				end
+				if clt.gate_cluster[g[0] ] == clt.gate_cluster[pre_g[0] ] or clt.gate_cluster[pre_g[0] ] != cluster_id
+					pre_g = g
+				else
+					ret.push(pre_g[1] )
+					pre_g = g
+				end
+			end
+		end
+	end
+	ret.map{|number| number.to_f} 
 end
