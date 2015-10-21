@@ -273,11 +273,12 @@ class Circuit
 						end
 						state = TIMING_PATH_END
 					else
-	#					if voltage == 'low'
-	#						state = FINISH
-	#					elsif voltage == 'high'
+						if voltage == 'low'
+							state = FINISH
+						elsif voltage == 'high'
 							state = TIMING_PATH_END
-	#					end
+						end
+
 					end
 				elsif (line_seg.length == 3 and (line_seg[2] == "r" or line_seg[2] == "f"  ) ) or
 					(line_seg.length == 4 and (line_seg[3] == "r" or line_seg[3] == "f" ))
@@ -345,10 +346,6 @@ class Cluster
 	def g2c(gate)
 		@gate_cluster[gate]
 	end
-	attr_accessor :clustered_gates
-	#def clustered_gates(cluster_id)
-	#	@clustered_gates[cluster_id]
-	#end
 	def to_cost
 		@clustered_gates.merge(@clustered_gates) do |k,v|
 			leakage(@circuit.library, k) 
@@ -544,10 +541,10 @@ def leakage_diff(cluster_paths, clt, low_lib, high_lib)
 	}.reduce(0.0, :+) 
 end
 def naive_simu_knob(affected_paths, on_paths, clt)
-	cluster_paths = []
+	cluster_paths = [].to_set
 	on_paths.each do |p|
 		#choose min cost cluster
-		cluster_paths += affected_paths.select{|c| c[0] == (clt.adaptivity & p.affecting_cluster).min{|c| clt.to_cost[c] } }
+		cluster_paths += affected_paths.select{|c| c[0] == (clt.adaptivity & p.affecting_cluster).min{|c| clt.to_cost[c] } }.to_set
 	end
 	cluster_paths
 end
@@ -611,21 +608,21 @@ def mat_gen(paths, clt, cluster_th = 0.2)
 		[c, paths.select{|p| p.affecting_cluster.include?(c) }.to_set]
 	end
 	
-	for i in (0..affected_paths.length - 1) do 
-		affected_paths.sort!{|b,a| a[1].length <=> b[1].length}
-		#affected_paths = affected_paths[0,i] + affected_paths[i..-1].sort{|a,b| clt.to_cost[ a[0] ]<=>clt.to_cost[ b[0] ]}
-		for j in (i+1..affected_paths.length - 1) do
-			offset = affected_paths[j][1] - affected_paths[i][1] 
-			intersection = affected_paths[j][1] & affected_paths[i][1] 
-#			if intersection.length < offset.length
-			if offset.length > 0
-				affected_paths[j][1] = affected_paths[j][1] - intersection
-			end
-#			else
-#				affected_paths[j][1] = affected_paths[j][1] - offset
+#	for i in (0..affected_paths.length - 1) do 
+#		affected_paths.sort!{|b,a| a[1].length <=> b[1].length}
+#		#affected_paths = affected_paths[0,i] + affected_paths[i..-1].sort{|a,b| clt.to_cost[ a[0] ]<=>clt.to_cost[ b[0] ]}
+#		for j in (i+1..affected_paths.length - 1) do
+#			offset = affected_paths[j][1] - affected_paths[i][1] 
+#			intersection = affected_paths[j][1] & affected_paths[i][1] 
+##			if intersection.length < offset.length
+#			if offset.length > 0
+#				affected_paths[j][1] = affected_paths[j][1] - intersection
 #			end
-		end
-	end
+##			else
+##				affected_paths[j][1] = affected_paths[j][1] - offset
+##			end
+#		end
+#	end
 	index_file = File.new("index_cluster", "w")
 	mat_file = File.new("mat_input", "w") 
 	mat = affected_paths.map do |path_with_number|

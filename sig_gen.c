@@ -57,6 +57,8 @@ int dfs_check(SIG_KNOB sk, int level, SIG_KNOB sk_to_ckeck){
 		return 0;
 	}
 }
+
+/* sk dominates dd_sk */
 void sk_update_dominated_sig(SIG_KNOB sk, SIG_KNOB dd_sk){
 	int i ;
 	if(sk == NULL || dd_sk == NULL){return ;}
@@ -70,6 +72,8 @@ void sk_update_dominated_sig(SIG_KNOB sk, SIG_KNOB dd_sk){
 	sk->dominated_signal[sk->ndominated_sig] = dd_sk ;
 	sk->ndominated_sig += 1;
 }
+
+/* d_sk dominates sk */
 void sk_update_dominating_sig(SIG_KNOB sk, SIG_KNOB d_sk){
 		int i ;
 		if(sk == NULL|| d_sk == NULL){return ;}
@@ -150,7 +154,6 @@ void sk_chain_pruning(float const cost[], int level ){
 			int dominated_level = 0, self_level = 0 ;
 			int nmin_cost_knobs = 0;
 		
-//			while(sk != NULL){
 
 			int *min_cost_knob_list = malloc(sk->ndominated_sig * sizeof * min_cost_knob_list) ;
 			float min_c = 0.0;
@@ -189,7 +192,7 @@ void sk_chain_pruning(float const cost[], int level ){
 					for (i = 0; i < sk->ndominated_sig; i++){
 				
 					if(dfs_check(sk->dominated_signal[i], 0, sk->dominating_signal[j]) ){
-					
+						/* There is another path from i -> some other node -> j */
 					}else{
 						sk_update_dominating_sig(sk->dominated_signal[i] , sk->dominating_signal[j] ) ;
 						sk_update_dominated_sig(sk->dominating_signal[j] , sk->dominated_signal[i] ) ;
@@ -216,8 +219,6 @@ void sk_chain_pruning(float const cost[], int level ){
 				self_level += 1 ;
 			}
 			free(min_cost_knob_list);
-//			sk = sk->next_level;
-//			}
 		}
 
 	}
@@ -550,14 +551,15 @@ void print_keys(char *temp_mat, int nrow, int ncol, float const cost[], int cons
 }
 #endif
 void get_cost(FILE *cost_input, float *cost, int nrow){
-	int temp, i;
+	int  i;
+	float temp ;
 	if(cost_input == NULL){
 		perror("no cost file");
 		exit(EXIT_FAILURE);
 	}
 	for(i = 0; i< nrow ; i++){
-		fscanf(cost_input, "%d", &temp) ;
-		cost[i] = (float) temp ;
+		fscanf(cost_input, "%f", &temp) ;
+		cost[i] = temp ;
 	}
 }
 int main(){

@@ -4,6 +4,7 @@ lib = Library.new('NangateOpenCellLibrary_typical_ccs.lib')
 lib2 = Library.new('NangateOpenCellLibrary_fast_ccs.lib')
 if ARGV[3] != nil
 	ckt = Circuit.new('gates.txt', lib, ARGV[2].to_i, [0.0441, 0.0491], 'pr' ,0.8 , ARGV[3].split(",").map{|i| i.to_i} ) 
+	print "with adaptivity:", ARGV[3].split(",").map{|i| i.to_i},"\n" 
 else
 	ckt = Circuit.new('gates.txt', lib, ARGV[2].to_i, [0.0441, 0.0491], 'pr' ,0.8 )
 end
