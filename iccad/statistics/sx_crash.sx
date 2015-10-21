@@ -1,0 +1,15 @@
+### Custom WaveView session file (version E-2011.03-1 build 1103) ###
+### saved at 15:36:30 on Tue Oct 20 2015 ###
+wdf 0 "/home/li3939108/ADS/iccad/statistics/demo.raw/TransientAnalysis.tran" load=used 
+scalar list
+waveview_begin 1  stack  offset=0 name_b=81 mntr_b=81 dm=diff:-525:-97:0:0:0:1:0:0:0:0:0.0000e+00:0.0000e+00:5.0000e+01:5.0000e+01:-1:-1:1.01878e-09:5.56791e-01:0.00000e+00:0.00000e+00 dm=xy:370:331:1:0:0:5.0000e+01:2.08226e-09:-1.32385e-06 dm=width:296:141:1:0:0:0:0.0000e+00:0.0000e+00:5.0000e+01:0:9.96221e-10:3.99378e-09:6.84332e-01 geo=880:90:700:400 "name=waveview 1" 
+  panel_begin linear pidx=0 spath=true 
+    line src=wdf lidx=0 fidx=0 "delim=.^" sigtype=1 "name=n1" attr=0:0:1:0 autoset=true disp=show 
+  panel_end
+  panel_begin linear pidx=1 spath=true 
+    line src=wdf lidx=0 fidx=0 "delim=.^" sigtype=1 "name=o1" attr=1:1:1:0 autoset=true disp=show 
+  panel_end
+  panel_begin linear pidx=2 spath=true 
+    line src=wdf lidx=0 fidx=0 "delim=.^" sigtype=1 "name=o2" attr=2:2:1:0 autoset=true disp=show 
+  panel_end
+waveview_end

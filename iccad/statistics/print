@@ -1,0 +1,4653 @@
+ ****** HSPICE -- C-2009.09-SP1 32-BIT (Nov 23 2009) linux ******               
+  Copyright (C) 2009 Synopsys, Inc. All Rights Reserved.                        
+  Unpublished-rights reserved under US copyright laws.
+  This program is protected by law and is subject to the 
+  terms and conditions of the license agreement from Synopsys.
+  Use of this program is your acceptance to be bound by the 
+  license agreement. HSPICE is the trademark of Synopsys, Inc.
+  Input File: demo.sp                                                           
+ lic:  
+ lic: FLEXlm: v8.5b 
+ lic: USER:   li3939108            HOSTNAME: raptor 
+ lic: HOSTID: f04da240beb1         PID:      22030 
+ lic: Using FLEXlm license file: 
+ lic: 27000@license.ece.tamu.edu 
+ lic: Checkout 1 hspice 
+ lic: License/Maintenance for hspice will expire on 14-nov-2015/2014.09 
+ lic: FLOATING license(s) on SERVER license.ece.tamu.edu 
+ lic:   
+ **warning** Unrecognized output type delay1   on line above;ignored.
+
+ **warning** Unrecognized output type delay3   on line above;ignored.
+
+1****** HSPICE -- C-2009.09-SP1 32-BIT (Nov 23 2009) linux ******               
+ ******  
+ *********************************
+
+  ******  circuit name directory
+ circuit number to circuit name directory
+   number circuitname                     definition         multiplier
+        0 main circuit
+        1 x.                              inv_3              1.00 
+        2 x.x2.                           inv_x2             1.00 
+        3 x.x8.                           inv_x8             1.00 
+        4 x.x32.                          inv_x32            1.00 
+1****** HSPICE -- C-2009.09-SP1 32-BIT (Nov 23 2009) linux ******               
+ ******  
+ *********************************
+
+  ******  mos   model parameters tnom=  25.000 temp=  25.000 *****
+ 
+Model Name: nmos_vtl  
+
+ BSIM4 Model (Level 54)
+
+    MOBMOD = 0
+    BINUNIT = 1
+    PARAMCHK = 1
+    CAPMOD = 2
+    DIOMOD = 1
+    RDSMOD = 0
+    TRNQSMOD = 0
+    ACNQSMOD = 0
+    RBODYMOD = 1
+    RGATEMOD = 1
+    PERMOD = 1
+    GEOMOD = 1
+    RGEOMOD = 0
+    FNOIMOD = 1
+    TNOIMOD = 0
+    IGCMOD = 1
+    IGBMOD = 1
+    STIMOD = 0
+    VERSION =      4 
+    TOXREF = 1.8e-09 
+    TOXE = 1.8e-09 
+    TOXP = 1.5e-09 
+    TOXM = 1.8e-09 
+    DTOX =  3e-10 
+    EPSROX =    3.9 
+    CDSC =      0 
+    CDSCB =      0 
+    CDSCD =      0 
+    CIT =      0 
+    NFACTOR =    1.6 
+    XJ = 1.4e-08 
+    VSAT = 1.3e+05 
+    A0 =      1 
+    AGS =      0 
+    A1 =      0 
+    A2 =      1 
+    AT = 3.3e+04 
+    KETA =   0.04 
+    NSUB =  6e+16 
+    NDEP = 3.24e+18 
+    NSD =  2e+20 
+    NGATE =  1e+23 
+    GAMMA1 =      0 
+    GAMMA2 =      0 
+    VBX =      0 
+    VBM =     -3 
+    XT = 1.55e-07 
+    K1 =    0.4 
+    KT1 =  -0.11 
+    KT1L =      0 
+    KT2 =  0.022 
+    K2 =      0 
+    K3 =      0 
+    K3B =      0 
+    LPE0 =      0 
+    LPEB =      0 
+    DVTP0 =  1e-10 
+    DVTP1 =    0.1 
+    W0 = 2.5e-06 
+    DVT0 =      1 
+    DVT1 =      2 
+    DVT2 =      0 
+    DVT0W =      0 
+    DVT1W =      0 
+    DVT2W =      0 
+    DROUT =    0.5 
+    DSUB =    0.1 
+    VTH0 = 0.7226 
+    EU =   1.67 
+    UA =  6e-10 
+    UA1 = 4.31e-09 
+    UB = 1.2e-18 
+    UB1 = 7.61e-18 
+    UC =      0 
+    UC1 = -5.6e-11 
+    U0 =  0.049 
+    UTE =   -1.5 
+    VOFF =  -0.13 
+    VOFFL =      0 
+    MINV =   0.05 
+    FPROUT =    0.2 
+    PDITS =   0.08 
+    PDITSD =   0.23 
+    PDITSL = 2.3e+06 
+    DELTA =   0.01 
+    RDSW =    210 
+    RDSWMIN =      0 
+    RDWMIN =      0 
+    RSWMIN =      0 
+    RDW =     80 
+    RSW =     80 
+    PRWG =      0 
+    PRWB =      0 
+    PRT =      0 
+    ETA0 = 0.0125 
+    ETAB =      0 
+    PCLM =   0.02 
+    PDIBLC1 =  0.001 
+    PDIBLC2 =  0.001 
+    PDIBLCB = -0.005 
+    PSCBE1 = 8.14e+08 
+    PSCBE2 =  1e-07 
+    PVAG =  1e-20 
+    WR =      1 
+    DWG =      0 
+    DWB =      0 
+    XW =      0 
+    XWREF =      0 
+    XL =      0 
+    XLREF =      0 
+    B0 =      0 
+    B1 =      0 
+    ALPHA0 =  0.074 
+    ALPHA1 =  0.005 
+    AGIDL = 0.0002 
+    BGIDL = 2.1e+09 
+    CGIDL = 0.0002 
+    PHIN =      0 
+    EGIDL =    0.8 
+    AIGC = 0.01521 
+    BIGC = 0.002743 
+    CIGC =  0.002 
+    AIGSD = 0.01521 
+    BIGSD = 0.002743 
+    CIGSD =  0.002 
+    AIGBACC =  0.012 
+    BIGBACC = 0.0028 
+    CIGBACC =  0.002 
+    AIGBINV =  0.014 
+    BIGBINV =  0.004 
+    CIGBINV =  0.004 
+    NIGC =      1 
+    NIGBINV =      3 
+    NIGBACC =      1 
+    NTOX =      1 
+    EIGBINV =    1.1 
+    PIGCD =      1 
+    POXEDGE =      1 
+    XRCRG1 =     12 
+    TNOIA =    1.5 
+    TNOIB =    3.5 
+    NTNOI =      1 
+    XRCRG2 =      5 
+    BETA0 =     30 
+    IJTHDFWD =   0.01 
+    IJTHSFWD =   0.01 
+    IJTHDREV =  0.001 
+    IJTHSREV =  0.001 
+    XJBVD =      1 
+    XJBVS =      1 
+    BVD =     10 
+    BVS =     10 
+    VFB =  -0.55 
+    GBMIN =  1e-10 
+    RBDB =     15 
+    RBPB =      5 
+    RBSB =     15 
+    RBPS =     15 
+    RBPD =     15 
+    CGSL = 2.653e-10 
+    CGDL = 2.653e-10 
+    CKAPPAS =   0.03 
+    CKAPPAD =   0.03 
+    CF = 1.189e-10 
+    CLC =  1e-07 
+    CLE =    0.6 
+    DWC =  5e-09 
+    DLC =      0 
+    DLCIG =      0 
+    DWJ =      0 
+    VFBCV =     -1 
+    ACDE =      1 
+    MOIN =     15 
+    NOFF =    0.9 
+    VOFFCV =   0.02 
+    DMCG =      0 
+    DMCI =      0 
+    DMDG =      0 
+    DMCGT =      0 
+    XGW =      0 
+    XGL =      0 
+    RSHG =    0.4 
+    NGCON =      1 
+    TCJ =  0.001 
+    TPB =  0.005 
+    TCJSW =  0.001 
+    TPBSW =  0.005 
+    TCJSWG =  0.001 
+    TPBSWG =  0.005 
+    SK0 =      0 
+    SK1 =      0 
+    SK2 =      0 
+    SL =  2e-06 
+    SW =  2e-06 
+    K =      0 
+    TNOM =  300.1 
+    CGSO = 1.1e-10 
+    CGDO = 1.1e-10 
+    CGBO = 2.56e-11 
+    XPART =      0 
+    RSH =      5 
+    JSS = 0.0001 
+    JSWS =  1e-11 
+    JSWGS =  1e-10 
+    PBS =      1 
+    MJS =    0.5 
+    PBSWS =      1 
+    MJSWS =   0.33 
+    CJS = 0.0005 
+    CJSWS =  5e-10 
+    NJS =      1 
+    PBSWGS =      1 
+    MJSWGS =   0.33 
+    CJSWGS =  3e-10 
+    XTIS =      3 
+    JSD = 0.0001 
+    JSWD =  1e-11 
+    JSWGD =  1e-10 
+    PBD =      1 
+    MJD =    0.5 
+    PBSWD =      1 
+    MJSWD =   0.33 
+    CJD = 0.0005 
+    CJSWD =  5e-10 
+    NJD =      1 
+    PBSWGD =      1 
+    MJSWGD =   0.33 
+    CJSWGD =  5e-10 
+    XTID =      3 
+    LMLT =      1 
+    WMLT =      1 
+    LINT =      0 
+    LL =      0 
+    LLC =      0 
+    LLN =      1 
+    LW =      0 
+    LWC =      0 
+    LWN =      1 
+    LWL =      0 
+    LWLC =      0 
+    LMIN =      0 
+    LMAX =      1 
+    WINT =  5e-09 
+    WL =      0 
+    WLC =      0 
+    WLN =      1 
+    WW =      0 
+    WWC =      0 
+    WWN =      1 
+    WWL =      0 
+    WWLC =      0 
+    WMIN =      0 
+    WMAX =      1 
+    NOIA = 6.25e+41 
+    NOIB = 3.125e+26 
+    NOIC = 8.75e+09 
+    EM = 4.1e+07 
+    EF =      1 
+    AF =      1 
+    KF =      0 
+    TRS =      0 
+    TRD =      0 
+ 
+
+ 
+Model Name: pmos_vtl  
+
+ BSIM4 Model (Level 54)
+
+    MOBMOD = 0
+    BINUNIT = 1
+    PARAMCHK = 1
+    CAPMOD = 2
+    DIOMOD = 1
+    RDSMOD = 0
+    TRNQSMOD = 0
+    ACNQSMOD = 0
+    RBODYMOD = 1
+    RGATEMOD = 1
+    PERMOD = 1
+    GEOMOD = 1
+    RGEOMOD = 0
+    FNOIMOD = 1
+    TNOIMOD = 0
+    IGCMOD = 1
+    IGBMOD = 1
+    STIMOD = 0
+    VERSION =      4 
+    TOXREF = 1.82e-09 
+    TOXE = 1.82e-09 
+    TOXP = 1.5e-09 
+    TOXM = 1.82e-09 
+    DTOX = 3.2e-10 
+    EPSROX =    3.9 
+    CDSC =      0 
+    CDSCB =      0 
+    CDSCD =      0 
+    CIT =      0 
+    NFACTOR =    1.8 
+    XJ = 1.4e-08 
+    VSAT =  9e+04 
+    A0 =      1 
+    AGS =  1e-20 
+    A1 =      0 
+    A2 =      1 
+    AT = 3.3e+04 
+    KETA = -0.047 
+    NSUB =  6e+16 
+    NDEP = 2.44e+18 
+    NSD =  2e+20 
+    NGATE =  1e+23 
+    GAMMA1 =      0 
+    GAMMA2 =      0 
+    VBX =      0 
+    VBM =     -3 
+    XT = 1.55e-07 
+    K1 =    0.4 
+    KT1 =  -0.11 
+    KT1L =      0 
+    KT2 =  0.022 
+    K2 =  -0.01 
+    K3 =      0 
+    K3B =      0 
+    LPE0 =      0 
+    LPEB =      0 
+    DVTP0 =  1e-11 
+    DVTP1 =   0.05 
+    W0 = 2.5e-06 
+    DVT0 =      1 
+    DVT1 =      2 
+    DVT2 = -0.032 
+    DVT0W =      0 
+    DVT1W =      0 
+    DVT2W =      0 
+    DROUT =   0.56 
+    DSUB =    0.1 
+    VTH0 = -0.487 
+    EU =      1 
+    UA =  2e-09 
+    UA1 = 4.31e-09 
+    UB =  5e-19 
+    UB1 = 7.61e-18 
+    UC =      0 
+    UC1 = -5.6e-11 
+    U0 =  0.021 
+    UTE =   -1.5 
+    VOFF = -0.126 
+    VOFFL =      0 
+    MINV =   0.05 
+    FPROUT =    0.2 
+    PDITS =   0.08 
+    PDITSD =   0.23 
+    PDITSL = 2.3e+06 
+    DELTA =   0.01 
+    RDSW =    250 
+    RDSWMIN =      0 
+    RDWMIN =      0 
+    RSWMIN =      0 
+    RDW =     75 
+    RSW =     75 
+    PRWG =      0 
+    PRWB =      0 
+    PRT =      0 
+    ETA0 = 0.0125 
+    ETAB =      0 
+    PCLM =   0.12 
+    PDIBLC1 =  0.001 
+    PDIBLC2 =  0.001 
+    PDIBLCB = 3.4e-08 
+    PSCBE1 = 8.14e+08 
+    PSCBE2 = 9.58e-07 
+    PVAG =  1e-20 
+    WR =      1 
+    DWG =      0 
+    DWB =      0 
+    XW =      0 
+    XWREF =      0 
+    XL =      0 
+    XLREF =      0 
+    B0 =      0 
+    B1 =      0 
+    ALPHA0 =  0.074 
+    ALPHA1 =  0.005 
+    AGIDL = 0.0002 
+    BGIDL = 2.1e+09 
+    CGIDL = 0.0002 
+    PHIN =      0 
+    EGIDL =    0.8 
+    AIGC = 0.0097 
+    BIGC = 0.00125 
+    CIGC = 0.0008 
+    AIGSD = 0.0097 
+    BIGSD = 0.00125 
+    CIGSD = 0.0008 
+    AIGBACC =  0.012 
+    BIGBACC = 0.0028 
+    CIGBACC =  0.002 
+    AIGBINV =  0.014 
+    BIGBINV =  0.004 
+    CIGBINV =  0.004 
+    NIGC =      1 
+    NIGBINV =      3 
+    NIGBACC =      1 
+    NTOX =      1 
+    EIGBINV =    1.1 
+    PIGCD =      1 
+    POXEDGE =      1 
+    XRCRG1 =     12 
+    TNOIA =    1.5 
+    TNOIB =    3.5 
+    NTNOI =      1 
+    XRCRG2 =      5 
+    BETA0 =     30 
+    IJTHDFWD =   0.01 
+    IJTHSFWD =   0.01 
+    IJTHDREV =  0.001 
+    IJTHSREV =  0.001 
+    XJBVD =      1 
+    XJBVS =      1 
+    BVD =     10 
+    BVS =     10 
+    VFB =   0.55 
+    GBMIN =  1e-10 
+    RBDB =     15 
+    RBPB =      5 
+    RBSB =     15 
+    RBPS =     15 
+    RBPD =     15 
+    CGSL = 2.653e-10 
+    CGDL = 2.653e-10 
+    CKAPPAS =   0.03 
+    CKAPPAD =   0.03 
+    CF = 1.186e-10 
+    CLC =  1e-07 
+    CLE =    0.6 
+    DWC =  5e-09 
+    DLC =      0 
+    DLCIG =      0 
+    DWJ =      0 
+    VFBCV =     -1 
+    ACDE =      1 
+    MOIN =     15 
+    NOFF =    0.9 
+    VOFFCV =   0.02 
+    DMCG =      0 
+    DMCI =      0 
+    DMDG =      0 
+    DMCGT =      0 
+    XGW =      0 
+    XGL =      0 
+    RSHG =    0.4 
+    NGCON =      1 
+    TCJ =  0.001 
+    TPB =  0.005 
+    TCJSW =  0.001 
+    TPBSW =  0.005 
+    TCJSWG =  0.001 
+    TPBSWG =  0.005 
+    SK0 =      0 
+    SK1 =      0 
+    SK2 =      0 
+    SL =  2e-06 
+    SW =  2e-06 
+    K =      0 
+    TNOM =  300.1 
+    CGSO = 1.1e-10 
+    CGDO = 1.1e-10 
+    CGBO = 2.56e-11 
+    XPART =      0 
+    RSH =      5 
+    JSS = 0.0001 
+    JSWS =  1e-11 
+    JSWGS =  1e-10 
+    PBS =      1 
+    MJS =    0.5 
+    PBSWS =      1 
+    MJSWS =   0.33 
+    CJS = 0.0005 
+    CJSWS =  5e-10 
+    NJS =      1 
+    PBSWGS =      1 
+    MJSWGS =   0.33 
+    CJSWGS =  3e-10 
+    XTIS =      3 
+    JSD = 0.0001 
+    JSWD =  1e-11 
+    JSWGD =  1e-10 
+    PBD =      1 
+    MJD =    0.5 
+    PBSWD =      1 
+    MJSWD =   0.33 
+    CJD = 0.0005 
+    CJSWD =  5e-10 
+    NJD =      1 
+    PBSWGD =      1 
+    MJSWGD =   0.33 
+    CJSWGD =  5e-10 
+    XTID =      3 
+    LMLT =      1 
+    WMLT =      1 
+    LINT =      0 
+    LL =      0 
+    LLC =      0 
+    LLN =      1 
+    LW =      0 
+    LWC =      0 
+    LWN =      1 
+    LWL =      0 
+    LWLC =      0 
+    LMIN =      0 
+    LMAX =      1 
+    WINT =  5e-09 
+    WL =      0 
+    WLC =      0 
+    WLN =      1 
+    WW =      0 
+    WWC =      0 
+    WWN =      1 
+    WWL =      0 
+    WWLC =      0 
+    WMIN =      0 
+    WMAX =      1 
+    NOIA = 6.188e+40 
+    NOIB = 1.5e+25 
+    NOIC = 8.75e+09 
+    EM = 4.1e+07 
+    EF =      1 
+    AF =      1 
+    KF =      0 
+    TRS =      0 
+    TRD =      0 
+ 
+
+  **warning** (demo.sp:180) dc voltage reset to initial transient source value              in source        0:vpulse              new dc=  0.0000D+00
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5e-08.
+
+ 
+      
+ **diagnostic** set option symb=1 internally to help for convergence.
+ *****************************************************************
+ ******  option summary
+ ******
+ runlvl  = 3         bypass  = 2         
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.60319e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.60319e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.60319e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.60319e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26167e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26167e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26167e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26167e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26167e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26167e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26167e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26167e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26167e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26167e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26167e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26167e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26167e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26167e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26167e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26167e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46861e-08.
+
+
+   *** monte carlo  index =     1 ***
+
+       MONTE CARLO PARAMETER DEFINITIONS
+
+ vth0_n_g                        
+     nmos_vtl        =  0.7256    
+ vth0_p_g                        
+     pmos_vtl        = -0.5219    
+ vth0_aging_n                    
+     nmos_vtl        =  0.7256    
+ vth0_aging_p                    
+     pmos_vtl        = -0.5219    
+ 1:l_g                           
+     2:l             =  4.6032E-08  3:l             =  4.2617E-08
+     4:l             =  4.4686E-08
+
+   delay1=  2.5798E-11  targ=  1.0258E-09   trig=  1.0001E-09
+   delay2=  3.7003E-11  targ=  1.0629E-09   trig=  1.0258E-09
+   delay3=  1.9808E-11  targ=  5.0200E-09   trig=  5.0001E-09
+   delay4=  4.2846E-11  targ=  5.0628E-09   trig=  5.0200E-09
+
+          ***** job concluded
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.75088e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.75088e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.75088e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.75088e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.74803e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.74803e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.74803e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.74803e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.74803e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.74803e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.74803e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.74803e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.74803e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.74803e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.74803e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.74803e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.74803e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.74803e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.74803e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.74803e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.26269e-08.
+
+
+   *** monte carlo  index =     2 ***
+
+       MONTE CARLO PARAMETER DEFINITIONS
+
+ vth0_n_g                        
+     nmos_vtl        =  0.7764    
+ vth0_p_g                        
+     pmos_vtl        = -0.5073    
+ vth0_aging_n                    
+     nmos_vtl        =  0.7764    
+ vth0_aging_p                    
+     pmos_vtl        = -0.5073    
+ 1:l_g                           
+     2:l             =  4.7509E-08  3:l             =  4.7480E-08
+     4:l             =  4.2627E-08
+
+   delay1=  3.2948E-11  targ=  1.0330E-09   trig=  1.0001E-09
+   delay2=  3.9936E-11  targ=  1.0729E-09   trig=  1.0330E-09
+   delay3=  2.0351E-11  targ=  5.0205E-09   trig=  5.0001E-09
+   delay4=  5.2809E-11  targ=  5.0733E-09   trig=  5.0205E-09
+
+          ***** job concluded
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.53717e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.53717e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.53717e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.53717e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.53489e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.53489e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.53489e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.53489e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.53489e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.53489e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.53489e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.53489e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.53489e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.53489e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.53489e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.53489e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.53489e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.53489e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.53489e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.53489e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.29036e-08.
+
+
+   *** monte carlo  index =     3 ***
+
+       MONTE CARLO PARAMETER DEFINITIONS
+
+ vth0_n_g                        
+     nmos_vtl        =  0.7501    
+ vth0_p_g                        
+     pmos_vtl        = -0.5066    
+ vth0_aging_n                    
+     nmos_vtl        =  0.7501    
+ vth0_aging_p                    
+     pmos_vtl        = -0.5066    
+ 1:l_g                           
+     2:l             =  4.5372E-08  3:l             =  4.5349E-08
+     4:l             =  4.2904E-08
+
+   delay1=  2.8071E-11  targ=  1.0281E-09   trig=  1.0001E-09
+   delay2=  3.8296E-11  targ=  1.0664E-09   trig=  1.0281E-09
+   delay3=  1.9046E-11  targ=  5.0192E-09   trig=  5.0001E-09
+   delay4=  4.7328E-11  targ=  5.0665E-09   trig=  5.0192E-09
+
+          ***** job concluded
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=3.96604e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=3.96604e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=3.96604e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=3.96604e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.4938e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.4938e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.4938e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.4938e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.4938e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.4938e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.4938e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.4938e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.4938e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.4938e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.4938e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.4938e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.4938e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.4938e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.4938e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.4938e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78529e-08.
+
+
+   *** monte carlo  index =     4 ***
+
+       MONTE CARLO PARAMETER DEFINITIONS
+
+ vth0_n_g                        
+     nmos_vtl        =  0.7415    
+ vth0_p_g                        
+     pmos_vtl        = -0.4751    
+ vth0_aging_n                    
+     nmos_vtl        =  0.7415    
+ vth0_aging_p                    
+     pmos_vtl        = -0.4751    
+ 1:l_g                           
+     2:l             =  3.9660E-08  3:l             =  4.4938E-08
+     4:l             =  4.7853E-08
+
+   delay1=  2.4648E-11  targ=  1.0247E-09   trig=  1.0001E-09
+   delay2=  3.3333E-11  targ=  1.0580E-09   trig=  1.0247E-09
+   delay3=  1.5795E-11  targ=  5.0159E-09   trig=  5.0001E-09
+   delay4=  4.9145E-11  targ=  5.0651E-09   trig=  5.0159E-09
+
+          ***** job concluded
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.8097e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.8097e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.8097e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.8097e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.55533e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.55533e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.55533e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.55533e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.55533e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.55533e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.55533e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.55533e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.55533e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.55533e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.55533e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.55533e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.55533e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.55533e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.55533e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.55533e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.06217e-08.
+
+
+   *** monte carlo  index =     5 ***
+
+       MONTE CARLO PARAMETER DEFINITIONS
+
+ vth0_n_g                        
+     nmos_vtl        =  0.6783    
+ vth0_p_g                        
+     pmos_vtl        = -0.5071    
+ vth0_aging_n                    
+     nmos_vtl        =  0.6783    
+ vth0_aging_p                    
+     pmos_vtl        = -0.5071    
+ 1:l_g                           
+     2:l             =  4.8097E-08  3:l             =  4.5553E-08
+     4:l             =  4.0622E-08
+
+   delay1=  2.3874E-11  targ=  1.0239E-09   trig=  1.0001E-09
+   delay2=  3.4385E-11  targ=  1.0583E-09   trig=  1.0239E-09
+   delay3=  2.0445E-11  targ=  5.0206E-09   trig=  5.0001E-09
+   delay4=  4.0188E-11  targ=  5.0608E-09   trig=  5.0206E-09
+
+          ***** job concluded
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56196e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56196e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56196e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56196e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.68142e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.68142e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.68142e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.68142e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.68142e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.68142e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.68142e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.68142e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.68142e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.68142e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.68142e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.68142e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.68142e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.68142e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.68142e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.68142e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44461e-08.
+
+
+   *** monte carlo  index =     6 ***
+
+       MONTE CARLO PARAMETER DEFINITIONS
+
+ vth0_n_g                        
+     nmos_vtl        =  0.6307    
+ vth0_p_g                        
+     pmos_vtl        = -0.5676    
+ vth0_aging_n                    
+     nmos_vtl        =  0.6307    
+ vth0_aging_p                    
+     pmos_vtl        = -0.5676    
+ 1:l_g                           
+     2:l             =  4.5620E-08  3:l             =  4.6814E-08
+     4:l             =  4.4446E-08
+
+   delay1=  2.0260E-11  targ=  1.0203E-09   trig=  1.0001E-09
+   delay2=  4.0530E-11  targ=  1.0608E-09   trig=  1.0203E-09
+   delay3=  2.3011E-11  targ=  5.0232E-09   trig=  5.0001E-09
+   delay4=  3.6604E-11  targ=  5.0598E-09   trig=  5.0232E-09
+
+          ***** job concluded
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.43983e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.43983e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.43983e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.43983e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.74134e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.74134e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.74134e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.74134e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.74134e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.74134e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.74134e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.74134e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.74134e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.74134e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.74134e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.74134e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.74134e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.74134e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.74134e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.74134e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.42561e-08.
+
+
+   *** monte carlo  index =     7 ***
+
+       MONTE CARLO PARAMETER DEFINITIONS
+
+ vth0_n_g                        
+     nmos_vtl        =  0.6832    
+ vth0_p_g                        
+     pmos_vtl        = -0.4377    
+ vth0_aging_n                    
+     nmos_vtl        =  0.6832    
+ vth0_aging_p                    
+     pmos_vtl        = -0.4377    
+ 1:l_g                           
+     2:l             =  4.4398E-08  3:l             =  4.7413E-08
+     4:l             =  4.4256E-08
+
+   delay1=  2.3561E-11  targ=  1.0236E-09   trig=  1.0001E-09
+   delay2=  3.0168E-11  targ=  1.0538E-09   trig=  1.0236E-09
+   delay3=  1.6503E-11  targ=  5.0167E-09   trig=  5.0001E-09
+   delay4=  4.4330E-11  targ=  5.0610E-09   trig=  5.0167E-09
+
+          ***** job concluded
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.91547e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.91547e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.91547e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.91547e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.40771e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.40771e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.40771e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.40771e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.40771e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.40771e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.40771e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.40771e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.40771e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.40771e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.40771e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.40771e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.40771e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.40771e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.40771e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.40771e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.32338e-08.
+
+
+   *** monte carlo  index =     8 ***
+
+       MONTE CARLO PARAMETER DEFINITIONS
+
+ vth0_n_g                        
+     nmos_vtl        =  0.6886    
+ vth0_p_g                        
+     pmos_vtl        = -0.4811    
+ vth0_aging_n                    
+     nmos_vtl        =  0.6886    
+ vth0_aging_p                    
+     pmos_vtl        = -0.4811    
+ 1:l_g                           
+     2:l             =  4.9155E-08  3:l             =  4.4077E-08
+     4:l             =  4.3234E-08
+
+   delay1=  2.5029E-11  targ=  1.0251E-09   trig=  1.0001E-09
+   delay2=  3.2343E-11  targ=  1.0574E-09   trig=  1.0251E-09
+   delay3=  1.9252E-11  targ=  5.0194E-09   trig=  5.0001E-09
+   delay4=  4.0534E-11  targ=  5.0599E-09   trig=  5.0194E-09
+
+          ***** job concluded
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.33458e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.33458e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.33458e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.33458e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.58969e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.58969e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.58969e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.58969e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.58969e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.58969e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.58969e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.58969e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.58969e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.58969e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.58969e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.58969e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.58969e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.58969e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.58969e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.58969e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85627e-08.
+
+
+   *** monte carlo  index =     9 ***
+
+       MONTE CARLO PARAMETER DEFINITIONS
+
+ vth0_n_g                        
+     nmos_vtl        =  0.7231    
+ vth0_p_g                        
+     pmos_vtl        = -0.4825    
+ vth0_aging_n                    
+     nmos_vtl        =  0.7231    
+ vth0_aging_p                    
+     pmos_vtl        = -0.4825    
+ 1:l_g                           
+     2:l             =  4.3346E-08  3:l             =  4.5897E-08
+     4:l             =  4.8563E-08
+
+   delay1=  2.5171E-11  targ=  1.0252E-09   trig=  1.0001E-09
+   delay2=  3.4959E-11  targ=  1.0602E-09   trig=  1.0252E-09
+   delay3=  1.7421E-11  targ=  5.0176E-09   trig=  5.0001E-09
+   delay4=  4.4094E-11  targ=  5.0617E-09   trig=  5.0176E-09
+
+          ***** job concluded
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50512e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50512e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50512e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50512e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85025e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85025e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85025e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85025e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85025e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85025e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85025e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.85025e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85025e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85025e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85025e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85025e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85025e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85025e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85025e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.85025e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.22655e-08.
+
+
+   *** monte carlo  index =    10 ***
+
+       MONTE CARLO PARAMETER DEFINITIONS
+
+ vth0_n_g                        
+     nmos_vtl        =  0.6214    
+ vth0_p_g                        
+     pmos_vtl        = -0.5363    
+ vth0_aging_n                    
+     nmos_vtl        =  0.6214    
+ vth0_aging_p                    
+     pmos_vtl        = -0.5363    
+ 1:l_g                           
+     2:l             =  4.5051E-08  3:l             =  4.8503E-08
+     4:l             =  4.2265E-08
+
+   delay1=  1.9966E-11  targ=  1.0200E-09   trig=  1.0001E-09
+   delay2=  3.7140E-11  targ=  1.0572E-09   trig=  1.0200E-09
+   delay3=  2.1160E-11  targ=  5.0213E-09   trig=  5.0001E-09
+   delay4=  3.6495E-11  targ=  5.0578E-09   trig=  5.0213E-09
+
+          ***** job concluded
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.25058e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.25058e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.25058e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.25058e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.8438e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.8438e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.8438e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.8438e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.8438e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.8438e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.8438e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.8438e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.8438e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.8438e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.8438e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.8438e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.8438e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.8438e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.8438e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.8438e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.64318e-08.
+
+
+   *** monte carlo  index =    11 ***
+
+       MONTE CARLO PARAMETER DEFINITIONS
+
+ vth0_n_g                        
+     nmos_vtl        =  0.7046    
+ vth0_p_g                        
+     pmos_vtl        = -0.4866    
+ vth0_aging_n                    
+     nmos_vtl        =  0.7046    
+ vth0_aging_p                    
+     pmos_vtl        = -0.4866    
+ 1:l_g                           
+     2:l             =  4.2506E-08  3:l             =  4.8438E-08
+     4:l             =  4.6432E-08
+
+   delay1=  2.3825E-11  targ=  1.0239E-09   trig=  1.0001E-09
+   delay2=  3.5478E-11  targ=  1.0594E-09   trig=  1.0239E-09
+   delay3=  1.7537E-11  targ=  5.0177E-09   trig=  5.0001E-09
+   delay4=  4.3483E-11  targ=  5.0612E-09   trig=  5.0177E-09
+
+          ***** job concluded
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.52943e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.52943e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.52943e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.52943e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.40354e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.40354e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.40354e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.40354e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.40354e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.40354e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.40354e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.40354e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.40354e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.40354e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.40354e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.40354e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.40354e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.40354e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.40354e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.40354e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.45216e-08.
+
+
+   *** monte carlo  index =    12 ***
+
+       MONTE CARLO PARAMETER DEFINITIONS
+
+ vth0_n_g                        
+     nmos_vtl        =  0.6925    
+ vth0_p_g                        
+     pmos_vtl        = -0.4795    
+ vth0_aging_n                    
+     nmos_vtl        =  0.6925    
+ vth0_aging_p                    
+     pmos_vtl        = -0.4795    
+ 1:l_g                           
+     2:l             =  4.5294E-08  3:l             =  4.4035E-08
+     4:l             =  4.4522E-08
+
+   delay1=  2.3836E-11  targ=  1.0239E-09   trig=  1.0001E-09
+   delay2=  3.1801E-11  targ=  1.0557E-09   trig=  1.0239E-09
+   delay3=  1.7820E-11  targ=  5.0180E-09   trig=  5.0001E-09
+   delay4=  4.0408E-11  targ=  5.0584E-09   trig=  5.0180E-09
+
+          ***** job concluded
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.41081e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.41081e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.41081e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.41081e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.66699e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.66699e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.66699e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.66699e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.66699e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.66699e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.66699e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.66699e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.66699e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.66699e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.66699e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.66699e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.66699e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.66699e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.66699e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.66699e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.71629e-08.
+
+
+   *** monte carlo  index =    13 ***
+
+       MONTE CARLO PARAMETER DEFINITIONS
+
+ vth0_n_g                        
+     nmos_vtl        =  0.7671    
+ vth0_p_g                        
+     pmos_vtl        = -0.4810    
+ vth0_aging_n                    
+     nmos_vtl        =  0.7671    
+ vth0_aging_p                    
+     pmos_vtl        = -0.4810    
+ 1:l_g                           
+     2:l             =  4.4108E-08  3:l             =  4.6670E-08
+     4:l             =  4.7163E-08
+
+   delay1=  2.9408E-11  targ=  1.0295E-09   trig=  1.0001E-09
+   delay2=  3.8233E-11  targ=  1.0677E-09   trig=  1.0295E-09
+   delay3=  1.7697E-11  targ=  5.0178E-09   trig=  5.0001E-09
+   delay4=  4.9576E-11  targ=  5.0674E-09   trig=  5.0178E-09
+
+          ***** job concluded
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.13705e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.13705e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.13705e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.13705e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.63709e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.63709e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.63709e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.63709e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.63709e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.63709e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.63709e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.63709e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.63709e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.63709e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.63709e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.63709e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.63709e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.63709e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.63709e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.63709e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.56864e-08.
+
+
+   *** monte carlo  index =    14 ***
+
+       MONTE CARLO PARAMETER DEFINITIONS
+
+ vth0_n_g                        
+     nmos_vtl        =  0.7048    
+ vth0_p_g                        
+     pmos_vtl        = -0.4398    
+ vth0_aging_n                    
+     nmos_vtl        =  0.7048    
+ vth0_aging_p                    
+     pmos_vtl        = -0.4398    
+ 1:l_g                           
+     2:l             =  4.1370E-08  3:l             =  4.6371E-08
+     4:l             =  4.5686E-08
+
+   delay1=  2.3581E-11  targ=  1.0236E-09   trig=  1.0001E-09
+   delay2=  2.9628E-11  targ=  1.0533E-09   trig=  1.0236E-09
+   delay3=  1.5547E-11  targ=  5.0157E-09   trig=  5.0001E-09
+   delay4=  4.4249E-11  targ=  5.0599E-09   trig=  5.0157E-09
+
+          ***** job concluded
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.51904e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.51904e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.51904e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.51904e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46542e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46542e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46542e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46542e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46542e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46542e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46542e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.46542e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46542e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46542e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46542e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46542e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46542e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46542e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46542e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.46542e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.6146e-08.
+
+
+   *** monte carlo  index =    15 ***
+
+       MONTE CARLO PARAMETER DEFINITIONS
+
+ vth0_n_g                        
+     nmos_vtl        =  0.8087    
+ vth0_p_g                        
+     pmos_vtl        = -0.4936    
+ vth0_aging_n                    
+     nmos_vtl        =  0.8087    
+ vth0_aging_p                    
+     pmos_vtl        = -0.4936    
+ 1:l_g                           
+     2:l             =  4.5190E-08  3:l             =  4.4654E-08
+     4:l             =  4.6146E-08
+
+   delay1=  3.5403E-11  targ=  1.0355E-09   trig=  1.0001E-09
+   delay2=  3.8893E-11  targ=  1.0743E-09   trig=  1.0355E-09
+   delay3=  1.8341E-11  targ=  5.0185E-09   trig=  5.0001E-09
+   delay4=  5.5409E-11  targ=  5.0739E-09   trig=  5.0185E-09
+
+          ***** job concluded
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49665e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49665e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49665e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49665e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.44619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.44619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.78704e-08.
+
+
+   *** monte carlo  index =    16 ***
+
+       MONTE CARLO PARAMETER DEFINITIONS
+
+ vth0_n_g                        
+     nmos_vtl        =  0.7184    
+ vth0_p_g                        
+     pmos_vtl        = -0.5329    
+ vth0_aging_n                    
+     nmos_vtl        =  0.7184    
+ vth0_aging_p                    
+     pmos_vtl        = -0.5329    
+ 1:l_g                           
+     2:l             =  4.4966E-08  3:l             =  4.4462E-08
+     4:l             =  4.7870E-08
+
+   delay1=  2.4975E-11  targ=  1.0250E-09   trig=  1.0001E-09
+   delay2=  3.9052E-11  targ=  1.0641E-09   trig=  1.0250E-09
+   delay3=  2.0177E-11  targ=  5.0203E-09   trig=  5.0001E-09
+   delay4=  4.3440E-11  targ=  5.0638E-09   trig=  5.0203E-09
+
+          ***** job concluded
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.43369e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.43369e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.43369e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.43369e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.79192e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.79192e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.79192e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.79192e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.79192e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.79192e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.79192e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.79192e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.79192e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.79192e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.79192e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.79192e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.79192e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.79192e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.79192e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.79192e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.31299e-08.
+
+
+   *** monte carlo  index =    17 ***
+
+       MONTE CARLO PARAMETER DEFINITIONS
+
+ vth0_n_g                        
+     nmos_vtl        =  0.8335    
+ vth0_p_g                        
+     pmos_vtl        = -0.4754    
+ vth0_aging_n                    
+     nmos_vtl        =  0.8335    
+ vth0_aging_p                    
+     pmos_vtl        = -0.4754    
+ 1:l_g                           
+     2:l             =  4.4337E-08  3:l             =  4.7919E-08
+     4:l             =  4.3130E-08
+
+   delay1=  3.9130E-11  targ=  1.0392E-09   trig=  1.0001E-09
+   delay2=  4.1148E-11  targ=  1.0803E-09   trig=  1.0392E-09
+   delay3=  1.7686E-11  targ=  5.0178E-09   trig=  5.0001E-09
+   delay4=  6.4098E-11  targ=  5.0819E-09   trig=  5.0178E-09
+
+          ***** job concluded
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.59915e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.59915e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.59915e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.59915e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.57738e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.57738e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.57738e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.57738e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.57738e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.57738e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.57738e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.57738e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.57738e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.57738e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.57738e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.57738e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.57738e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.57738e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.57738e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.57738e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.50225e-08.
+
+
+   *** monte carlo  index =    18 ***
+
+       MONTE CARLO PARAMETER DEFINITIONS
+
+ vth0_n_g                        
+     nmos_vtl        =  0.7514    
+ vth0_p_g                        
+     pmos_vtl        = -0.5104    
+ vth0_aging_n                    
+     nmos_vtl        =  0.7514    
+ vth0_aging_p                    
+     pmos_vtl        = -0.5104    
+ 1:l_g                           
+     2:l             =  4.5992E-08  3:l             =  4.5774E-08
+     4:l             =  4.5023E-08
+
+   delay1=  2.8550E-11  targ=  1.0286E-09   trig=  1.0001E-09
+   delay2=  3.9235E-11  targ=  1.0678E-09   trig=  1.0286E-09
+   delay3=  1.9606E-11  targ=  5.0198E-09   trig=  5.0001E-09
+   delay4=  4.8006E-11  targ=  5.0678E-09   trig=  5.0198E-09
+
+          ***** job concluded
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5962e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5962e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5962e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5962e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.30531e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.30531e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.30531e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.30531e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.30531e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.30531e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.30531e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.30531e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.30531e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.30531e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.30531e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.30531e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.30531e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.30531e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.30531e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.30531e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.3345e-08.
+
+
+   *** monte carlo  index =    19 ***
+
+       MONTE CARLO PARAMETER DEFINITIONS
+
+ vth0_n_g                        
+     nmos_vtl        =  0.7702    
+ vth0_p_g                        
+     pmos_vtl        = -0.4474    
+ vth0_aging_n                    
+     nmos_vtl        =  0.7702    
+ vth0_aging_p                    
+     pmos_vtl        = -0.4474    
+ 1:l_g                           
+     2:l             =  4.5962E-08  3:l             =  4.3053E-08
+     4:l             =  4.3345E-08
+
+   delay1=  3.1235E-11  targ=  1.0313E-09   trig=  1.0001E-09
+   delay2=  3.1924E-11  targ=  1.0632E-09   trig=  1.0313E-09
+   delay3=  1.6743E-11  targ=  5.0169E-09   trig=  5.0001E-09
+   delay4=  4.8557E-11  targ=  5.0654E-09   trig=  5.0169E-09
+
+          ***** job concluded
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5491e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5491e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5491e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.5491e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.61281e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.61281e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.61281e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.61281e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.61281e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.61281e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.61281e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.61281e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.61281e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.61281e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.61281e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.61281e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.61281e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.61281e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.61281e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.61281e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+ Warning:  Acde = 1 may be too small in BSIM4 model pmos_vtl with w=6.3e-07 l=4.49619e-08.
+
+
+   *** monte carlo  index =    20 ***
+
+       MONTE CARLO PARAMETER DEFINITIONS
+
+ vth0_n_g                        
+     nmos_vtl        =  0.6982    
+ vth0_p_g                        
+     pmos_vtl        = -0.5559    
+ vth0_aging_n                    
+     nmos_vtl        =  0.6982    
+ vth0_aging_p                    
+     pmos_vtl        = -0.5559    
+ 1:l_g                           
+     2:l             =  4.5491E-08  3:l             =  4.6128E-08
+     4:l             =  4.4962E-08
+
+   delay1=  2.3749E-11  targ=  1.0238E-09   trig=  1.0001E-09
+   delay2=  4.0761E-11  targ=  1.0646E-09   trig=  1.0238E-09
+   delay3=  2.1994E-11  targ=  5.0221E-09   trig=  5.0001E-09
+   delay4=  4.2926E-11  targ=  5.0651E-09   trig=  5.0221E-09
+
+   meas_variable = delay1
+   mean  =  26.6509p  varian = 2.395e-23
+   sigma =   4.8943p  avgdev =   3.8189p
+   max   =  39.1301p  min    =  19.9662p
+    1-sigma =   4.8943p median =  25.0021p
+
+   meas_variable = delay2
+   mean  =  36.2122p  varian = 1.359e-23
+   sigma =   3.6871p  avgdev =   3.1891p
+   max   =  41.1477p  min    =  29.6283p
+    1-sigma =   3.6871p median =  37.0713p
+
+   meas_variable = delay3
+   mean  =  18.7971p  varian = 4.141e-24
+   sigma =   2.0350p  avgdev =   1.6880p
+   max   =  23.0110p  min    =  15.5466p
+    1-sigma =   2.0350p median =  18.6940p
+
+   meas_variable = delay4
+   mean  =  45.7261p  varian = 4.270e-23
+   sigma =   6.5344p  avgdev =   4.9118p
+   max   =  64.0977p  min    =  36.4946p
+    1-sigma =   6.5344p median =  44.1715p
+ 
+
+          ***** job concluded
+1****** HSPICE -- C-2009.09-SP1 32-BIT (Nov 23 2009) linux ******               
+ ******  
+ *********************************
+
+  ******  job statistics summary tnom=  25.000 temp=  25.000 *****
+ 
+ 
+ ******  Machine Information  ******
+ CPU:
+ model name	: AMD Opteron(tm) Processor 6176
+ cpu MHz	: 2299.943
+ 
+ OS:
+ Linux version 3.13.0-62-generic (buildd@lgw01-59) (gcc version 4.8.2 (Ubuntu 4.
+ 8.2-19ubuntu1) ) #102-Ubuntu SMP Tue Aug 11 14:29:36 UTC 2015
+
+
+  ******  HSPICE Threads Information  ******
+
+  Command Line Threads Count                  :     1
+  Available CPU Count                         :    48
+  Actual Model Evaluation(Load) Threads Count :     1
+  Actual Solver Threads Count                 :     1
+
+
+  ******  Circuit Statistics  ******
+  # nodes       =     342 # elements   =      86
+  # resistors   =       0 # capacitors =       0 # inductors   =       0
+  # mutual_inds =       0 # vccs       =       0 # vcvs        =       0
+  # cccs        =       0 # ccvs       =       0 # volt_srcs   =       2
+  # curr_srcs   =       0 # diodes     =       0 # bjts        =       0
+  # jfets       =       0 # mosfets    =      84 # U elements  =       0
+  # T elements  =       0 # W elements =       0 # B elements  =       0
+  # S elements  =       0 # P elements =       0 # va device   =       0
+
+
+  ******  Runtime Statistics (seconds)  ******
+
+  analysis           time    # points   tot. iter  conv.iter
+  op point           0.10           1          80
+  transient          7.32      800020       10052        4183 rev=       100
+  readin             0.00
+  errchk             0.02
+  setup              0.00
+  output             0.00
+
+
+           total memory used         1049  kbytes
+           total cpu time            7.44 seconds
+           total elapsed time        8.63 seconds
+           job started at     01:05:38 10/21/2015
+           job ended   at     01:05:47 10/21/2015
+
+
+ lic: Release hspice token(s) 

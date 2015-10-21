@@ -1,0 +1,46 @@
+### CustomExplorer log file, revision E-2011.03-1 (build 1103) ###
+### created at 16:29:22 on Tue Oct 20 2015 (Linux AMD64) ###
+wv_start_log
+# (0) running in waveview only mode
+# (0) HOME defined
+wv_move_window CustomWaveView 0 0
+wv_resize_window CustomWaveView 800 400
+wv_move_window CustomWaveView 2 53
+wv_move_window CustomWaveView 0 3
+wv_resize_window CustomWaveView 1597 870
+sx_open_sim_file_read {demo.raw/timeSweep.tran}
+wv_move_window CustomWaveView 1 0
+wv_select_hierview_item {FILE0:D0:timeSweep.tran}
+wv_dclick_hierview_item {FILE0:D0:timeSweep.tran}
+wv_select_hierview_item {FILE0:D0:timeSweep.tran} {toplevel}
+wv_dclick_hierview_item {FILE0:D0:timeSweep.tran} {toplevel}
+wv_select_sigview_item I1
+wv_select_sigview_item I1
+wv_select_sigview_item I1
+wv_dclick_sigview_item I1
+wv_select_sigview_item O1
+wv_dclick_sigview_item O1
+wv_select_sigview_item O2
+wv_dclick_sigview_item O2
+wv_select_wv_item WV1.PANEL2:1.LEGEND
+wv_drag_item_to WV1 30 402
+wv_drag_enter WV1
+wv_drag_to WV1 28 392
+wv_drag_to WV1 23 295
+wv_drag_to WV1 22 216
+wv_drop_on WV1
+wv_drag_item_to WV1 28 397
+wv_select_wv_item WV1.PANEL2:1.LEGEND
+wv_drag_item_to WV1 45 447
+wv_drag_enter WV1
+wv_drag_to WV1 38 437
+wv_drag_to WV1 41 314
+wv_drop_on WV1
+wv_drag_item_to WV1 40 442
+wv_select_panel WV1.PANEL1:1 7.28363e-10 1.19554
+wv_drag_item_to WV1 213 56
+wv_zoom WV1.PANEL1:1 7.28363e-10 1.19554 3.03342e-09 -0.272061
+wv_close_window CustomWaveView
+wv_move_dialog Confirmation 705 384
+wv_select_dialog Confirmation
+# wv_press_button Confirmation.Ok
