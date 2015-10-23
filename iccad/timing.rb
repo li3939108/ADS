@@ -165,7 +165,7 @@ class Circuit
 	def gate_reference( gate )
 		@gate_reference[ gate ]
 	end
-	def simu_sensor(on_arrival_time, rat = nil)
+	def simu_sensor(on_arrival_time, on_cluster, rat = nil)
 		@critical_paths.select do |p|
 			at = p.arrival_time('yes')  
 			if rat == nil
@@ -547,6 +547,9 @@ def naive_simu_knob(affected_paths, on_paths, clt)
 		cluster_paths += affected_paths.select{|c| c[0] == (clt.adaptivity & p.affecting_cluster).min{|c| clt.to_cost[c] } }.to_set
 	end
 	cluster_paths
+end
+def finite_state(affecting_cluster, on_paths, clt, )
+
 end
 def simu_knob(affected_paths, on_paths, clt)
 	# sorting in descending order
