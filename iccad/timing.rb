@@ -120,7 +120,9 @@ class Circuit
 		parse_GinC_file('GinC.txt', preassigned_adaptivity) 
 		update_variation 
 	end
-	attr_accessor :max_delay,:library,:arrival_time, :total_leakage, :gate_arrival_time, :original_critical_paths, :full_paths
+	attr_accessor :max_delay,:library,:arrival_time, :total_leakage, 
+		:gate_arrival_time, :original_critical_paths, :full_paths,
+		:clusters
 	def atdist
 	end
 	def lib
@@ -140,9 +142,6 @@ class Circuit
 		:number_of_gates => @gate_reference.length, 
 		:area => @total_area, 
 		:leakage => @total_leakage}
-	end
-	def clusters
-		@clusters
 	end
 	def set_gate_delay(gate, delay, voltage = 'low')
 		if voltage == 'low'
@@ -165,9 +164,13 @@ class Circuit
 	def gate_reference( gate )
 		@gate_reference[ gate ]
 	end
-	def simu_sensor(on_arrival_time, on_cluster, rat = nil)
+	def simu_sensor(on_arrival_time, cluster_paths= [].to_set,  rat = nil)
 		@critical_paths.select do |p|
-			at = p.arrival_time('yes')  
+			if cluster_paths.empty?
+				at = p.arrival_time('yes')  
+			else
+				at = p.new_arrival_time(cluster_paths, @clusters) 
+			end
 			if rat == nil
 				at > on_arrival_time
 			else
@@ -548,8 +551,21 @@ def naive_simu_knob(affected_paths, on_paths, clt)
 	end
 	cluster_paths
 end
-def finite_state(affecting_cluster, on_paths, clt, )
-
+def fsm_naive(affected_paths, existing_cluster_paths, on_paths, clt)
+	cluster_paths = existing_cluster_paths.to_set
+	on_paths.each do |p|
+		cluster_paths += affected_paths.select{|c| c[0]==
+			(clt.adaptivity & p.affecting_cluster - 
+			existing_cluster_paths.map{|path| path[0] }.to_set).min{|c| clt.to_cost[c] } }.to_set
+	end
+end
+def finite_state(affected_paths, on_paths, ckt, ret )
+	limit = 3
+	cluster_paths = simu_knob(affected_paths, on_paths, ckt.clusters).to_set
+	(1..limit).each do |i|
+		on_paths = ckt.simu_sensor(ret, cluster_paths ) 
+		cluster_paths = fsm_naive(affected_paths, cluster_paths, on_paths, ckt.clusters).to_set
+	end
 end
 def simu_knob(affected_paths, on_paths, clt)
 	# sorting in descending order
