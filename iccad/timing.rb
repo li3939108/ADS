@@ -98,7 +98,7 @@ class Circuit
 	TIMING_PATH_START = 4
 	TIMING_PATH_END =5
 	FINISH = 6
-	def initialize(gates, library , sensor_limit = 15, sigma = [0.0441, 0.0491], stage = "pr", potential = 0.8, preassigned_adaptivity = nil)
+	def initialize(gates, library , sensor_limit = 15, sigma = [0.0441, 0.0931, 0.0441], stage = "pr", potential = 0.8, preassigned_adaptivity = nil)
 		@library = library 
 		@gate_delay = {}
 		@gate_delay_high_voltage = {}
@@ -113,6 +113,7 @@ class Circuit
 		@full_paths = []
 		@rand =  RandomGaussian.new(1, sigma[0])
 		@rand2 = RandomGaussian.new(1, sigma[1])
+		@rand3 = RandomGaussian.new(1, sigma[2])
 		parse_gates(gates, library)
 		parse_timing_file("timing.#{stage}.low", potential, 'low') 
 		parse_timing_file("timing.#{stage}.high", 0, 'high')
@@ -122,16 +123,20 @@ class Circuit
 	end
 	attr_accessor :max_delay,:library,:arrival_time, :total_leakage, 
 		:gate_arrival_time, :original_critical_paths, :full_paths,
-		:clusters
-	def atdist
-	end
+		:clusters, :rand3
 	def lib
 		@library
 	end
 	def update_variation
 		inter = @rand2.rand
+		@clusters.update_variation
 		@gate_delay.each_key do |g|
-			@gate_delay_variation[g] = inter * @rand.rand
+			if @clusters.gate_cluster[g] == nil
+				spatial = 1
+			else
+				spatial =  @clusters.variation[ @clusters.gate_cluster[g] ]
+			end
+			@gate_delay_variation[g] = inter * (@rand.rand + spatial - 1 )
 		end
 	end
 	def gate_variation(gate)
@@ -328,6 +333,7 @@ class Cluster
 		@gate_cluster = {}
 		@clustered_gates = {}
 		@circuit = ckt
+		@variation = {}
 		if preassigned_adaptivity == nil
 			@adaptivity = nil
 		elsif preassigned_adaptivity.kind_of?(Array)
@@ -335,9 +341,13 @@ class Cluster
 		end
 		@cost = {}
 	end
-	attr_accessor :adaptivity
-	attr_accessor :clustered_gates
-	attr_accessor :gate_cluster 
+	attr_accessor :adaptivity, :clustered_gates, :gate_cluster, 
+		:variation
+	def update_variation
+		@clustered_gates.keys.each do |c|
+			@variation[c] = @circuit.rand3.rand
+		end
+	end
 	def set_gate_cluster(gate, cluster) 
 		@gate_cluster[gate] = cluster
 		if @clustered_gates[cluster] == nil
@@ -418,7 +428,7 @@ class Placement
 	end
 	def update_variation(u = 1, sigma )
 		if @rand == nil
-			@rand =  RandomGaussian.new(u, sigma ) 
+			@rand =  RandomGaussian.new(u, sigma[0] ) 
 		end
 		@gate_loc.keys.each do |gate|
 			@gate_delay_derate[gate] = @rand.rand
@@ -549,6 +559,7 @@ def naive_simu_knob(affected_paths, on_paths, clt)
 		#choose min cost cluster
 		cluster_paths += affected_paths.select{|c| c[0] == (clt.adaptivity & p.affecting_cluster).min{|c| clt.to_cost[c] } }.to_set
 	end
+	$stderr.print "naive: ", cluster_paths.map{|p| p[0] } , "\n"
 	cluster_paths
 end
 def fsm_naive(affected_paths, existing_cluster_paths, on_paths, clt)
@@ -558,14 +569,18 @@ def fsm_naive(affected_paths, existing_cluster_paths, on_paths, clt)
 			(clt.adaptivity & p.affecting_cluster - 
 			existing_cluster_paths.map{|path| path[0] }.to_set).min{|c| clt.to_cost[c] } }.to_set
 	end
+	cluster_paths
 end
-def finite_state(affected_paths, on_paths, ckt, ret )
-	limit = 3
+def finite_state(affected_paths, on_paths, ckt, ret, limit = 2)
 	cluster_paths = simu_knob(affected_paths, on_paths, ckt.clusters).to_set
 	(1..limit).each do |i|
 		on_paths = ckt.simu_sensor(ret, cluster_paths ) 
+		if on_paths.empty? then break end
 		cluster_paths = fsm_naive(affected_paths, cluster_paths, on_paths, ckt.clusters).to_set
+		$stderr.print "fsm#{i}: ", cluster_paths.map{|p| p[0] } , "\n"
 	end
+	$stderr.print "fsm: ", cluster_paths.map{|p| p[0] } , "\n"
+	cluster_paths
 end
 def simu_knob(affected_paths, on_paths, clt)
 	# sorting in descending order
@@ -609,6 +624,7 @@ def simu_knob(affected_paths, on_paths, clt)
 			end
 		end
 	end
+	$stderr.print "Proposed: ", cluster_paths.map{|p| p[0] } , "\n"
 	cluster_paths
 end
 def cost_gen(affected_paths, clt)
