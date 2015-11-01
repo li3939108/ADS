@@ -98,7 +98,7 @@ class Circuit
 	TIMING_PATH_START = 4
 	TIMING_PATH_END =5
 	FINISH = 6
-	def initialize(gates, library , sensor_limit = 15, sigma = [0.0441, 0.0931, 0.0441], stage = "pr", potential = 0.8, preassigned_adaptivity = nil)
+	def initialize(gates, library , sensor_limit = 15, sigma = [] , stage = "pr", potential = 0.8, preassigned_adaptivity = nil)
 		@library = library 
 		@gate_delay = {}
 		@gate_delay_high_voltage = {}
@@ -111,9 +111,10 @@ class Circuit
 		@max_delay = 0
 		@arrival_time = []
 		@full_paths = []
-		@rand =  RandomGaussian.new(1, sigma[0])
+		@rand  =  RandomGaussian.new(1, sigma[0])
 		@rand2 = RandomGaussian.new(1, sigma[1])
 		@rand3 = RandomGaussian.new(1, sigma[2])
+		@rand4 = RandomGaussian.new(sigma[3][0] , sigma[3][1] ) 
 		parse_gates(gates, library)
 		parse_timing_file("timing.#{stage}.low", potential, 'low') 
 		parse_timing_file("timing.#{stage}.high", 0, 'high')
@@ -136,7 +137,7 @@ class Circuit
 			else
 				spatial =  @clusters.variation[ @clusters.gate_cluster[g] ]
 			end
-			@gate_delay_variation[g] = inter * (@rand.rand + spatial - 1 )
+			@gate_delay_variation[g] = inter * (@rand.rand + spatial - 1 ) * @rand4.rand
 		end
 	end
 	def gate_variation(gate)
@@ -584,7 +585,7 @@ def finite_state(affected_paths, on_paths, ckt, ret, limit = 2)
 end
 def simu_knob(affected_paths, on_paths, clt)
 	# sorting in descending order
-	sorted_paths = affected_paths.sort{|a,b| a[1].length <=> b[1].length }
+	sorted_paths = affected_paths.sort{|a,b| (on_paths & a[1]).length <=> (on_paths & b[1]).length }
 	intersections = []
 	cluster_paths = []
 	sorted_paths.each do |p|
@@ -602,23 +603,35 @@ def simu_knob(affected_paths, on_paths, clt)
 				end
 				fully_coverd = true if temp_intersect.empty?
 			end
-			i_to_replace = contain_equal_set.map{|is| intersections.index(is) }
+		#	i_to_replace = contain_equal_set.map{|is| intersections.index(is) }
 			if fully_coverd == true
-				coverd_cost = i_to_replace.map{|i| 
-					clt.to_cost[ cluster_paths[i][0] ] }.reduce(0,:+)
+			#	coverd_cost = i_to_replace.map{|i| 
+			#		clt.to_cost[ cluster_paths[i][0] ] }.reduce(0,:+)
+				coverd_cost = contain_equal_set.map{|is| 
+					clt.to_cost[ cluster_paths[ intersections.index(is) ][0] ] }.reduce(0,:+) 
 				if coverd_cost > clt.to_cost[ p[0] ]
-					i_to_replace.each do |i|
+					contain_equal_set.map do |is| 
+						i = intersections.index(is) 
 						cluster_paths.delete_at(i)
 						intersections.delete_at(i)
 					end
+					#i_to_replace.each do |i|
+					#	cluster_paths.delete_at(i)
+					#	intersections.delete_at(i)
+					#end
 					cluster_paths.push(p)
 					intersections.push(intersect) 
 				end
 			else
-				i_to_replace.each do |i|
+				contain_equal_set.map do |is| 
+					i = intersections.index(is) 
 					cluster_paths.delete_at(i)
 					intersections.delete_at(i)
 				end
+				#i_to_replace.each do |i|
+				#	cluster_paths.delete_at(i)
+				#	intersections.delete_at(i)
+				#end
 				cluster_paths.push(p)
 				intersections.push(intersect) 
 			end

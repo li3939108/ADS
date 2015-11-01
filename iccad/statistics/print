@@ -9,7 +9,7 @@
  lic:  
  lic: FLEXlm: v8.5b 
  lic: USER:   li3939108            HOSTNAME: raptor 
- lic: HOSTID: f04da240beb1         PID:      22030 
+ lic: HOSTID: f04da240beb1         PID:      26766 
  lic: Using FLEXlm license file: 
  lic: 27000@license.ece.tamu.edu 
  lic: Checkout 1 hspice 
@@ -575,7 +575,7 @@ Model Name: pmos_vtl
     TRD =      0 
  
 
-  **warning** (demo.sp:180) dc voltage reset to initial transient source value              in source        0:vpulse              new dc=  0.0000D+00
+  **warning** (demo.sp:35) dc voltage reset to initial transient source value              in source        0:vpulse              new dc=  0.0000D+00
  Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
 
  Warning:  Acde = 1 may be too small in BSIM4 model nmos_vtl with w=4.15e-07 l=4.5e-08.
@@ -4635,19 +4635,19 @@ Model Name: pmos_vtl
   ******  Runtime Statistics (seconds)  ******
 
   analysis           time    # points   tot. iter  conv.iter
-  op point           0.10           1          80
-  transient          7.32      800020       10052        4183 rev=       100
-  readin             0.00
-  errchk             0.02
+  op point           0.14           1          80
+  transient          7.30      800020       10052        4183 rev=       100
+  readin             0.02
+  errchk             0.00
   setup              0.00
   output             0.00
 
 
            total memory used         1049  kbytes
-           total cpu time            7.44 seconds
-           total elapsed time        8.63 seconds
-           job started at     01:05:38 10/21/2015
-           job ended   at     01:05:47 10/21/2015
+           total cpu time            7.46 seconds
+           total elapsed time        7.68 seconds
+           job started at     02:11:26 10/21/2015
+           job ended   at     02:11:33 10/21/2015
 
 
  lic: Release hspice token(s) 
