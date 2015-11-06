@@ -3,16 +3,20 @@ require '../timing.rb'
 inter_die_std = 0.0931
 intra_die_std = 0.0658
 spatial_std = 0.0658
+#aging = (1.196 + 1.168 ) / 2
+#aging_std = (0.0425 + 0.0668) / 2
+aging = 1
+aging_std = 0
 lib = Library.new('NangateOpenCellLibrary_typical_ccs.lib')
 lib2 = Library.new('NangateOpenCellLibrary_fast_ccs.lib')
-if ARGV[3] != nil
-	ckt = Circuit.new('gates.txt', lib, ARGV[2].to_i, [intra_die_std, inter_die_std, spatial_std], 'pr' ,0.7 , ARGV[3].split(",").map{|i| i.to_i} ) 
-	print "with adaptivity:", ARGV[3].split(",").map{|i| i.to_i},"\n" 
+if ARGV[5] != nil
+	ckt = Circuit.new('gates.txt', lib, ARGV[2].to_i, [intra_die_std, inter_die_std, spatial_std, [aging, aging_std]], 'pr' ,0.7 , ARGV[5].split(",").map{|i| i.to_i} ) 
+	print "with adaptivity:", ARGV[5].split(",").map{|i| i.to_i},"\n" 
 else
-	ckt = Circuit.new('gates.txt', lib, ARGV[2].to_i, [intra_die_std, inter_die_std, spatial_std], 'pr' ,0.7 )
+	ckt = Circuit.new('gates.txt', lib, ARGV[2].to_i, [intra_die_std, inter_die_std, spatial_std, [aging, aging_std]], 'pr' ,0.7 )
 end
 #control_ckt = Circuit.new('gates.control', lib)
-ap = mat_gen(ckt.critical_paths, ckt.clusters, 0.20)
+ap = mat_gen(ckt.critical_paths, ckt.clusters, ARGV[4].to_f)
 cost_gen(ap, ckt.clusters) 
 
 sum_logic = 0
@@ -26,7 +30,7 @@ true_count_all_high = 0
 on_count = 0
 on_2_count = 0
 times = ARGV[1].to_i
-rat = 1.05 * ARGV[0].to_f
+rat = ARGV[3].to_f * ARGV[0].to_f
 all_cluster_paths = ckt.clusters.to_id.map{|id| [id,[]] }
 
 print "total_leakage: ", ckt.total_leakage, "\n"
@@ -73,6 +77,7 @@ print "total_leakage: ", ckt.total_leakage, "\n"
 			true_count_all_low += 1 
 			true_count_logic += 1 
 			true_count_naive += 1 
+			true_count_fsm += 1
 		end
 		true_count_all_high += 1 if ckt.check_timing(rat, all_cluster_paths  )
 	else
