@@ -1,4 +1,5 @@
 require 'set'
+require_relative './graphmatch.rb'
 
 class RandomGaussian
 	def initialize(mean, stddev, rand_helper = lambda { Kernel.rand })
@@ -98,7 +99,7 @@ class Circuit
 	TIMING_PATH_START = 4
 	TIMING_PATH_END =5
 	FINISH = 6
-	def initialize(gates, library , sensor_limit = 15, sigma = [0.0441, 0.0931, 0.0441], stage = "pr", potential = 0.8, preassigned_adaptivity = nil)
+	def initialize(gates, library , sensor_limit = 15, sigma = [] , stage = "pr", potential = 0.8, preassigned_adaptivity = nil)
 		@library = library 
 		@gate_delay = {}
 		@gate_delay_high_voltage = {}
@@ -111,9 +112,10 @@ class Circuit
 		@max_delay = 0
 		@arrival_time = []
 		@full_paths = []
-		@rand =  RandomGaussian.new(1, sigma[0])
+		@rand  =  RandomGaussian.new(1, sigma[0])
 		@rand2 = RandomGaussian.new(1, sigma[1])
 		@rand3 = RandomGaussian.new(1, sigma[2])
+		@rand4 = RandomGaussian.new(sigma[3][0] , sigma[3][1] ) 
 		parse_gates(gates, library)
 		parse_timing_file("timing.#{stage}.low", potential, 'low') 
 		parse_timing_file("timing.#{stage}.high", 0, 'high')
@@ -123,7 +125,7 @@ class Circuit
 	end
 	attr_accessor :max_delay,:library,:arrival_time, :total_leakage, 
 		:gate_arrival_time, :original_critical_paths, :full_paths,
-		:clusters, :rand3
+		:clusters, :rand3, :matching
 	def lib
 		@library
 	end
@@ -136,11 +138,14 @@ class Circuit
 			else
 				spatial =  @clusters.variation[ @clusters.gate_cluster[g] ]
 			end
-			@gate_delay_variation[g] = inter * (@rand.rand + spatial - 1 )
+			@gate_delay_variation[g] = inter * (@rand.rand + spatial - 1 ) * @rand4.rand
 		end
 	end
 	def gate_variation(gate)
 		@gate_delay_variation[gate]
+	end
+	def inspect
+		to_s
 	end
 	def to_s
 		{:critical_paths => @critical_paths.map{|p| p.arrival_time}, 
@@ -319,6 +324,20 @@ class Circuit
 			end
 		end
 	end
+	def matching_cluster_gen
+		aff_clt_set = @critical_paths.map{|p|  p.affecting_cluster & @clusters.adaptivity }.reduce(Set.new, :+).to_a
+		edges = {}
+		h = @critical_paths.map{|p| p.hash }
+		@critical_paths.each do |p|
+			edges[p.hash] = {}; edges[p.hash + 1] = {}
+			p.affecting_cluster.each do |c|
+				edges[p.hash][c] = (@clusters.to_cost[c] / 1000).to_i
+				edges[p.hash + 1][c] = (@clusters.to_cost[c] / 1000).to_i
+			end
+		end
+		@matching = Graphmatch.match(@critical_paths, aff_clt_set, edges) 
+		@matching.values
+	end
 	def check_timing(rat, cluster_path)
 		@original_critical_paths.each do |p|
 			if p.new_arrival_time(cluster_path, @clusters) > rat 
@@ -447,6 +466,9 @@ class Placement
 end
 
 class Path
+	def inspect
+		to_s
+	end
 	def to_s
 		{'startpoint'=>@startpoint, 'endpoint' => @endpoint, 'arrival_time'=>@arrival_time, 
 		'length of gates along path'=>@gates_along_path.length,
@@ -464,7 +486,7 @@ class Path
 		@circuit = ckt
 		@gate_arrival_time = []
 	end
-	attr_accessor :gate_arrival_time
+	attr_accessor :gate_arrival_time, :cluster_delay_sum
 	def affecting_cluster
 		@important_cluster
 	end
@@ -526,7 +548,24 @@ class Path
 	def add_gate(gate)
 		@gates_along_path.add(gate)
 	end
-
+	def select_(clt, limit)
+		sum_effective_at = 0
+		if @important_cluster.length != 0
+			return 
+		end
+		@gates_along_path.each do |g|
+			c = clt.g2c(g) 
+			if c == nil or @gate_delay[g] > 1
+			elsif @cluster_delay_sum[c] == nil
+				@cluster_delay_sum[c] = @gate_delay[g] 
+				sum_effective_at +=  @gate_delay[g]
+			else
+				@cluster_delay_sum[c] += @gate_delay[g]
+				sum_effective_at +=  @gate_delay[g]
+			end
+		end
+		@important_cluster = @cluster_delay_sum.to_a.sort{|b,a| a[1] <=> b[1]}[0,limit.to_i].map{|a| a[0]}.to_set
+	end
 	def cluster(clt, threshold = 0.2)
 		sum_effective_at = 0
 		if @important_cluster.length != 0
@@ -544,14 +583,22 @@ class Path
 			end
 		end
 		@important_cluster = @cluster_delay_sum.select{|k,v|
-			(v + 0.0) /  sum_effective_at >= threshold
+			(v + 0.0) / sum_effective_at >= threshold
 		}.keys.to_set 
 	end
 end
 def leakage_diff(cluster_paths, clt, low_lib, high_lib)
 	cluster_paths.map { |c|
-		0.5 * clt.leakage(low_lib, c[0] )
+		0.75 * clt.leakage(low_lib, c[0] ) #Leakage Power
 	}.reduce(0.0, :+) 
+end
+def maxflow_simu_knob(affected_paths, on_paths, ckt)
+	cluster_paths = [].to_set
+	on_paths.each do |p|
+		cluster_paths += affected_paths.select{|c| c[0] == ckt.matching[p.hash] or c[0] == ckt.matching[p.hash+1] }.to_set
+	end
+	$stderr.print "maxflow: ", cluster_paths.map{|p| p[0] } , "\n"
+	cluster_paths
 end
 def naive_simu_knob(affected_paths, on_paths, clt)
 	cluster_paths = [].to_set
@@ -584,7 +631,7 @@ def finite_state(affected_paths, on_paths, ckt, ret, limit = 2)
 end
 def simu_knob(affected_paths, on_paths, clt)
 	# sorting in descending order
-	sorted_paths = affected_paths.sort{|a,b| a[1].length <=> b[1].length }
+	sorted_paths = affected_paths.sort{|a,b| (on_paths & a[1]).length <=> (on_paths & b[1]).length }
 	intersections = []
 	cluster_paths = []
 	sorted_paths.each do |p|
@@ -602,23 +649,35 @@ def simu_knob(affected_paths, on_paths, clt)
 				end
 				fully_coverd = true if temp_intersect.empty?
 			end
-			i_to_replace = contain_equal_set.map{|is| intersections.index(is) }
+		#	i_to_replace = contain_equal_set.map{|is| intersections.index(is) }
 			if fully_coverd == true
-				coverd_cost = i_to_replace.map{|i| 
-					clt.to_cost[ cluster_paths[i][0] ] }.reduce(0,:+)
+			#	coverd_cost = i_to_replace.map{|i| 
+			#		clt.to_cost[ cluster_paths[i][0] ] }.reduce(0,:+)
+				coverd_cost = contain_equal_set.map{|is| 
+					clt.to_cost[ cluster_paths[ intersections.index(is) ][0] ] }.reduce(0,:+) 
 				if coverd_cost > clt.to_cost[ p[0] ]
-					i_to_replace.each do |i|
+					contain_equal_set.map do |is| 
+						i = intersections.index(is) 
 						cluster_paths.delete_at(i)
 						intersections.delete_at(i)
 					end
+					#i_to_replace.each do |i|
+					#	cluster_paths.delete_at(i)
+					#	intersections.delete_at(i)
+					#end
 					cluster_paths.push(p)
 					intersections.push(intersect) 
 				end
 			else
-				i_to_replace.each do |i|
+				contain_equal_set.map do |is| 
+					i = intersections.index(is) 
 					cluster_paths.delete_at(i)
 					intersections.delete_at(i)
 				end
+				#i_to_replace.each do |i|
+				#	cluster_paths.delete_at(i)
+				#	intersections.delete_at(i)
+				#end
 				cluster_paths.push(p)
 				intersections.push(intersect) 
 			end
@@ -635,9 +694,9 @@ def cost_gen(affected_paths, clt)
 	cost_file.close
 end
 def mat_gen(paths, clt, cluster_th = 0.2)
-	paths.each do |p|
-		p.cluster(clt, cluster_th)
-	end
+	if cluster_th > 1.0  then paths.each{|p| p.select_(clt, cluster_th); }
+	else paths.each{|p| p.cluster(clt, cluster_th); } end
+	
 	aff_clt_set = paths.map{|p|  p.affecting_cluster & clt.adaptivity }
 	affected_paths = aff_clt_set.reduce(Set.new, :+).map do |c|
 		[c, paths.select{|p| p.affecting_cluster.include?(c) }.to_set]
