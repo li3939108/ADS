@@ -1,4 +1,5 @@
 require 'set'
+require_relative './graphmatch.rb'
 
 class RandomGaussian
 	def initialize(mean, stddev, rand_helper = lambda { Kernel.rand })
@@ -111,20 +112,21 @@ class Circuit
 		@max_delay = 0
 		@arrival_time = []
 		@full_paths = []
+		@unclustered = 0
 		@rand  =  RandomGaussian.new(1, sigma[0])
 		@rand2 = RandomGaussian.new(1, sigma[1])
 		@rand3 = RandomGaussian.new(1, sigma[2])
 		@rand4 = RandomGaussian.new(sigma[3][0] , sigma[3][1] ) 
 		parse_gates(gates, library)
+		parse_GinC_file('GinC.txt', preassigned_adaptivity) 
 		parse_timing_file("timing.#{stage}.low", potential, 'low') 
 		parse_timing_file("timing.#{stage}.high", 0, 'high')
 		select_paths(sensor_limit, potential)
-		parse_GinC_file('GinC.txt', preassigned_adaptivity) 
 		update_variation 
 	end
 	attr_accessor :max_delay,:library,:arrival_time, :total_leakage, 
 		:gate_arrival_time, :original_critical_paths, :full_paths,
-		:clusters, :rand3
+		:clusters, :rand3, :matching, :unclustered
 	def lib
 		@library
 	end
@@ -142,6 +144,9 @@ class Circuit
 	end
 	def gate_variation(gate)
 		@gate_delay_variation[gate]
+	end
+	def inspect
+		to_s
 	end
 	def to_s
 		{:critical_paths => @critical_paths.map{|p| p.arrival_time}, 
@@ -233,6 +238,7 @@ class Circuit
 		@critical_paths.sample(number ) 
 	end
 	def parse_timing_file(file = "timing.pr.low", threshold = 0.75, voltage = 'low')
+		previous_cluster = nil
 		timing_file = File.new(file, "r") 
 		state = INITIAL
 		design_name = " " 
@@ -292,6 +298,10 @@ class Circuit
 				elsif (line_seg.length == 3 and (line_seg[2] == "r" or line_seg[2] == "f"  ) ) or
 					(line_seg.length == 4 and (line_seg[3] == "r" or line_seg[3] == "f" ))
 					if voltage == 'low'
+						if @clusters.g2c(temp_gate) == nil and previous_cluster != nil
+							@clusters.set_gate_cluster(temp_gate, previous_cluster)
+							@unclustered += 1
+						else previous_cluster = @clusters.g2c(temp_gate); end
 						path.set_gate_delay(temp_gate, line_seg[0].to_f ) 
 						path.gate_arrival_time.push([temp_gate, line_seg[2]]) if  (line_seg[3] == "r" or line_seg[3] == "f" ) 
 						path.gate_arrival_time.push([temp_gate, line_seg[1]]) if (line_seg[2] == "r" or line_seg[2] == "f"  )
@@ -302,6 +312,10 @@ class Circuit
 				elsif line_seg.length == 6 or line_seg.length == 7
 					path.add_gate(line_seg[0]) if voltage == 'low'
 					if voltage == 'low'
+						if @clusters.g2c(line_seg[0]) == nil and previous_cluster != nil
+							@clusters.set_gate_cluster(line_seg[0], previous_cluster) 
+							@unclustered += 1
+						else previous_cluster = @clusters.g2c(line_seg[0]); end
 						path.set_gate_delay(line_seg[0], line_seg[3].to_f) 
 						path.gate_arrival_time.push([line_seg[0], line_seg[5] ]) if  (line_seg[6] == "r" or line_seg[6] == "f" ) 
 						path.gate_arrival_time.push([line_seg[0], line_seg[4] ]) if (line_seg[5] == "r" or line_seg[5] == "f"  )
@@ -319,6 +333,21 @@ class Circuit
 				return self
 			end
 		end
+	end
+	def matching_cluster_gen
+		aff_clt_set = @critical_paths.map{|p|  p.affecting_cluster & @clusters.adaptivity }.reduce(Set.new, :+).to_a
+		edges = {}
+		h = @critical_paths.map{|p| [p.hash, p.hash + 1] }.reduce([], :+)
+		h = h[0, aff_clt_set.length ]
+		@critical_paths.each do |p|
+			edges[p.hash] = {}; edges[p.hash + 1] = {}
+			p.affecting_cluster.each do |c|
+				edges[p.hash][c] = (@clusters.to_cost[c] / 1000).to_i
+				edges[p.hash + 1][c] = (@clusters.to_cost[c] / 1000).to_i
+			end
+		end
+		@matching = Graphmatch.match(h, aff_clt_set, edges) 
+		@matching.values
 	end
 	def check_timing(rat, cluster_path)
 		@original_critical_paths.each do |p|
@@ -362,7 +391,7 @@ class Cluster
 	end
 	def to_cost
 		@clustered_gates.merge(@clustered_gates) do |k,v|
-			leakage(@circuit.library, k) 
+			leakage(@circuit.library, k)
 		end
 	end
 	def to_id
@@ -377,17 +406,18 @@ class Cluster
 		if cluster_id == nil
 			@clustered_gates.merge(@clustered_gates) do |id, gates|
 				gates.map{|g|
-					lib.leakage[ @circuit.gate_reference(g) ]
+					if lib.leakage[  @circuit.gate_reference(g) ]  == nil
+					#	print "nil", g, @circuit.gate_reference(g), "\n"
+						0.0
+					else lib.leakage[ @circuit.gate_reference(g) ]; end
 				}.reduce(0.0, :+) 
 			end
 		else
 			@clustered_gates[ cluster_id ].map{ |g|
 				if lib.leakage[  @circuit.gate_reference(g) ]  == nil
-					print "nil", g, @circuit.gate_reference(g), "\n"
+					#print "nil", g, @circuit.gate_reference(g), "\n"
 					0.0
-				else
-					lib.leakage[  @circuit.gate_reference(g) ]
-				end
+				else lib.leakage[  @circuit.gate_reference(g) ]; end
 			}.reduce(0.0, :+) 
 		end
 	end
@@ -448,6 +478,9 @@ class Placement
 end
 
 class Path
+	def inspect
+		to_s
+	end
 	def to_s
 		{'startpoint'=>@startpoint, 'endpoint' => @endpoint, 'arrival_time'=>@arrival_time, 
 		'length of gates along path'=>@gates_along_path.length,
@@ -465,7 +498,7 @@ class Path
 		@circuit = ckt
 		@gate_arrival_time = []
 	end
-	attr_accessor :gate_arrival_time
+	attr_accessor :gate_arrival_time, :cluster_delay_sum
 	def affecting_cluster
 		@important_cluster
 	end
@@ -527,7 +560,24 @@ class Path
 	def add_gate(gate)
 		@gates_along_path.add(gate)
 	end
-
+	def select_(clt, limit)
+		sum_effective_at = 0
+		if @important_cluster.length != 0
+			return 
+		end
+		@gates_along_path.each do |g|
+			c = clt.g2c(g) 
+			if c == nil or @gate_delay[g] > 1
+			elsif @cluster_delay_sum[c] == nil
+				@cluster_delay_sum[c] = @gate_delay[g] 
+				sum_effective_at +=  @gate_delay[g]
+			else
+				@cluster_delay_sum[c] += @gate_delay[g]
+				sum_effective_at +=  @gate_delay[g]
+			end
+		end
+		@important_cluster = @cluster_delay_sum.to_a.sort{|b,a| a[1] <=> b[1]}[0,limit.to_i].map{|a| a[0]}.to_set
+	end
 	def cluster(clt, threshold = 0.2)
 		sum_effective_at = 0
 		if @important_cluster.length != 0
@@ -545,14 +595,30 @@ class Path
 			end
 		end
 		@important_cluster = @cluster_delay_sum.select{|k,v|
-			(v + 0.0) /  sum_effective_at >= threshold
+			(v + 0.0) / sum_effective_at >= threshold
 		}.keys.to_set 
 	end
 end
 def leakage_diff(cluster_paths, clt, low_lib, high_lib)
 	cluster_paths.map { |c|
-		0.5 * clt.leakage(low_lib, c[0] )
+		0.75 * clt.leakage(low_lib, c[0] ) #Leakage Power
 	}.reduce(0.0, :+) 
+end
+def coarse_simu_knob(affected_paths, on_paths, ckt)
+	cluster_paths = [].to_set
+	if on_paths.empty? 
+		cluster_paths
+	else
+		affected_paths.to_set
+	end
+end
+def maxflow_simu_knob(affected_paths, on_paths, ckt)
+	cluster_paths = [].to_set
+	on_paths.each do |p|
+		cluster_paths += affected_paths.select{|c| c[0] == ckt.matching[p.hash] or c[0] == ckt.matching[p.hash+1] }.to_set
+	end
+	$stderr.print "maxflow: ", cluster_paths.map{|p| p[0] } , "\n"
+	cluster_paths
 end
 def naive_simu_knob(affected_paths, on_paths, clt)
 	cluster_paths = [].to_set
@@ -648,9 +714,9 @@ def cost_gen(affected_paths, clt)
 	cost_file.close
 end
 def mat_gen(paths, clt, cluster_th = 0.2)
-	paths.each do |p|
-		p.cluster(clt, cluster_th)
-	end
+	if cluster_th > 1.0  then paths.each{|p| p.select_(clt, cluster_th); }
+	else paths.each{|p| p.cluster(clt, cluster_th); } end
+	
 	aff_clt_set = paths.map{|p|  p.affecting_cluster & clt.adaptivity }
 	affected_paths = aff_clt_set.reduce(Set.new, :+).map do |c|
 		[c, paths.select{|p| p.affecting_cluster.include?(c) }.to_set]
