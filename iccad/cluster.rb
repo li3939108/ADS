@@ -1,4 +1,4 @@
-gate_out_file = File.new("gates.txt")
+gate_out_file = File.new("gates_out")
 cluster_file = File.new("gatesInClusters.txt", "r") 
 out2gate = {}
 gate2cluster = {}
