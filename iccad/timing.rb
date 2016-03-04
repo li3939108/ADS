@@ -201,6 +201,25 @@ class Circuit
 			end
 		end
 	end
+	def select_paths_( th = 0.15, potential)
+		covered_gates = Set.new
+		selected_paths = []
+		while  (not @critical_paths.empty?)
+		#	@critical_paths.sort!{|x,y| (( x.arrival_time - @max_delay * potential) * x.fresh ) <=> 
+		#		( (y.arrival_time - @max_delay * potential) * y.fresh) }
+			@critical_paths.sort!{|x,y| (( x.arrival_time ) * x.fresh ) <=> ( (y.arrival_time ) * y.fresh) }
+			path = @critical_paths.pop
+			print "fresh: ", path.fresh, " arrivel: ", path.arrival_time, "\n"
+			selected_paths.push(path)
+			covered_gates = covered_gates + path.gates.to_set
+			@critical_paths.each do |p|
+				p.update_fresh(covered_gates)
+				if p.fresh < th then @critical_paths.delete(p) end
+				covered_gates = covered_gates + p.gates.to_set
+			end
+		end
+		@critical_paths = selected_paths 
+	end
 	def select_paths( limit = 15, potential)
 		covered_gates = Set.new
 		selected_paths = []
@@ -337,8 +356,12 @@ class Circuit
 	def matching_cluster_gen
 		aff_clt_set = @critical_paths.map{|p|  p.affecting_cluster & @clusters.adaptivity }.reduce(Set.new, :+).to_a
 		edges = {}
-		h = @critical_paths.map{|p| [p.hash, p.hash + 1] }.reduce([], :+)
-		h = h[0, aff_clt_set.length ]
+		aff_clt_set.sort!{|a,b| 
+		h_b = aff_clt_set.map{|c| c.hash} + aff_clt_set.map{|c| c.hash + 1 } 
+		h_s = @critical_paths.map{|p| p.hash} + @critical_paths.map{|p| p.hash + 1 }
+		max_length = [aff_clt_set.length, @critical_paths.length ].max
+		h_s = h_s[0, max_length]
+		h_b = h_b[0, max_length]
 		@critical_paths.each do |p|
 			edges[p.hash] = {}; edges[p.hash + 1] = {}
 			p.affecting_cluster.each do |c|
@@ -346,7 +369,7 @@ class Circuit
 				edges[p.hash + 1][c] = (@clusters.to_cost[c] / 1000).to_i
 			end
 		end
-		@matching = Graphmatch.match(h, aff_clt_set, edges) 
+		@matching = Graphmatch.match(h_s, aff_clt_set, edges) 
 		@matching.values
 	end
 	def check_timing(rat, cluster_path)
