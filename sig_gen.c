@@ -103,8 +103,8 @@ void remove_dominated_sig(SIG_KNOB sk, SIG_KNOB sk_to_remove){
 	fprintf(stderr, "remove_dominated : %s(%d) - %s\n", sk->signal_key, sk->ndominated_sig, sk_to_remove->signal_key ) ;
 	sk->ndominated_sig = sk->ndominated_sig  - 1;
 	//fprintf(stderr, "dominated: %s %s \n", sk->dominated_signal[0]->signal_key, sk->dominated_signal[1]->signal_key ) ;
-	
 }
+
 void remove_dominating_sig(SIG_KNOB sk, SIG_KNOB sk_to_remove){
 	int i,j=0 ;
 	SIG_KNOB *dominating_signal = malloc( (sk->ndominating_sig - 1) * sizeof *dominating_signal ) ;
@@ -178,8 +178,9 @@ void sk_chain_pruning(float const cost[], int level ){
 			fprintf(stderr, "self_level: %d, dominated_level: %d, sig:%s ,min_c: %f, cost: %f, nmin_knobs:%d\n", 
 				self_level, dominated_level, keys[i], min_c, cost[ sk->knobs[self_level] ], nmin_cost_knobs ) ;
 			#endif
-			if( (min_c < cost [ sk->knobs[ self_level ] ])||
-				(min_c == cost[ sk->knobs[ self_level ] ] && nmin_cost_knobs == 1 && min_cost_knob_list[0] == sk->knobs[self_level]) ){
+			if( (min_c < cost [ sk->knobs[ self_level ] ]) 	
+			//	||	(min_c == cost[ sk->knobs[ self_level ] ] && nmin_cost_knobs == 1 && min_cost_knob_list[0] == sk->knobs[self_level]) 
+				){
 				int i = 0, j;
 				for(	j = 0; j < sk->ndominating_sig; j++){
 					remove_dominated_sig ( sk->dominating_signal[j], sk ) ;
@@ -534,10 +535,15 @@ void print_keys(char *temp_mat, int nrow, int ncol, float const cost[], int cons
 		if(et == NULL){
 			fprintf(stderr, "nothing found \n") ;
 		}else{
-			fprintf(stderr, "key: %s, knob: %d,%d,%d; dominating: ", sk->signal_key, 
+			fprintf(stderr, "key: %s, knob: %d,%d,%d; #sensors: %d     sensor index:  ", sk->signal_key, 
 				( (SIG_KNOB )(et->data))->knobs[0],
 				( (SIG_KNOB )(et->data))->knobs[1],
-				( (SIG_KNOB )(et->data))->knobs[2] ) ;
+				( (SIG_KNOB )(et->data))->knobs[2] ,
+				sk->nsensors ) ;
+			for(j = 0; j < sk->nsensors; j ++){
+				fprintf(stderr, "  %d ", sk->sensors_index_list[j] ) ;
+			}
+			fprintf(stderr, " dominating: " );
 			for(j = 0; j < sk->ndominating_sig ; j ++){
 				fprintf(stderr, "%s, ", sk->dominating_signal[j]->signal_key ) ;
 			}
@@ -599,14 +605,14 @@ int main(){
 	print_keys((char *)mat, nrow, ncol, cost, index, 0) ;
 	#endif
 //	print_keys((char *)mat, nrow, ncol, cost, index, 1) ;
-	inputs(ncol) ;
-	sig2gates(keys, nkeys, 0) ;
+//	inputs(ncol) ;
+	//sig2gates(keys, nkeys, 0) ;
 //	sig2gates(keys, nkeys, 1) ;
-	isig2gates(keys, nkeys, 0) ;
+	//isig2gates(keys, nkeys, 0) ;
 //	isig2gates(keys, nkeys, 1) ;
-	or_isig_gates(keys, nkeys, nrow) ;
-	wires_gen();
-	outputs_gen();
+	//or_isig_gates(keys, nkeys, nrow) ;
+	//wires_gen();
+	//outputs_gen();
 	for( i = 0; i < nkeys ; i++){
 		ENTRY e={ keys[i], NULL};
 		et = hsearch(e, FIND) ;
